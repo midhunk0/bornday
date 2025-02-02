@@ -1,11 +1,13 @@
 version: '3.8'
 
 services:
-  mongodb:
-    image: mongo
-    container_name: mongo_db
+  db:
+    image: postgres
+    container_name: postgres_db
     ports:
-      - "27017:27017"
+      - 27017:27017
+    env_file:
+      - ./server/.env
     volumes:
       - bornday_data:/data/db 
 
@@ -13,9 +15,9 @@ services:
     build: ./server
     container_name: backend_api
     ports:
-      - "4000:4000"
+      - 4000:4000
     depends_on:
-      - mongodb
+      - db
     env_file:
       - ./server/.env 
     volumes:
@@ -26,11 +28,11 @@ services:
     build: ./client
     container_name: frontend_app
     ports:
-      - "5173:5173"
+      - 5173:5173
     depends_on:
       - backend
     volumes:
-      - ./client:app
+      - ./client:/app
       - /app/node_modules
   
 volumes:
