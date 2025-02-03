@@ -3,9 +3,14 @@ const { User, Bornday }=require("./model");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 const returnUserId = require("./helper");
+const sendEmail = require("./mail");
 
 const jwt_secret=process.env.JWT_SECRET;
 const jwt_expires_in="1hr";
+
+const generateOTP=()=>{
+    return Math.floor(10000+Math.random()*900000).toString();
+};
 
 const registerUser=async(req, res)=>{
     try{
@@ -22,21 +27,49 @@ const registerUser=async(req, res)=>{
             return res.status(400).json({ message: "Email is already in use" });
         }
         const hashedPassword=await bcrypt.hash(password, bcrypt.genSaltSync(12));
+        const otp=generateOTP();
+        const otpExpires=new Date(Date.now()+10*60*1000);
         const user=new User({
             username: username,
             email: email,
             password: hashedPassword,
+            otp: otp,
+            otpExpires: otpExpires,
             borndays: []
         });
         await user.save();
-        const token=jwt.sign({ userId: user._id, username: user.username }, jwt_secret, { expiresIn: jwt_expires_in });
-        res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 3600000 });
-        return res.status(200).json({ message: "User created successfully" });
+        const message=`Your verification code is: ${otp}`;
+        await sendEmail(email, "Verify your email", message);
+        return res.status(200).json({ message: "User registered. Check your email for the OTP" });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
     }
 };
+
+const verifyOTP=async(req, res)=>{
+    try{
+        const { email, otp }=req.body;
+        const user=await User.findOne({ email });
+        if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        if(user.otp!==otp){
+            return res.status(400).json({ message: "Invalid OTP" });
+        }
+        if(user.otpExpires<Date.now()){
+            return res.status(400).json({ message: "OTP expired" });
+        }
+        user.isVerified=true;
+        user.otp=undefined;
+        user.otpExpires=undefined;
+        await user.save();
+        return res.status(200).json({ message: "Email verified successfully. You can login now" });
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+}
 
 const loginUser=async(req, res)=>{
     try{
@@ -47,6 +80,9 @@ const loginUser=async(req, res)=>{
         const user=await User.findOne({ $or: [{ email: credential }, { username: credential }]});
         if(!user){
             return res.status(400).json({ message: "User doesn't exists" });
+        }
+        if(!user.isVerified){
+            return res.status(400).json({ message: "You are not verified" });
         }
         const passwordMatch=await bcrypt.compare(password, user.password);
         if(!passwordMatch){
@@ -65,14 +101,71 @@ const logoutUser=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const user=await User.findById(userId);
         if(!user){
             return res.status(400).json({ message: "User not found" });
         }
-        res.cookie("jwt", "", { maxAge: 1 });
+        res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "strict" });
         return res.status(200).json({ message: "Logout successful" });
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+};
+
+const editUser=async(req, res)=>{
+    try{
+        const userId=returnUserId(req);
+        if(!userId){
+            return res.status(400).json({ message: "User token not found or invalid" });
+        }
+        const user=await User.findById(userId);
+        if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        const { username, email, oldPassword, newPassword }=req.body;
+        let otpRequired=false, passwordChanged=false;
+        if(username && username!==user.username){
+            const usernameExist=await User.findOne({ username });
+            if(usernameExist){
+                return res.status(400).json({ message: "Username already taken" });
+            }
+            user.username=username;
+        }
+        if(email && email!==user.email){
+            const emailExist=await User.findOne({ email });
+            if(emailExist){
+                return res.status(400).json({ message: "Email is already in use" });
+            }
+            user.email=email;
+            otpRequired=true;
+        }
+        if(oldPassword && newPassword){
+            const passwordMatch=await bcrypt.compare(oldPassword, user.password);
+            if(!passwordMatch){
+                return res.status(400).json({ message: "Incorrect password" })
+            }
+            if(oldPassword===newPassword){
+                return res.status(400).json({ message: "New password cannot be the same as old password" });
+            }
+            user.password=await bcrypt.hash(newPassword, bcrypt.genSaltSync(12));
+            passwordChanged=true;
+        }
+        if(otpRequired){
+            const otp=generateOTP();
+            user.otp=otp;
+            user.otpExpires=new Date(Date.now()+10*60*1000);
+            user.isVerified=false;
+            const message=`Your verification code is: ${otp}`;
+            await sendEmail(user.email, "Verify your email", message);
+        }
+        await user.save();
+        if(otpRequired || passwordChanged){
+            res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "strict" });
+        }
+        return res.status(200).json({ message: otpRequired ? "User updated. Check your email for the OTP" : "User updated" });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
@@ -83,13 +176,13 @@ const deleteUser=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const deleteUser=await User.findByIdAndDelete(userId);
         if(!deleteUser){
             return res.status(400).json({ message: "User deletion failed" });
         }
-        res.cookie("jwt", "", { maxAge: 1 });
+        res.clearCookie("jwt", { maxAge: 1 });
         return res.status(200).json({ message: "User deleted successfully" });
     }
     catch(err){
@@ -101,7 +194,7 @@ const addBornday=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const user=await User.findById(userId);
         if(!user){
@@ -125,7 +218,7 @@ const fetchBorndays=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const user=await User.findById(userId).select("borndays");
         if(!user){
@@ -142,7 +235,7 @@ const fetchBornday=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const user=await User.findById(userId).select("borndays");
         if(!user){
@@ -164,7 +257,7 @@ const fetchBorndaysByMonth=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const user=await User.findById(userId).select("borndays");
         if(!user){
@@ -186,7 +279,7 @@ const fetchBorndaysByDay=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const user=await User.findById(userId).select("borndays");
         if(!user){
@@ -211,7 +304,7 @@ const editBornday=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         const user=await User.findById(userId).select("borndays");
         if(!user){
@@ -242,7 +335,7 @@ const deleteBornday=async(req, res)=>{
         const { borndayId }=req.params;
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found ot invalid" });
+            return res.status(400).json({ message: "User token not found or invalid" });
         }
         
         // const user=await User.findById(userId);
@@ -271,8 +364,10 @@ const deleteBornday=async(req, res)=>{
 
 module.exports={
     registerUser,
+    verifyOTP,
     loginUser,
     logoutUser,
+    editUser,
     deleteUser,
     addBornday,
     fetchBorndays,
