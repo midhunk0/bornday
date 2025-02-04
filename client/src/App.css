@@ -1,42 +1,83 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.input-container{
+    display: flex;
+    position: relative;
+    width: 100%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.input-container input{
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input-container label{
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: gray;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.input-container input:focus,
+.input-container input:not(:placeholder-shown){
+    border-color: #CA3F85;
 }
 
-.card {
-  padding: 2em;
+.input-container input:focus+label,
+.input-container input:not(:placeholder-shown)+label{
+    top: 0;
+    left: 12px;
+    font-size: 12px;
+    color: #CA3F85;
+    background: white;
+    padding: 0 4px;
 }
 
-.read-the-docs {
-  color: #888;
+.password-container{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    position: relative;
+}
+
+.image-container{
+    position: absolute;
+    display: grid;
+    background: #CA3F85;
+    border-radius: 50%;
+    cursor: pointer;
+    place-items: center;
+    outline: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    right: 8px;
+    transition: background 0.3s ease-in-out;
+}
+
+.image-container:hover{
+    background: #000;
+}
+
+.image-container img{
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
+}
+
+.image-container.visible{
+    background: white;
+}
+
+.image-container.visible img{
+    filter: none;
 }

@@ -1,28 +1,17 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres
-    container_name: postgres_db
-    ports:
-      - 27017:27017
-    env_file:
-      - ./server/.env
-    volumes:
-      - bornday_data:/data/db 
-
   backend: 
     build: ./server
     container_name: backend_api
     ports:
       - 4000:4000
-    depends_on:
-      - db
     env_file:
       - ./server/.env 
     volumes:
       - ./server:/app
       - /app/node_modules
+    command: ["npm", "start"]
   
   frontend: 
     build: ./client
@@ -34,6 +23,5 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
-  
-volumes:
-  bornday_data: {}
+    command: ["npm", "run", "dev"]
+    

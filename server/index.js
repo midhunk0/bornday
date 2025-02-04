@@ -12,7 +12,11 @@ const apiUrl=environment==='development'
     ? process.env.FRONT_END_DEV_API
     : process.env.FRONT_END_PROD_API;
 
-app.use(cors());
+app.use(cors({
+    origin: apiUrl,
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorizarion"]
+}));
 app.use(cookieParser());
 app.use(express.json());
 
