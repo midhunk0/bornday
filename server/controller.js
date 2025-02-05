@@ -40,6 +40,8 @@ const registerUser=async(req, res)=>{
         await user.save();
         const message=`Your verification code is: ${otp}`;
         await sendEmail(email, "Verify your email", message);
+        const token=jwt.sign({ userId: user._id, username: user.username }, jwt_secret, { expiresIn: jwt_expires_in });
+        res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 3600000 });
         return res.status(200).json({ message: "User registered. Check your email for the OTP" });
     }
     catch(err){
@@ -97,6 +99,23 @@ const loginUser=async(req, res)=>{
     }
 };
 
+const fetchUser=async(req, res)=>{
+    try{
+        const userId=returnUserId(req);
+        if(!userId){
+            return res.status(400).json({ message: "User token not found or invalid" });
+        }
+        const user=await User.findById(userId).select("username email _id");
+        if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        return res.status(200).json({ message: "User fetched", user: user });
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+}
+
 const logoutUser=async(req, res)=>{
     try{
         const userId=returnUserId(req);
@@ -115,7 +134,7 @@ const logoutUser=async(req, res)=>{
     }
 };
 
-const editUser=async(req, res)=>{
+const updateUser=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
@@ -165,7 +184,7 @@ const editUser=async(req, res)=>{
         if(otpRequired || passwordChanged){
             res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "strict" });
         }
-        return res.status(200).json({ message: otpRequired ? "User updated. Check your email for the OTP" : "User updated" });
+        return res.status(200).json({ message: otpRequired ? "User updated. Check your email for the OTP" : "User updated", verified: !otpRequired });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
@@ -366,8 +385,9 @@ module.exports={
     registerUser,
     verifyOTP,
     loginUser,
+    fetchUser,
     logoutUser,
-    editUser,
+    updateUser,
     deleteUser,
     addBornday,
     fetchBorndays,

@@ -1,0 +1,89 @@
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    min-width: 56px;
+    height: 100vh;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.sidebar.collapsed{
+    width: 56px;
+}
+
+.sidebar-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    gap: 16px;
+    cursor: pointer;
+}
+
+.sidebar-header h2{
+    text-transform: capitalize;
+    font-family: "Oswald", serif;
+    font-size: x-large;
+}
+
+.sidebar-button{
+    display: flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+}
+
+.sidebar-button img{
+    width: 24px;
+    height: 24px;
+}
+
+.sidebar-menus{
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-menu{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.sidebar-menu a{
+    opacity: 1;
+}
+
+.sidebar.collapsed .sidebar-menu a{
+    display: none;
+}
+
+.sidebar-menu:hover{
+    background: rgb(236, 209, 209);
+}
+
+.sidebar-menu img{
+    width: 24px;
+    height: 24px;
+}
+
+.sidebar-footer{
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+.sidebar-footer:hover{
+    background: rgb(238, 205, 205);
+}
+
+.sidebar-footer img{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}

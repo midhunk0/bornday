@@ -14,8 +14,6 @@ export function Register(){
         email: "",
         password: ""
     });
-    const [otp, setOtp]=useState<string>("");
-    const [showVerification, setShowVerification]=useState<boolean>(false);
     const [visible, setVisible]=useState<boolean>(false);
 
     const environment=import.meta.env.MODE;
@@ -36,11 +34,6 @@ export function Register(){
         setVisible(!visible);
     }
 
-    function handleOTP(e: React.ChangeEvent<HTMLInputElement>){
-        const { value }=e.target;
-        setOtp(value);
-    };
-
     async function registerUser(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
         try{
@@ -52,7 +45,7 @@ export function Register(){
             });
             const result=await response.json();
             if(response.ok){
-                setShowVerification(true);
+                navigate("/verify");
             }
             console.log(result.message);
         }
@@ -66,31 +59,6 @@ export function Register(){
         }
     };
 
-    async function verifyOTP(e: React.FormEvent<HTMLFormElement>){
-        e.preventDefault();
-        try{
-            const response=await fetch(`${apiUrl}/verifyOTP`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: registerData.email, otp}),
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                navigate("/login");
-            }
-            console.log(result.message);
-        }
-        catch(error: unknown){
-            if(error instanceof Error){
-                console.error("Error during verification: ", error.message);
-            }
-            else{
-                console.error("An unknown error occurred");
-            }
-        }
-    }
-
     return(
         <div className="register">
             <div className="register-image">
@@ -98,50 +66,35 @@ export function Register(){
             </div>
             <div className="register-contents">
                 <div className="register-logo">
-                    <img src="cake.png" alt="img"/>
+                    <img src="/cake.png" alt="img"/>
                 </div>
                 <div className="register-form">
                     <h1>Welcome To Bornday.</h1>
-                    {showVerification ? (
-                        <form onSubmit={verifyOTP}>
+                    <form onSubmit={registerUser}>
+                        <div className="input-container">
+                            <input type="text" name="username" value={registerData.username} required onChange={handleInputChange} placeholder=" "/>
+                            <label>Username</label>
+                        </div>
+                        <div className="input-container">
+                            <input type="email" name="email" value={registerData.email} required onChange={handleInputChange} placeholder=" "/>
+                            <label>Email</label>
+                        </div>
+                        <div className="password-container">
                             <div className="input-container">
-                                <input type="text" name="otp" value={otp} required onChange={handleOTP} placeholder=" "/>
-                                <label>Enter OTP</label>
+                                <input type={visible ? "text" : "password"} name="password" value={registerData.password} required onChange={handleInputChange} placeholder=" "/>
+                                <label>Password</label>
                             </div>
-                            <button className="register-button" type="submit">
-                                <span className="register-button-icon-wrapper">
-                                    <img src="arrow.png" alt="icon" className="register-button-icon" />
-                                </span>
-                                Verify
-                            </button>
-                        </form>
-                    ) : (
-                        <form onSubmit={registerUser}>
-                            <div className="input-container">
-                                <input type="text" name="username" value={registerData.username} required onChange={handleInputChange} placeholder=" "/>
-                                <label>Username</label>
+                            <div className={`image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
+                                <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                             </div>
-                            <div className="input-container">
-                                <input type="email" name="email" value={registerData.email} required onChange={handleInputChange} placeholder=" "/>
-                                <label>Email</label>
+                        </div>
+                        <button className="register-button" type="submit">
+                            <div className="register-button-icon-wrapper">
+                                <img src="arrow.png" alt="icon" className="register-button-icon" />
                             </div>
-                            <div className="password-container">
-                                <div className="input-container">
-                                    <input type={visible ? "text" : "password"} name="password" value={registerData.password} required onChange={handleInputChange} placeholder=" "/>
-                                    <label>Password</label>
-                                </div>
-                                <div className={`image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
-                                    <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
-                                </div>
-                            </div>
-                            <button className="register-button" type="submit">
-                                <div className="register-button-icon-wrapper">
-                                    <img src="arrow.png" alt="icon" className="register-button-icon" />
-                                </div>
-                                Register
-                            </button>
-                        </form>
-                    )}
+                            Register
+                        </button>
+                    </form>
                     <p className="register-footer">
                         Already have an account? <a href="/login">Login</a>
                     </p>

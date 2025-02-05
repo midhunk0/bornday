@@ -1,0 +1,41 @@
+.account{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.account h1{
+    font-family: "Oswald", serif;
+    text-transform: capitalize;
+    font-size: 50px;
+}
+
+.account-form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: center;
+    padding: 16px;
+    gap: 16px;
+}
+
+.account-form button, .account-buttons button{
+    padding: 16px;
+    font-size: 16px;
+    border: 1px solid black;
+    cursor: pointer;
+    background: whitesmoke;
+    border-radius: 50px;
+}
+
+.account-buttons{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    width: 50%;
+}
+
+.account-buttons button{
+    width: 100%;
+}
