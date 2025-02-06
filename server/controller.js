@@ -52,6 +52,12 @@ const registerUser=async(req, res)=>{
 const verifyOTP=async(req, res)=>{
     try{
         const { email, otp }=req.body;
+        if(!email){
+            return res.status(400).json({ message: "Enter the email" });
+        }
+        if(!otp){
+            return res.status(400).json({ message: "Enter the OTP" });
+        }
         const user=await User.findOne({ email });
         if(!user){
             return res.status(400).json({ message: "User not found" });

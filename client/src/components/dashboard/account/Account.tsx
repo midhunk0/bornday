@@ -64,7 +64,6 @@ export function Account(){
                 credentials: "include"
             });
             const result=await response.json();
-            console.log(result);
             if(response.ok){
                 if(!result.verified){
                     navigate("/verify");

@@ -67,9 +67,13 @@
     background: rgb(236, 209, 209);
 }
 
-.sidebar-menu img{
+.sidebar-icon-add, .sidebar-icon-month, .sidebar-icon-bornday, .sidebar-icon-day{
     width: 24px;
     height: 24px;
+}
+
+.sidebar-menu:hover .sidebar-icon-add, .sidebar-menu:hover .sidebar-icon-month, .sidebar-menu:hover .sidebar-icon-bornday, .sidebar-menu:hover .sidebar-icon-day{
+    animation: vibrate 0.1s ease-in-out infinite alternate;
 }
 
 .sidebar-footer{
@@ -82,8 +86,33 @@
     background: rgb(238, 205, 205);
 }
 
-.sidebar-footer img{
+.sidebar-icon-option{
     width: 24px;
     height: 24px;
     cursor: pointer;
+}
+
+.sidebar-footer:hover .sidebar-icon-option{
+    animation: rotate 0.5s ease-in-out infinite;
+}
+
+@keyframes vibrate{
+    0%{
+        transform: rotate(-10deg);
+    }
+    100%{
+        transform: rotate(10deg);
+    }    
+}
+
+@keyframes rotate{
+    0%{
+        transform: rotate(0);
+    }
+    50%{
+        transform: rotate(90deg);
+    }
+    100%{
+        transform: rotate(180deg);
+    }
 }

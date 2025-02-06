@@ -21,25 +21,25 @@ export function Sidebar(){
             </div>
             <div className="sidebar-menus">
                 <div className="sidebar-menu" onClick={()=>navigate("/dashboard/add")}>
-                    <img src="/add.png" alt="img"/>
+                    <img src="/add.png" alt="img" className="sidebar-icon-add"/>
                     {!collapsed && <a>Add Bornday</a>}
                 </div>
                 <div className="sidebar-menu" onClick={()=>navigate("/dashboard/calendar")}>
-                    <img src="/month.png" alt="img"/>
+                    <img src="/month.png" alt="img" className="sidebar-icon-month"/>
                     {!collapsed && <a>Calendar View</a>}
                 </div>
                 <div className="sidebar-menu" onClick={()=>navigate("/dashboard/borndays")}>
-                    <img src="/bornday.png" alt="img"/>
+                    <img src="/bornday.png" alt="img" className="sidebar-icon-bornday"/>
                     {!collapsed && <a>All Borndays</a>}
                 </div>
                 <div className="sidebar-menu" onClick={()=>navigate("/dashboard/bornday/:id")}>
-                    <img src="/day.png" alt="img"/>
+                    <img src="/day.png" alt="img" className="sidebar-icon-day"/>
                     {!collapsed && <a>Day View</a>}
                 </div>
             </div>
             <div className="sidebar-footer">
                 <div className="sidebar-menu" onClick={()=>navigate("/dashboard/account")}>
-                    <img src="/option.png" alt="img"/>
+                    <img src="/option.png" alt="img" className="sidebar-icon-option"/>
                     {!collapsed && <a>Account</a>}
                 </div>
             </div>

@@ -1,7 +1,98 @@
+import React, { useState, useEffect } from "react";
 import "./Borndays.css";
+// import { useNavigate } from "react-router-dom";
+
+interface Bornday {
+    name: string;
+    date: string;
+}
+
+type BorndayData = Bornday[];
 
 export function Borndays(){
+    const [borndays, setBorndays]=useState<BorndayData>([]);
+    const [openButtons, setOpenButtons]=useState<{ [key: number]: boolean }>({});
+
+    const environment=import.meta.env.MODE;
+    const apiUrl=environment==="development"
+        ? import.meta.env.VITE_APP_DEV_URL
+        : import.meta.env.VITE_APP_PROD_URL
+    // const navigate=useNavigate();
+
+    useEffect(()=>{
+        async function fetchBorndays(){
+            try{
+                const response=await fetch(`${apiUrl}/fetchBorndays`, {
+                    method: "GET",
+                    credentials: "include"
+                });
+                const result=await response.json();
+                if(response.ok){
+                    setBorndays(result.borndays);
+                }
+                console.log(result.message);
+            }
+            catch(error){
+                if(error instanceof Error){
+                    console.log("Error during fetching: ", error.message);
+                }
+                else{
+                    console.log("An unknown error occurred");
+                }
+            }
+        }
+
+        fetchBorndays();
+    }, [apiUrl]);
+
+    function formatDate(dateString: string){
+        const date=new Date(dateString);
+        return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+    };
+
+    function toggleOpen(index: number){
+        setOpenButtons((prev)=>({
+            ...prev,
+            [index]: !prev[index]
+        }));
+    }
+
     return(
-        <p>borndays</p>
+        <div className="borndays">
+            <h1>Borndays.</h1>
+            {borndays && borndays.length>0 ? (
+                <div className="borndays-items">
+                    {borndays.map((bornday, index)=>(
+                        <div className="borndays-item" key={index}>
+                            <div className="borndays-item-content">
+                                <p>{bornday.name}</p>
+                                <p>{formatDate(bornday.date)}</p>
+                            </div>
+                            <div className="borndays-buttons">
+                                {openButtons[index] && (
+                                    <span className="borndays-icon-wrapper">
+                                        <img src="/edit.png" alt="img" className="borndays-icon-edit"/>
+                                    </span>
+                                )}
+                                {openButtons[index] && (
+                                    <span className="borndays-icon-wrapper">
+                                        <img src="/delete.png" alt="img" className="borndays-icon-delete"/>
+                                    </span>
+                                )}
+                                <span className="borndays-icon-wrapper">
+                                    <img src={openButtons[index] ? "/right.png" : "/left.png"} alt="img" className={openButtons[index] ? "borndays-icon-right" : "borndays-icon-left"} onClick={()=>toggleOpen(index)}/>
+                                </span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ):(
+                <p>No borndays available</p>
+            )}
+        </div>
     );
 };

@@ -32,19 +32,19 @@ export function Add(){
         try{
             const response=await fetch(`${apiUrl}/addBornday`, {
                 method: "POST",
-                headers: { "Conten-Type": "application/json" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(borndayData),
                 credentials: "include"
             });
             const result=await response.json();
             if(response.ok){
-                navigate("/calendar");
+                navigate("/dashboard/borndays");
             }
             console.log(result.message);
         }
         catch(error: unknown){
             if(error instanceof Error){
-                console.log("Error during lognin: ", error.message);
+                console.log("Error during adding: ", error.message);
             }
             else{
                 console.error("An unknown error occurred");
@@ -64,7 +64,12 @@ export function Add(){
                     <input type="date" name="date" value={borndayData.date} required onChange={handleInputChange} placeholder=" "/>
                     <label>DOB</label>
                 </div>
-                <button type="submit" className="add-button">Add</button>
+                <button type="submit" className="add-button">
+                    Add
+                    <span className="add-button-icon-wrapper">
+                        <img src="/add.png" alt="img" className="add-button-icon"/>
+                    </span>
+                </button>
             </form>
         </div>
     );
