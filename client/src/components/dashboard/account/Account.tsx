@@ -143,14 +143,34 @@ export function Account(){
                     <label>Email</label>
                 </div>
                 {enableEdit ? 
-                    <button type="button" onClick={handleUpdate}>Update User</button>
+                    <button type="button" className="account-button" onClick={handleUpdate}>
+                        Update User
+                        <div className="account-icon-wrapper">
+                            <img src="/update.png" alt="img" className="account-icon-update"/>
+                        </div>
+                    </button>
                 : 
-                    <button type="button" onClick={toggleEdit}>Edit User</button>
+                    <button type="button" className="account-button" onClick={toggleEdit}>
+                        Edit User
+                        <div className="account-icon-wrapper">
+                            <img src="/edit.png" alt="img" className="account-icon-edit"/>
+                        </div>
+                    </button>
                 }
             </form>
             <div className="account-buttons">
-                <button type="button" onClick={handleLogout}>Logout</button>
-                <button type="button" onClick={handleDelete}>Delete Account</button>
+                <button type="button" onClick={handleLogout} className="account-button">
+                    Logout
+                    <div className="account-icon-wrapper">
+                        <img src="/logout.png" alt="img" className="account-icon-logout"/>
+                    </div>
+                </button>
+                <button type="button" onClick={handleDelete} className="account-button delete">
+                    Delete Account
+                    <div className="account-icon-wrapper">
+                        <img src="/delete.png" alt="img" className="account-icon-delete"/>
+                    </div>
+                </button>
             </div>
         </div>
     )

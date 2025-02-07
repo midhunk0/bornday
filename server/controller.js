@@ -2,11 +2,11 @@
 const { User, Bornday }=require("./model");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
-const returnUserId = require("./helper");
+const { returnUserId, getNextBornday } = require("./helper");
 const sendEmail = require("./mail");
 
 const jwt_secret=process.env.JWT_SECRET;
-const jwt_expires_in="1hr";
+const jwt_expires_in="1d";
 
 const generateOTP=()=>{
     return Math.floor(10000+Math.random()*900000).toString();
@@ -41,7 +41,7 @@ const registerUser=async(req, res)=>{
         const message=`Your verification code is: ${otp}`;
         await sendEmail(email, "Verify your email", message);
         const token=jwt.sign({ userId: user._id, username: user.username }, jwt_secret, { expiresIn: jwt_expires_in });
-        res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 3600000 });
+        res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 24*60*1000 });
         return res.status(200).json({ message: "User registered. Check your email for the OTP" });
     }
     catch(err){
@@ -97,7 +97,7 @@ const loginUser=async(req, res)=>{
             return res.status(400).json({ message: "Incorrect password" });
         }
         const token=jwt.sign({ userId: user._id, username: user.username }, jwt_secret, { expiresIn: jwt_expires_in });
-        res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 3600000 });
+        res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 24*60*10000 });
         return res.status(200).json({ message: "User login successful" });
     }
     catch(err){
@@ -132,7 +132,7 @@ const logoutUser=async(req, res)=>{
         if(!user){
             return res.status(400).json({ message: "User not found" });
         }
-        res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "strict" });
+        res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
         return res.status(200).json({ message: "Logout successful" });
     }
     catch(err){
@@ -249,7 +249,13 @@ const fetchBorndays=async(req, res)=>{
         if(!user){
             return res.status(400).json({ message: "User not found" });
         }
-        return res.status(200).json({ message: "Borndays fetched", borndays: user.borndays });
+        const today=new Date();
+        const borndays=user.borndays.sort((a, b)=>{
+            const nextA=getNextBornday(a.date, today);
+            const nextB=getNextBornday(b.date, today);
+            return nextA.getTime()-nextB.getTime();
+        })
+        return res.status(200).json({ message: "Borndays fetched", borndays: borndays });
     }
     catch(err){
         return res.status(500).json({ message: err.message });

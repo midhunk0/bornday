@@ -1,0 +1,117 @@
+.bornday{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.bornday h1{
+    font-family: "Oswald", serif;
+    text-transform: capitalize;
+    font-size: 50px;
+}
+
+.bornday-div{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    width: 50%;
+    gap: 16px;
+    border: 1px solid #CA3f85;
+    border-radius: 24px;
+    background: #fff;
+}
+
+.bornday-button{
+    padding: 16px;
+    font-size: 16px;
+    border: 1px solid #CA3f85;
+    cursor: pointer;
+    background: whitesmoke;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.3s ease-in-out;
+}
+
+.bornday-icon-wrapper{
+    position: absolute;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    background: #CA3f85;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    outline: none;
+    border: 1px solid #CA3f85;
+    overflow: hidden;
+}
+
+.bornday-icon-edit, .bornday-icon-delete{
+    width: 24px;
+    height: 24px;
+    filter: invert();
+    transition: transform 0.6s ease-in-out;
+}
+
+.bornday-button:hover{
+    background: #000;
+    color: #fff;
+}
+
+.bornday-icon-edit{
+    transform-origin: bottom left;
+}
+
+.bornday-button:hover .bornday-icon-wrapper{
+    background: #fff;
+}
+
+.bornday-button:hover .bornday-icon-edit{
+    animation: writing 0.8s ease-in-out;
+    filter: none;
+}
+
+.bornday-button:hover .bornday-icon-delete{
+    animation: shake 0.6s ease-in-out;
+    filter: none;
+}
+
+
+@keyframes shake{
+    0%{ 
+        transform: rotate(0deg) translateY(0); 
+    }
+    25%{ 
+        transform: rotate(-10deg) translateY(-4px); 
+    }
+    50%{ 
+        transform: rotate(10deg) translateY(-6px); 
+    }
+    75%{ 
+        transform: rotate(-5deg) translateY(-3px); 
+    }
+    100%{ 
+        transform: rotate(0deg) translateY(0); 
+    }
+}
+
+@keyframes writing{
+    0% {
+        transform: rotate(0deg) translate(0, 0);
+    }
+    25% {
+        transform: rotate(-15deg) translate(10px, 5px);
+    }
+    50% {
+        transform: rotate(-25deg) translate(20px, 10px);
+    }
+    75% {
+        transform: rotate(-35deg) translate(30px, 15px);
+    }
+    100% {
+        transform: rotate(-45deg) translate(40px, 0);
+    }
+}

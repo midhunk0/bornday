@@ -10,6 +10,8 @@ import { Borndays } from "./components/dashboard/borndays/Borndays";
 import { Account } from "./components/dashboard/account/Account";
 import { Update } from "./components/dashboard/update/Update";
 import { Verification } from "./components/auth/verification/Verification";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
     return (
@@ -23,12 +25,29 @@ function App() {
                     <Route path="" element={<Add/>}/>
                     <Route path="add" element={<Add/>}/>
                     <Route path="calendar" element={<Calendar/>}/>
-                    <Route path="bornday/:id" element={<Bornday/>}/>
+                    <Route path="bornday/:borndayId" element={<Bornday/>}/>
                     <Route path="borndays" element={<Borndays/>}/>
                     <Route path="account" element={<Account/>}/>
-                    <Route path="update" element={<Update/>}/>
+                    <Route path="update/:borndayId" element={<Update/>}/>
                 </Route>
             </Routes>
+            <ToastContainer 
+                toastStyle={{
+                    background: "#CA3F85",
+                    borderRadius: "25px",
+                }}
+                position="bottom-right"
+                autoClose={2000}
+                hideProgressBar={true} 
+                newestOnTop={false} 
+                closeOnClick={true} 
+                rtl={false}
+                pauseOnFocusLoss={true} 
+                draggable={true} 
+                theme="colored"
+                pauseOnHover={true}
+                closeButton={false}
+            />
         </Router>
     )
 }

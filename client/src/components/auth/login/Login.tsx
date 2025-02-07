@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface LoginData{
     credential: string,
@@ -43,9 +44,12 @@ export function Login(){
             });
             const result=await response.json();
             if(response.ok){
+                toast.success(result.message);
                 navigate("/dashboard");
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error: unknown){
             if(error instanceof Error){
@@ -73,12 +77,12 @@ export function Login(){
                             <input type="text" name="credential" value={loginData.credential} required onChange={handleInputChange} placeholder=" "/>
                             <label>Username/Email</label>
                         </div>
-                        <div className="password-container">
+                        <div className="login-password-container">
                             <div className="input-container">
                                 <input type={visible ? "text" : "password"} name="password" value={loginData.password} required onChange={handleInputChange} placeholder=" "/>
                                 <label>Password</label>
                             </div>
-                            <div className={`image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
+                            <div className={`login-image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
                                 <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                             </div>
                         </div>

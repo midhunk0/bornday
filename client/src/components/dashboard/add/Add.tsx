@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Add.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface BorndayData{
     name: string,
@@ -8,9 +8,10 @@ interface BorndayData{
 };
 
 export function Add(){
+    const location=useLocation();
     const [borndayData, setBorndayData]=useState<BorndayData>({
         name: "",
-        date: ""
+        date: (location.state as { date?: string })?.date || new Date().toISOString().split("T")[0]
     });
 
     const environment=import.meta.env.MODE;

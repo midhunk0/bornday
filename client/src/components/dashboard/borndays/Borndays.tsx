@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Borndays.css";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Bornday {
+    _id: string;
     name: string;
     date: string;
 }
@@ -11,13 +12,13 @@ type BorndayData = Bornday[];
 
 export function Borndays(){
     const [borndays, setBorndays]=useState<BorndayData>([]);
-    const [openButtons, setOpenButtons]=useState<{ [key: number]: boolean }>({});
+    const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
 
     const environment=import.meta.env.MODE;
     const apiUrl=environment==="development"
         ? import.meta.env.VITE_APP_DEV_URL
         : import.meta.env.VITE_APP_PROD_URL
-    // const navigate=useNavigate();
+    const navigate=useNavigate();
 
     useEffect(()=>{
         async function fetchBorndays(){
@@ -54,11 +55,46 @@ export function Borndays(){
         });
     };
 
-    function toggleOpen(index: number){
+    function toggleOpen(e: React.MouseEvent, id: string){
+        e.stopPropagation();
         setOpenButtons((prev)=>({
             ...prev,
-            [index]: !prev[index]
+            [id]: !prev[id]
         }));
+    };
+
+    function toBornday(e: React.FormEvent, borndayId: string){
+        e.preventDefault();
+        navigate(`/dashboard/bornday/${borndayId}`);
+    }
+
+    function updateBornday(e: React.MouseEvent, borndayId: string){
+        e.stopPropagation();
+        navigate(`/dashboard/update/${borndayId}`);
+    };
+
+    async function deleteBornday(e: React.FormEvent, borndayId: string){
+        e.stopPropagation();
+        e.preventDefault();
+        try{
+            const response=await fetch(`${apiUrl}/deleteBornday/${borndayId}`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+            const result=await response.json();
+            if(response.ok){
+                setBorndays((prevBorndays) => prevBorndays.filter(bornday => bornday._id !== borndayId));
+            }
+            console.log(result.message);
+        }
+        catch(error){
+            if(error instanceof Error){
+                console.log("Error while deleting bornday: ", error.message);
+            }
+            else{
+                console.log("An unknown error occurred");
+            }
+        }
     }
 
     return(
@@ -66,26 +102,26 @@ export function Borndays(){
             <h1>Borndays.</h1>
             {borndays && borndays.length>0 ? (
                 <div className="borndays-items">
-                    {borndays.map((bornday, index)=>(
-                        <div className="borndays-item" key={index}>
+                    {borndays.map((bornday)=>(
+                        <div className="borndays-item" key={bornday._id} onClick={(e)=>toBornday(e, bornday._id)}>
                             <div className="borndays-item-content">
                                 <p>{bornday.name}</p>
                                 <p>{formatDate(bornday.date)}</p>
                             </div>
                             <div className="borndays-buttons">
-                                {openButtons[index] && (
-                                    <span className="borndays-icon-wrapper">
+                                {openButtons[bornday._id] && (
+                                    <div className="borndays-icon-wrapper" onClick={(e)=>updateBornday(e, bornday._id)}>
                                         <img src="/edit.png" alt="img" className="borndays-icon-edit"/>
-                                    </span>
+                                    </div>
                                 )}
-                                {openButtons[index] && (
-                                    <span className="borndays-icon-wrapper">
+                                {openButtons[bornday._id] && (
+                                    <div className="borndays-icon-wrapper" onClick={(e)=>deleteBornday(e, bornday._id)}>
                                         <img src="/delete.png" alt="img" className="borndays-icon-delete"/>
-                                    </span>
+                                    </div>
                                 )}
-                                <span className="borndays-icon-wrapper">
-                                    <img src={openButtons[index] ? "/right.png" : "/left.png"} alt="img" className={openButtons[index] ? "borndays-icon-right" : "borndays-icon-left"} onClick={()=>toggleOpen(index)}/>
-                                </span>
+                                <div className="borndays-icon-wrapper">
+                                    <img src={openButtons[bornday._id] ? "/right.png" : "/left.png"} alt="img" className={openButtons[bornday._id] ? "borndays-icon-right" : "borndays-icon-left"} onClick={(e)=>toggleOpen(e, bornday._id)}/>
+                                </div>
                             </div>
                         </div>
                     ))}

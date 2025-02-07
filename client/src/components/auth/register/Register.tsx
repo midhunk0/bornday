@@ -79,12 +79,12 @@ export function Register(){
                             <input type="email" name="email" value={registerData.email} required onChange={handleInputChange} placeholder=" "/>
                             <label>Email</label>
                         </div>
-                        <div className="password-container">
+                        <div className="register-password-container">
                             <div className="input-container">
                                 <input type={visible ? "text" : "password"} name="password" value={registerData.password} required onChange={handleInputChange} placeholder=" "/>
                                 <label>Password</label>
                             </div>
-                            <div className={`image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
+                            <div className={`register-image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
                                 <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                             </div>
                         </div>

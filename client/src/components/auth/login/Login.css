@@ -55,6 +55,47 @@
     gap: 16px;
 }
 
+.login-password-container{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    position: relative;
+}
+
+.login-image-container{
+    position: absolute;
+    display: grid;
+    background: #CA3F85;
+    border-radius: 50%;
+    cursor: pointer;
+    place-items: center;
+    outline: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    right: 8px;
+    transition: background 0.3s ease-in-out;
+}
+
+.login-image-container:hover{
+    background: #000;
+}
+
+.login-image-container img{
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
+}
+
+.login-image-container.visible{
+    background: white;
+}
+
+.login-image-container.visible img{
+    filter: none;
+}
+
 .login-button{
     display: inline-flex;
     border: 1px solid #CA3F85;

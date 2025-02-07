@@ -32,10 +32,10 @@ export function Sidebar(){
                     <img src="/bornday.png" alt="img" className="sidebar-icon-bornday"/>
                     {!collapsed && <a>All Borndays</a>}
                 </div>
-                <div className="sidebar-menu" onClick={()=>navigate("/dashboard/bornday/:id")}>
+                {/* <div className="sidebar-menu" onClick={()=>navigate("/dashboard/bornday/:id")}>
                     <img src="/day.png" alt="img" className="sidebar-icon-day"/>
                     {!collapsed && <a>Day View</a>}
-                </div>
+                </div> */}
             </div>
             <div className="sidebar-footer">
                 <div className="sidebar-menu" onClick={()=>navigate("/dashboard/account")}>
