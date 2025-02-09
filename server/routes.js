@@ -1,8 +1,9 @@
 const express=require("express");
-const { registerUser, addBornday, loginUser, logoutUser, deleteUser, deleteBornday, fetchBorndays, fetchBorndaysByMonth, fetchBorndaysByDay, fetchBornday, editBornday, verifyOTP, updateUser, fetchUser } = require("./controller");
+const { registerUser, addBornday, loginUser, logoutUser, deleteUser, deleteBornday, fetchBorndays, fetchBorndaysByMonth, fetchBorndaysByDay, fetchBornday, editBornday, verifyOTP, updateUser, fetchUser, sendOTP } = require("./controller");
 const router=express.Router();
 
 router.post("/registerUser", registerUser);
+router.post("/sendOTP", sendOTP);
 router.post("/verifyOTP", verifyOTP);
 router.post("/loginUser", loginUser);
 router.get("/fetchUser", fetchUser);

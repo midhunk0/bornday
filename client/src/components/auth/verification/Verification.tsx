@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Verification.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export function Verification(){
     const [email, setEmail]=useState("")
@@ -49,48 +50,45 @@ export function Verification(){
             });
             const result=await response.json();
             if(response.ok){
-                navigate("/login");
+                toast.success(result.message);
+                navigate("/dashboard");
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error){
             if(error instanceof Error){
-                console.log("Error while verification: ", error.message);
+                toast.error("Error while verification: "+ error.message);
             }
             else{
-                console.log("An unknown error occurred");
+                toast.error("An unknown error occurred");
             }
         }
     }
 
     return(
         <div className="verification">
-            <div className="verification-image">
-                <img src="/gifts.jpg" alt="img"/>
-            </div>
+            <img src="/gifts.jpg" alt="img" className="verification-image"/>
+            <img src="/cake.png" alt="img" className="verification-logo"/>
             <div className="verification-contents">
-                <div className="verification-logo">
-                    <img src="/cake.png" alt="img"/>
-                </div>
-                <div className="verification-form">
-                    <h1>Enter OTP</h1>
-                    <form onSubmit={verifyOTP}>
-                        <div className="input-container">
-                            <input type="email" name="email" value={email} required onChange={(e)=>setEmail(e.target.value)} placeholder=" "/>
-                            <label>Email</label>
-                        </div>
-                        <div className="input-container">
-                            <input type="text" name="otp" value={otp} required onChange={(e)=>setOtp(e.target.value)} placeholder=" "/>
-                            <label>OTP</label>
-                        </div>
-                        <button className="verification-button" type="submit">
-                            <span className="verification-icon-wrapper">
-                                <img src="arrow.png" alt="img" className="verification-icon"/>
-                            </span>
-                            Verify
-                        </button>
-                    </form>
-                </div>
+                <h1>Enter OTP</h1>
+                <form onSubmit={verifyOTP}>
+                    <div className="input-container">
+                        <input type="email" name="email" value={email} required onChange={(e)=>setEmail(e.target.value)} placeholder=" "/>
+                        <label>Email</label>
+                    </div>
+                    <div className="input-container">
+                        <input type="text" name="otp" value={otp} required onChange={(e)=>setOtp(e.target.value)} placeholder=" "/>
+                        <label>OTP</label>
+                    </div>
+                    <button className="verification-button" type="submit">
+                        <span className="verification-icon-wrapper">
+                            <img src="arrow.png" alt="img" className="verification-icon"/>
+                        </span>
+                        Verify
+                    </button>
+                </form>
             </div>
         </div>
     )

@@ -9,13 +9,16 @@
 .login-image{
     width: 70%;
     height: 100%;
-}
-
-.login-image img{
-    width: 100%;
-    height: 100%;
     object-fit: cover;
     border-radius: 16px;
+}
+
+.login-logo{
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    width: 32px;
+    height: 32px;
 }
 
 .login-contents{
@@ -25,34 +28,23 @@
     width: calc(30% - 32px);
     justify-content: center;
     align-items: center;
-}
-
-.login-logo{
-    position: absolute;
-    top: 32px;
-    left: 32px;
-}
-
-.login-logo img{
-    width: 32px;
-    height: 32px;
-}
-
-.login-form{
     width: 80%;
+
 }
 
-.login-form h1{
+.login-contents h1{
     color: #CA3F85;
     font-family: "Oswald", serif;
     font-size: 40px;
+    width: 80%;
 }
 
-.login-form form{
+.login-contents form{
     display: flex;
     flex-direction: column;
     margin-top: 16px;
     gap: 16px;
+    width: 80%;
 }
 
 .login-password-container{
@@ -96,6 +88,19 @@
     filter: none;
 }
 
+.login-forgot-password{
+    text-decoration: none;
+    color: #CA3F85;
+    font-weight: 600;
+    margin-left: 8px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.login-forgot-password:hover{
+    text-decoration: underline;
+}
+
 .login-button{
     display: inline-flex;
     border: 1px solid #CA3F85;
@@ -112,7 +117,7 @@
     transition: background 0.3s ease-in-out;
 }
   
-.login-button-icon-wrapper{
+.login-icon-wrapper{
     position: absolute;
     left: 8px;
     width: 36px;
@@ -125,7 +130,7 @@
     border: none;
 }
   
-.login-button-icon{
+.login-icon{
     width: 24px;
     height: 24px;
     transition: transform 0.6s ease-in-out;
@@ -137,11 +142,11 @@
     color: #fff;
 }
 
-.login-button:hover .login-button-icon-wrapper{
+.login-button:hover .login-icon-wrapper{
     background: #fff;
 }
 
-.login-button:hover .login-button-icon{
+.login-button:hover .login-icon{
     animation: slideIcon 0.6s ease-in-out;
     filter: none;
 }
@@ -184,64 +189,52 @@
 }
 
 
-@media(max-width: 1200px){
-    .login-image{
-        width: 60%;
+@media (max-width: 1280px){
+    .login-image{ 
+        width: 60%; 
     }
-
-    .login-contents{
-        width: calc(40% - 32px);
-    }
-}
-
-@media(max-width: 1024px){
-    .login-form{
-        width: 90%;
+    .login-contents{ 
+        width: 40%; 
     }
 }
-
-@media(max-width: 835px){
-    .login-image{
-        width: 50%;
+    
+@media (max-width: 1024px){
+    .login-image{ 
+        width: 50%; 
     }
-
-    .login-contents{
-        width: calc(50% - 32px);
+    .login-contents{ 
+        width: 50%; 
     }
-
-    .login-form{
-        width: 100%;
+    .login-contents h1, .login-contents form{ 
+        width: 90%; 
     }
 }
-
-@media(max-width: 800px){
+    
+@media (max-width: 768px){
     .login-image{
         display: none;
     }
-
-    .login-logo{
-        top: 16px;
-        left: 16px;
+    .login-logo{ 
+        top: 16px; 
+        left: 16px; 
     }
-
-    .login-contents{
-        width: 100%;
-        padding: 0;
+    .login-contents{ 
+        width: 100%; 
+        padding: 0; 
     }
-
-    .login-form{
-        width: 60%;
+    .login-contents h1, .login-contents form{ 
+        width: 70%; 
     }
 }
-
-@media(max-width: 640px){
-    .login-form{
-        width: 80%;
+    
+@media (max-width: 640px){
+    .login-contents h1, .login-contents form{ 
+        width: 90%; 
     }
 }
-
-@media(max-width: 489px){
-    .login-form{
-        width: 100%;
+   
+@media (max-width: 480px){
+    .login-contents h1, .login-contents form{ 
+        width: 100%; 
     }
 }

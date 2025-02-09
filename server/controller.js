@@ -9,7 +9,7 @@ const jwt_secret=process.env.JWT_SECRET;
 const jwt_expires_in="1d";
 
 const generateOTP=()=>{
-    return Math.floor(10000+Math.random()*900000).toString();
+    return Math.floor(100000+Math.random()*900000).toString(); 
 };
 
 const registerUser=async(req, res)=>{
@@ -49,6 +49,30 @@ const registerUser=async(req, res)=>{
     }
 };
 
+const sendOTP=async(req, res)=>{
+    try{
+        const { email }=req.body;
+        if(!email){
+            return res.status(400).json({ message: "Email is required" });
+        }
+        const user=await User.findOne({ email: email });
+        if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        const otp=generateOTP();
+        const otpExpires=new Date(Date.now()+10*60*1000);
+        user.otp=otp;
+        user.otpExpires=otpExpires;
+        await user.save();
+        const message=`Your verification code is: ${otp}`;
+        await sendEmail(email, "Verify your email", message);
+        return res.status(200).json({ message: "OTP sends to email" });    
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+}
+
 const verifyOTP=async(req, res)=>{
     try{
         const { email, otp }=req.body;
@@ -72,7 +96,9 @@ const verifyOTP=async(req, res)=>{
         user.otp=undefined;
         user.otpExpires=undefined;
         await user.save();
-        return res.status(200).json({ message: "Email verified successfully. You can login now" });
+        const token=jwt.sign({ userId: user._id, username: user.username }, jwt_secret, { expiresIn: jwt_expires_in });
+        res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 24*60*1000 });
+        return res.status(200).json({ message: "User verified successfully" });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
@@ -90,7 +116,7 @@ const loginUser=async(req, res)=>{
             return res.status(400).json({ message: "User doesn't exists" });
         }
         if(!user.isVerified){
-            return res.status(400).json({ message: "You are not verified" });
+            return res.status(400).json({ message: "You are not verified", verified: false });
         }
         const passwordMatch=await bcrypt.compare(password, user.password);
         if(!passwordMatch){
@@ -98,7 +124,7 @@ const loginUser=async(req, res)=>{
         }
         const token=jwt.sign({ userId: user._id, username: user.username }, jwt_secret, { expiresIn: jwt_expires_in });
         res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 24*60*10000 });
-        return res.status(200).json({ message: "User login successful" });
+        return res.status(200).json({ message: "User login successful", user: user });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
@@ -109,18 +135,18 @@ const fetchUser=async(req, res)=>{
     try{
         const userId=returnUserId(req);
         if(!userId){
-            return res.status(400).json({ message: "User token not found or invalid" });
+            return res.status(401).json({ message: "User token not found or invalid" });
         }
-        const user=await User.findById(userId).select("username email _id");
+        const user=await User.findById(userId).select("username email _id isVerified");
         if(!user){
-            return res.status(400).json({ message: "User not found" });
+            return res.status(401).json({ message: "User not found" });
         }
-        return res.status(200).json({ message: "User fetched", user: user });
+        return res.status(200).json({ message: "User fetched", user });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
     }
-}
+};
 
 const logoutUser=async(req, res)=>{
     try{
@@ -395,6 +421,7 @@ const deleteBornday=async(req, res)=>{
 
 module.exports={
     registerUser,
+    sendOTP,
     verifyOTP,
     loginUser,
     fetchUser,

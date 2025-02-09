@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface RegisterData{
     username: string,
@@ -45,60 +46,57 @@ export function Register(){
             });
             const result=await response.json();
             if(response.ok){
+                toast.success(result.message)
                 navigate("/verify");
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error: unknown){
             if(error instanceof Error){
-                console.error("Error during registration: ", error.message);
+                toast.error("Error during registration: "+ error.message);
             }
             else{
-                console.error("An unknown error occurred");
+                toast.error("An unknown error occurred");
             }
         }
     };
 
     return(
         <div className="register">
-            <div className="register-image">
-                <img src="/gifts.jpg" alt="img"/>
-            </div>
+            <img src="/gifts.jpg" alt="img" className="register-image"/>
+            <img src="/cake.png" alt="img" className="register-logo"/>
             <div className="register-contents">
-                <div className="register-logo">
-                    <img src="/cake.png" alt="img"/>
-                </div>
-                <div className="register-form">
-                    <h1>Welcome To Bornday.</h1>
-                    <form onSubmit={registerUser}>
+                <h1>Welcome To Bornday.</h1>
+                <form onSubmit={registerUser}>
+                    <div className="input-container">
+                        <input type="text" name="username" value={registerData.username} required onChange={handleInputChange} placeholder=" "/>
+                        <label>Username</label>
+                    </div>
+                    <div className="input-container">
+                        <input type="email" name="email" value={registerData.email} required onChange={handleInputChange} placeholder=" "/>
+                        <label>Email</label>
+                    </div>
+                    <div className="register-password-container">
                         <div className="input-container">
-                            <input type="text" name="username" value={registerData.username} required onChange={handleInputChange} placeholder=" "/>
-                            <label>Username</label>
+                            <input type={visible ? "text" : "password"} name="password" value={registerData.password} required onChange={handleInputChange} placeholder=" "/>
+                            <label>Password</label>
                         </div>
-                        <div className="input-container">
-                            <input type="email" name="email" value={registerData.email} required onChange={handleInputChange} placeholder=" "/>
-                            <label>Email</label>
+                        <div className={`register-image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
+                            <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                         </div>
-                        <div className="register-password-container">
-                            <div className="input-container">
-                                <input type={visible ? "text" : "password"} name="password" value={registerData.password} required onChange={handleInputChange} placeholder=" "/>
-                                <label>Password</label>
-                            </div>
-                            <div className={`register-image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
-                                <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
-                            </div>
+                    </div>
+                    <button className="register-button" type="submit">
+                        <div className="register-icon-wrapper">
+                            <img src="/arrow.png" alt="icon" className="register-icon" />
                         </div>
-                        <button className="register-button" type="submit">
-                            <div className="register-button-icon-wrapper">
-                                <img src="arrow.png" alt="icon" className="register-button-icon" />
-                            </div>
-                            Register
-                        </button>
-                    </form>
-                    <p className="register-footer">
-                        Already have an account? <a href="/login">Login</a>
-                    </p>
-                </div>
+                        Register
+                    </button>
+                </form>
+                <p className="register-footer">
+                    Already have an account? <a href="/login">Login</a>
+                </p>
             </div>
         </div>
     );

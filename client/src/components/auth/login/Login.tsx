@@ -14,11 +14,15 @@ export function Login(){
         password: ""
     });
     const [visible, setVisible]=useState<boolean>(false);
+    const [verified, setVerified]=useState<boolean>(true);
+    const [email, setEmail]=useState("");
+    const [forgotPassword, setForgotPassword]=useState<boolean>(false);
     
     const environment=import.meta.env.MODE;
     const apiUrl=environment==="development"
         ? import.meta.env.VITE_APP_DEV_URL
         : import.meta.env.VITE_APP_PROD_URL
+    
     const navigate=useNavigate();
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
@@ -31,6 +35,10 @@ export function Login(){
 
     function toggleVisibility(){
         setVisible(!visible);
+    }
+
+    function toggleForgotPassword(){
+        setForgotPassword(true);
     }
 
     async function loginUser(e: React.FormEvent<HTMLFormElement>){
@@ -46,6 +54,9 @@ export function Login(){
             if(response.ok){
                 toast.success(result.message);
                 navigate("/dashboard");
+                if(!result.verified){
+                    setVerified(false);
+                }
             }
             else{
                 toast.error(result.message);
@@ -53,25 +64,49 @@ export function Login(){
         }
         catch(error: unknown){
             if(error instanceof Error){
-                console.error("Error during login: ", error.message);
+                toast.error("Error during login: "+ error.message);
             }
             else{
-                console.error("An unknown error occurred");
+                toast.error("An unknown error occurred");
+            }
+        }
+    };
+
+    async function verifyOTP(e: React.FormEvent<HTMLFormElement>){
+        e.preventDefault();
+        try{
+            const response=await fetch(`${apiUrl}/sendOTP`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+                credentials: "include"
+            });
+            const result=await response.json();
+            if(response.ok){
+                toast.success(result.message);
+                navigate("/verify");
+            }
+            else{
+                toast.error(result.message);
+            }
+        }
+        catch(error: unknown){
+            if(error instanceof Error){
+                toast.error("Error during sending OTP: "+ error.message);
+            }
+            else{
+                toast.error("An unknown error occurred");
             }
         }
     }
 
     return(
         <div className="login">
-            <div className="login-image">
-                <img src="/gifts.jpg" alt="img"/>
-            </div>
+            <img src="/gifts.jpg" alt="img" className="login-image"/>
+            <img src="cake.png" alt="img" className="login-logo"/>
             <div className="login-contents">
-                <div className="login-logo">
-                    <img src="cake.png" alt="img"/>
-                </div>
-                <div className="login-form">
-                    <h1>Welcome Back.</h1>
+                <h1>Welcome Back.</h1>
+                {verified && !forgotPassword ? (
                     <form onSubmit={loginUser}>
                         <div className="input-container">
                             <input type="text" name="credential" value={loginData.credential} required onChange={handleInputChange} placeholder=" "/>
@@ -86,17 +121,31 @@ export function Login(){
                                 <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                             </div>
                         </div>
+                        <a onClick={toggleForgotPassword} className="login-forgot-password">Forgot password.</a>
                         <button type="submit" className="login-button">
-                            <span className="login-button-icon-wrapper">
-                                <img src="arrow.png" alt="icon" className="login-button-icon"/>
+                            <span className="login-icon-wrapper">
+                                <img src="arrow.png" alt="icon" className="login-icon"/>
                             </span>
                             Login
                         </button>
                     </form>
-                    <p className="login-footer">
-                        Don't have an account? <a href="/register">Register</a>
-                    </p>
-                </div>
+                ):(
+                    <form onSubmit={verifyOTP}>
+                        <div className="input-container">
+                            <input type="email" name="email" value={email} required onChange={(e)=>setEmail(e.target.value)} placeholder=" "/>
+                            <label>Email</label>
+                        </div>
+                        <button className="login-button" type="submit">
+                            <span className="login-icon-wrapper">
+                                <img src="arrow.png" alt="img" className="login-icon"/>
+                            </span>
+                            Send OTP
+                        </button>
+                    </form>
+                )}
+                <p className="login-footer">
+                    Don't have an account? <a href="/register">Register</a>
+                </p>
             </div>
         </div>
     );

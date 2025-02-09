@@ -12,16 +12,21 @@ import { Update } from "./components/dashboard/update/Update";
 import { Verification } from "./components/auth/verification/Verification";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PrivateRoute } from "./PrivateRoute";
 
-function App() {
-    return (
+function App(){
+    return(
         <Router>
             <Routes>
                 <Route path="/" element={<Navigate to="login"/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/verify" element={<Verification/>}/>
-                <Route path="/dashboard" element={<Dashboard/>}>
+                <Route path="/dashboard" element={
+                    <PrivateRoute>
+                        <Dashboard/>
+                    </PrivateRoute>
+                }>
                     <Route path="" element={<Add/>}/>
                     <Route path="add" element={<Add/>}/>
                     <Route path="calendar" element={<Calendar/>}/>
@@ -33,8 +38,7 @@ function App() {
             </Routes>
             <ToastContainer 
                 toastStyle={{
-                    background: "#CA3F85",
-                    borderRadius: "25px",
+                    borderRadius: "16px",
                 }}
                 position="bottom-right"
                 autoClose={2000}
@@ -50,6 +54,6 @@ function App() {
             />
         </Router>
     )
-}
+};
 
-export default App
+export default App;
