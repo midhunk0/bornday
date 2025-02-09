@@ -46,7 +46,7 @@ export function Update(){
         }
 
         fetchBornday();
-    }, [apiUrl]);
+    }, [apiUrl, borndayId]);
 
     async function updateBornday(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
