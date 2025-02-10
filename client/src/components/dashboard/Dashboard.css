@@ -1,13 +1,29 @@
 .dashboard{
     display: flex;
     height: 100vh;
+
+}
+
+.sidebar{
+    position: fixed;  
 }
 
 .dashboard-content{
     display: flex;
     width: 100%;
-    height: calc(100vh - 32px);
     padding: 16px;
     background: rgb(245, 232, 232);
     justify-content: center;
+    position: relative;
+    margin-left: 340px;   
+}
+
+.sidebar.collapsed + .dashboard-content{
+    margin-left: 56px;
+}
+
+@media (max-width: 720px){
+    .dashboard-content {
+        margin-left: 0;
+    }
 }

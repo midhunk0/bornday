@@ -3,13 +3,32 @@
     flex-direction: column;
     width: 340px;
     min-width: 56px;
-    height: 100vh;
-    transition: width 0.3s ease-in-out;
     overflow: hidden;
+    background: #fff;
+    height: 100vh;
+    z-index: 1;
+    position: fixed;
 }
 
 .sidebar.collapsed{
     width: 56px;
+}
+
+.sidebar.hidden {
+    opacity: 0;
+}
+
+.sidebar-toggle{
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.sidebar-toggle img{
+    width: 24px;
+    height: 24px;
 }
 
 .sidebar-header{
@@ -21,32 +40,18 @@
     cursor: pointer;
 }
 
-.sidebar-header h2{
+.sidebar-header h1{
     text-transform: capitalize;
     font-family: "Oswald", serif;
-    font-size: x-large;
 }
 
-.sidebar-button{
-    display: flex;
-    align-items: center;
-    border: none;
-    outline: none;
-    background: none;
+.sidebar-header img{
+    width: 24px;
+    height: 24px;
     cursor: pointer;
 }
 
-.sidebar-button img{
-    width: 24px;
-    height: 24px;
-}
-
-.sidebar-menus{
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar-menu{
+.sidebar-menu, .sidebar-footer{
     display: flex;
     align-items: center;
     gap: 16px;
@@ -55,44 +60,33 @@
     white-space: nowrap;
 }
 
-.sidebar-menu a{
-    opacity: 1;
-}
-
-.sidebar.collapsed .sidebar-menu a{
+.sidebar.collapsed a{
     display: none;
 }
 
-.sidebar-menu:hover{
+.sidebar.collapsed .sidebar-menus{
+    margin-top: 24px;
+}
+
+.sidebar-menu:hover, .sidebar-footer:hover{
     background: rgb(236, 209, 209);
 }
 
-.sidebar-icon-add, .sidebar-icon-month, .sidebar-icon-bornday, .sidebar-icon-day{
-    width: 24px;
+.sidebar-icon{
+    width: 24px !important;
     height: 24px;
 }
 
-.sidebar-menu:hover .sidebar-icon-add, .sidebar-menu:hover .sidebar-icon-month, .sidebar-menu:hover .sidebar-icon-bornday, .sidebar-menu:hover .sidebar-icon-day{
+
+.sidebar-menu:hover .sidebar-icon{
     animation: vibrate 0.1s ease-in-out infinite alternate;
 }
 
 .sidebar-footer{
-    display: flex;
-    flex-direction: column;
     margin-top: auto;
 }
 
-.sidebar-footer:hover{
-    background: rgb(238, 205, 205);
-}
-
-.sidebar-icon-option{
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
-
-.sidebar-footer:hover .sidebar-icon-option{
+.sidebar-footer:hover .sidebar-icon.option{
     animation: rotate 1s linear infinite;
 }
 
@@ -111,5 +105,16 @@
     }
     to{
         transform: rotate(360deg);
+    }
+}
+
+@media (min-width: 720px) {
+    .sidebar {
+        position: relative;
+        transform: translateX(0);
+    }
+    
+    .toggle-btn {
+        display: none;
     }
 }
