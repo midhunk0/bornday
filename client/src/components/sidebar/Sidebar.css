@@ -1,7 +1,6 @@
 .sidebar{
     display: flex;
     flex-direction: column;
-    width: 340px;
     min-width: 56px;
     overflow: hidden;
     background: #fff;
@@ -15,10 +14,12 @@
 }
 
 .sidebar.hidden {
-    opacity: 0;
+    display: none;
 }
 
 .sidebar-toggle{
+    display: flex;
+    align-items: center;
     position: fixed;
     top: 16px;
     left: 16px;
@@ -69,16 +70,21 @@
 }
 
 .sidebar-menu:hover, .sidebar-footer:hover{
-    background: rgb(236, 209, 209);
+    background: #CA3F85;
+    color: white;
 }
 
-.sidebar-icon{
-    width: 24px !important;
+.sidebar-icon-add, .sidebar-icon-month, .sidebar-icon-bornday, .sidebar-icon-option{
+    width: 24px;
     height: 24px;
+    margin: 0;
 }
 
 
-.sidebar-menu:hover .sidebar-icon{
+.sidebar-menu:hover .sidebar-icon-add,
+.sidebar-menu:hover .sidebar-icon-bornday,
+.sidebar-menu:hover .sidebar-icon-month{
+    filter: invert();
     animation: vibrate 0.1s ease-in-out infinite alternate;
 }
 
@@ -86,7 +92,8 @@
     margin-top: auto;
 }
 
-.sidebar-footer:hover .sidebar-icon.option{
+.sidebar-footer:hover .sidebar-icon-option{
+    filter: invert();
     animation: rotate 1s linear infinite;
 }
 

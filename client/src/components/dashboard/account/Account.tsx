@@ -157,8 +157,6 @@ export function Account(){
                         </div>
                     </button>
                 }
-            </form>
-            <div className="account-buttons">
                 <button type="button" onClick={handleLogout} className="account-button">
                     Logout
                     <div className="account-icon-wrapper">
@@ -167,11 +165,14 @@ export function Account(){
                 </button>
                 <button type="button" onClick={handleDelete} className="account-button delete">
                     Delete Account
-                    <div className="account-icon-wrapper">
+                    <div className="account-icon-wrapper delete">
                         <img src="/delete.png" alt="img" className="account-icon-delete"/>
                     </div>
                 </button>
-            </div>
+
+            </form>
+            {/* <div className="account-buttons">
+            </div> */}
         </div>
     )
 }

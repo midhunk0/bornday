@@ -22,7 +22,7 @@ export function Sidebar() {
         return ()=>window.removeEventListener("resize", handleResize);
     }, []);
 
-    const toggle = () => {
+    const toggle=()=>{
         if (window.innerWidth <= 720) {
             setCollapsed(false);
             setShow((prev) => !prev);
@@ -32,34 +32,41 @@ export function Sidebar() {
         }
     };
 
+    const handleMenu=(path: string)=>{
+        navigate(path);
+        if(window.innerWidth<=720){
+            setShow(false);
+        }
+    };
+
     return (
         <>
             {window.innerWidth <= 720 && !show && (
                 <div className="sidebar-toggle" onClick={toggle}>
-                    <img src="/cake.png" alt="Toggle" />
+                    <img src="/cake.png" alt="img"/>
                 </div>
             )}
             <div className={`sidebar ${collapsed ? "collapsed" : ""} ${show ? "show" : "hidden"}`}>
                 <div className="sidebar-header">
-                    {!collapsed && <h1 onClick={() => navigate("/dashboard")}>bornday.</h1>}
+                    {!collapsed && <h1 onClick={() => handleMenu("/dashboard")}>bornday.</h1>}
                     <img src="/cake.png" alt="Toggle" onClick={toggle} />
                 </div>
                 <div className="sidebar-menus">
-                    <div className="sidebar-menu" onClick={() => navigate("/dashboard/add")}>
-                        <img src="/add.png" alt="Add" className="sidebar-icon add" />
+                    <div className="sidebar-menu" onClick={() => handleMenu("/dashboard/add")}>
+                        <img src="/add.png" alt="Add" className="sidebar-icon-add" />
                         {!collapsed && <a>Add Bornday</a>}
                     </div>
-                    <div className="sidebar-menu" onClick={() => navigate("/dashboard/calendar")}>
-                        <img src="/month.png" alt="Calendar" className="sidebar-icon month" />
+                    <div className="sidebar-menu" onClick={() => handleMenu("/dashboard/calendar")}>
+                        <img src="/month.png" alt="Calendar" className="sidebar-icon-month" />
                         {!collapsed && <a>Calendar View</a>}
                     </div>
-                    <div className="sidebar-menu" onClick={() => navigate("/dashboard/borndays")}>
-                        <img src="/bornday.png" alt="Bornday" className="sidebar-icon bornday" />
+                    <div className="sidebar-menu" onClick={() => handleMenu("/dashboard/borndays")}>
+                        <img src="/bornday.png" alt="Bornday" className="sidebar-icon-bornday" />
                         {!collapsed && <a>All Borndays</a>}
                     </div>
                 </div>
-                <div className="sidebar-footer" onClick={() => navigate("/dashboard/account")}>
-                    <img src="/option.png" alt="Account" className="sidebar-icon option" />
+                <div className="sidebar-footer" onClick={() => handleMenu("/dashboard/account")}>
+                    <img src="/option.png" alt="Account" className="sidebar-icon-option" />
                     {!collapsed && <a>Account</a>}
                 </div>
             </div>

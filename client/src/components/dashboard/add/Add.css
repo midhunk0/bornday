@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    width: 50%;
+    width: 70%;
     padding: 16px;
 }
 
@@ -23,7 +23,7 @@
     font-size: 16px;
     border: 1px solid #CA3f85;
     cursor: pointer;
-    background: whitesmoke;
+    background: white;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
@@ -67,13 +67,40 @@
 }
 
 @keyframes rotateIcon{
-    0%{
+    from{
         transform: rotate(0deg);
     }
-    50%{
-        transform: rotate(180deg);
+    to{
+        transform: rotate(90deg);
     }
-    100%{
-        transform: rotate(180deg);
+}
+
+@media(max-width: 1080px){
+    .add-form{
+        width: calc(100% - 32px);
+    }
+}
+
+@media(max-width: 864px){
+    .add{
+        width: 100%;
+    }
+
+    .add-form{
+        padding: 0;
+        width: 100%;
+    }
+}
+
+@media(max-width: 720px){
+    .add{
+        margin-top: 24px;
+        width: 80%;
+    }
+}
+
+@media(max-width: 468px){
+    .add{
+        width: 100%;
     }
 }

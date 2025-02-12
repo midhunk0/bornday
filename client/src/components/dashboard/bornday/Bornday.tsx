@@ -78,9 +78,12 @@ export function Bornday(){
         <div className="bornday">
             <h1>Bornday</h1>
             <div className="bornday-div">
-                <div className="bornday-details">
-                    <h3>{borndayData.name}</h3>
-                    <h6>{borndayData.date}</h6>
+                <div className="bornday-user">
+                    <img src="/profile.png" alt="img"/>
+                    <div className="bornday-detail">
+                        <h2>{borndayData.name}</h2>
+                        <h4>{borndayData.date}</h4>
+                    </div>
                 </div>
                 <button type="button" className="bornday-button" onClick={()=>updateBornday(borndayId!)}>
                     Edit 

@@ -6,13 +6,14 @@
 
 .sidebar{
     position: fixed;  
+    width: 340px;
 }
 
 .dashboard-content{
     display: flex;
-    width: 100%;
+    width: calc(100% - 372px);
     padding: 16px;
-    background: rgb(245, 232, 232);
+    background: #fce4ef;
     justify-content: center;
     position: relative;
     margin-left: 340px;   
@@ -20,6 +21,8 @@
 
 .sidebar.collapsed + .dashboard-content{
     margin-left: 56px;
+    padding: 16px 158px;
+    width: calc(100% - 372px);
 }
 
 @media (max-width: 720px){
