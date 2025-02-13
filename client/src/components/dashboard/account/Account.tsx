@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./Account.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export function Account(){
+    const navigate=useNavigate();
+    
+    const apiUrl=import.meta.env.MODE==="development"
+        ? import.meta.env.VITE_APP_DEV_URL 
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const [userData, setUserData]=useState({
         _id: "",
         username: "",
         email: ""
     });
     const [enableEdit, setEnableEdit]=useState(false);
-
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==="development"
-        ? import.meta.env.VITE_APP_DEV_URL 
-        : import.meta.env.VITE_APP_PROD_URL
-    const navigate=useNavigate();
 
     useEffect(()=>{
         async function fetchUser(){
@@ -26,8 +27,11 @@ export function Account(){
                 const result=await response.json();
                 if(response.ok){
                     setUserData(result.user);
+                    toast.success(result.message);
                 }
-                console.log(result.message);
+                else{
+                    toast.error(result.message);
+                }
             }
             catch(error: unknown){
                 if(error instanceof Error){
@@ -41,10 +45,6 @@ export function Account(){
 
         fetchUser();
     }, [apiUrl]);
-
-    function toggleEdit(){
-        setEnableEdit((prev)=>!prev);
-    }
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
         const { name, value }=e.target;
@@ -69,8 +69,11 @@ export function Account(){
                     navigate("/verify");
                 }
                 setEnableEdit(false);
+                toast.success(result.message);
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error: unknown){
             if(error instanceof Error){
@@ -93,7 +96,10 @@ export function Account(){
             const result=await response.json();
             if(response.ok){
                 navigate("/")
-                console.log(result.message);
+                toast.success(result.message);
+            }
+            else{
+                toast.error(result.message);
             }
         }
         catch(error){
@@ -117,7 +123,10 @@ export function Account(){
             const result=await response.json();
             if(response.ok){
                 navigate("/register");
-                console.log(result.message);
+                toast.success(result.message);
+            }
+            else{
+                toast.error(result.message);
             }
         }
         catch(error){
@@ -150,7 +159,7 @@ export function Account(){
                         </div>
                     </button>
                 : 
-                    <button type="button" className="account-button" onClick={toggleEdit}>
+                    <button type="button" className="account-button" onClick={()=>setEnableEdit(!enableEdit)}>
                         Edit User
                         <div className="account-icon-wrapper">
                             <img src="/edit.png" alt="img" className="account-icon-edit"/>
@@ -169,10 +178,7 @@ export function Account(){
                         <img src="/delete.png" alt="img" className="account-icon-delete"/>
                     </div>
                 </button>
-
             </form>
-            {/* <div className="account-buttons">
-            </div> */}
         </div>
     )
 }

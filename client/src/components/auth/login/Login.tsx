@@ -9,6 +9,12 @@ interface LoginData{
 };
 
 export function Login(){
+    const navigate=useNavigate();
+    
+    const apiUrl=import.meta.env.MODE==="development"
+        ? import.meta.env.VITE_APP_DEV_URL
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const  [loginData, setLoginData]=useState<LoginData>({
         credential: "",
         password: ""
@@ -17,29 +23,14 @@ export function Login(){
     const [verified, setVerified]=useState<boolean>(true);
     const [email, setEmail]=useState("");
     const [forgotPassword, setForgotPassword]=useState<boolean>(false);
-    
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==="development"
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL
-    
-    const navigate=useNavigate();
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
         const { name, value }=e.target;
-        setLoginData(prevState=>({
-            ...prevState,
+        setLoginData(prev=>({
+            ...prev,
             [name]: value
         }));
     };
-
-    function toggleVisibility(){
-        setVisible(!visible);
-    }
-
-    function toggleForgotPassword(){
-        setForgotPassword(true);
-    }
 
     async function loginUser(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
@@ -117,11 +108,11 @@ export function Login(){
                                 <input type={visible ? "text" : "password"} name="password" value={loginData.password} required onChange={handleInputChange} placeholder=" "/>
                                 <label>Password</label>
                             </div>
-                            <div className={`login-image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
+                            <div className={`login-image-container ${visible ? "visible" : ""}`} onClick={()=>setVisible(!visible)}>
                                 <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                             </div>
                         </div>
-                        <a onClick={toggleForgotPassword} className="login-forgot-password">Forgot password.</a>
+                        <a onClick={()=>setForgotPassword(true)} className="login-forgot-password">Forgot password.</a>
                         <button type="submit" className="login-button">
                             <span className="login-icon-wrapper">
                                 <img src="arrow.png" alt="icon" className="login-icon"/>

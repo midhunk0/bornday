@@ -41,8 +41,8 @@
     border-radius: 50%;
     display: grid;
     place-content: center;
-    outline: none;
-    border: none;
+    border: 1px solid #CA3f85;
+    overflow: hidden;
 }
 
 .add-button-icon{
@@ -53,12 +53,12 @@
 }
 
 .add-button:hover{
-    background: #000;
-    color: #fff;
+    background: black;
+    color: white;
 }
 
 .add-button:hover .add-button-icon-wrapper{
-    background: #fff;
+    background: white;
 }
 
 .add-button:hover .add-button-icon{
@@ -89,6 +89,7 @@
     .add-form{
         padding: 0;
         width: 100%;
+        margin-top: 16px;
     }
 }
 

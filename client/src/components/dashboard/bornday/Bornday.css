@@ -16,8 +16,6 @@
     padding: 16px;
     width: 70%;
     gap: 16px;
-    /* border: 1px solid #CA3f85; */
-    border-radius: 24px;
 }
 
 .bornday-user{
@@ -30,32 +28,32 @@
 
 .bornday-user img{
     width: 40%;
-    /* height: 40%; */
     border-radius: 8px;
 }
 
 .bornday-detail{
     display: flex;
     flex-direction: column;
-    /* align-items: flex-end; */
-    width: 100%;
     padding: 16px;
     gap: 16px;
 }
 
 .bornday-button{
-    width: 100%;
     padding: 16px;
     font-size: 16px;
     border: 1px solid #CA3f85;
     cursor: pointer;
-    background: whitesmoke;
+    background: white;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     position: relative;
     transition: background 0.3s ease-in-out;
+}
+
+.bornday-button.delete{
+    color: red;
 }
 
 .bornday-icon-wrapper{
@@ -67,7 +65,6 @@
     border-radius: 50%;
     display: grid;
     place-content: center;
-    outline: none;
     border: 1px solid #CA3f85;
     overflow: hidden;
 }
@@ -80,8 +77,8 @@
 }
 
 .bornday-button:hover{
-    background: #000;
-    color: #fff;
+    background: black;
+    color: white;
 }
 
 .bornday-icon-edit{
@@ -89,7 +86,7 @@
 }
 
 .bornday-button:hover .bornday-icon-wrapper{
-    background: #fff;
+    background: white;
 }
 
 .bornday-button:hover .bornday-icon-edit{
@@ -149,12 +146,12 @@
 @media(max-width: 864px){
     .bornday{
         width: 100%;
-        /* padding: 16px; */
     }
 
     .bornday-div{
         padding: 0;
         width: 100%;
+        margin-top: 16px;
     }
 }
 
@@ -163,27 +160,10 @@
         margin-top: 24px;
         width: 80%;
     }
-
-    .bornday-div{
-        padding: 0;
-    }
 }
 
 @media(max-width: 468px){
     .bornday{
         width: 100%;
     }
-
-    .bornday-div{
-        width: 100%;
-    }
-
-    /* .bornday-buttons{
-        flex-direction: column;
-    }
-
-    .bornday-button{
-        padding-left: 0;
-        justify-content: center;
-    } */
 }

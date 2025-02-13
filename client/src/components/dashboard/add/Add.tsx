@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Add.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface BorndayData{
     name: string,
@@ -9,21 +10,22 @@ interface BorndayData{
 
 export function Add(){
     const location=useLocation();
+    const navigate=useNavigate();
+
+    const apiUrl=import.meta.env.MODE==="development"
+        ? import.meta.env.VITE_APP_DEV_URL 
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const [borndayData, setBorndayData]=useState<BorndayData>({
         name: "",
         date: (location.state as { date?: string })?.date || new Date().toISOString().split("T")[0]
     });
 
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==="development"
-        ? import.meta.env.VITE_APP_DEV_URL 
-        : import.meta.env.VITE_APP_PROD_URL
-    const navigate=useNavigate();
 
     function handleInputChange(e:React.ChangeEvent<HTMLInputElement>){
         const { name, value }=e.target;
-        setBorndayData(prevState=>({
-            ...prevState,
+        setBorndayData(prev=>({
+            ...prev,
             [name]: value
         }));
     };
@@ -40,8 +42,11 @@ export function Add(){
             const result=await response.json();
             if(response.ok){
                 navigate("/dashboard/borndays");
+                toast.success(result.message);
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error: unknown){
             if(error instanceof Error){

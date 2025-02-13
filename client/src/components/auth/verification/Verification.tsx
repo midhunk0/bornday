@@ -4,15 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export function Verification(){
-    const [email, setEmail]=useState("")
-    const [otp, setOtp]=useState("");
-    
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==="development"
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL
     const navigate=useNavigate();
 
+    const apiUrl=import.meta.env.MODE==="development"
+        ? import.meta.env.VITE_APP_DEV_URL
+        : import.meta.env.VITE_APP_PROD_URL;
+
+    const [email, setEmail]=useState("");
+    const [otp, setOtp]=useState("");;
+    
     useEffect(()=>{
         async function fetchEmail(){
             try{
@@ -37,7 +37,7 @@ export function Verification(){
         };
 
         fetchEmail();
-    }, [apiUrl]);
+    }, [apiUrl, email]);
 
     async function verifyOTP(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();

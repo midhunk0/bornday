@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Bornday.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface BorndayData{
     name: string;
@@ -8,17 +9,17 @@ interface BorndayData{
 };
 
 export function Bornday(){
+    const navigate=useNavigate();
+    const { borndayId }=useParams<{ borndayId: string }>() || "";
+
+    const apiUrl=import.meta.env.MODE==="development"
+        ? import.meta.env.VITE_APP_DEV_URL
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const [borndayData, setBorndayData]=useState<BorndayData>({
         name: "",
         date: ""
     });
-
-    const { borndayId }=useParams<{ borndayId: string }>() || "";
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==="development"
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL
-    const navigate=useNavigate();
 
     useEffect(()=>{
         async function fetchBornday(){
@@ -32,8 +33,11 @@ export function Bornday(){
                     const data=result.bornday;
                     data.date=data.date.split("T")[0]
                     setBorndayData(data);
+                    toast.success(result.message);
                 }
-                console.log(result.message);
+                else{
+                    toast.error(result.message);
+                }
             }
             catch(error){
                 if(error instanceof Error){
@@ -91,7 +95,7 @@ export function Bornday(){
                         <img src="/edit.png" alt="img" className="bornday-icon-edit"/>
                     </div>
                 </button>
-                <button type="button" className="bornday-button" onClick={deleteBornday}>
+                <button type="button" className="bornday-button delete" onClick={deleteBornday}>
                     Delete 
                     <div className="bornday-icon-wrapper">
                         <img src="/delete.png" alt="img" className="bornday-icon-delete"/>

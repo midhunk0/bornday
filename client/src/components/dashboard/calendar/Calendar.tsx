@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Calendar.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface Bornday {
     _id: string;
@@ -9,18 +10,16 @@ interface Bornday {
 }
 
 export function Calendar() {
+    const navigate=useNavigate();
+    
+    const apiUrl=import.meta.env.MODE==="development"
+        ? import.meta.env.VITE_APP_DEV_URL
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const [borndays, setBorndays] = useState<Bornday[]>([]);
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
-
     const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
-
-
-    const environment = import.meta.env.MODE;
-    const apiUrl = environment === "development"
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL;
-    const navigate=useNavigate();
 
     useEffect(() => {
         async function fetchBorndays() {
@@ -32,6 +31,10 @@ export function Calendar() {
                 const result = await response.json();
                 if (response.ok) {
                     setBorndays(result.borndays);
+                    toast.success(result.message);
+                }
+                else{
+                    toast.error(result.message);
                 }
             } catch (error) {
                 console.error("Error fetching borndays:", error);
@@ -67,7 +70,6 @@ export function Calendar() {
         navigate("/dashboard/add", { state: { date } });
     }
 
-
     function formatDate(dateString: string){
         const date=new Date(dateString);
         return date.toLocaleDateString("en-US", {
@@ -76,6 +78,7 @@ export function Calendar() {
             day: "numeric"
         });
     };
+
     function toggleOpen(e: React.MouseEvent, id: string){
         e.stopPropagation();
         setOpenButtons((prev)=>({
@@ -105,8 +108,11 @@ export function Calendar() {
             const result=await response.json();
             if(response.ok){
                 setBorndays((prevBorndays) => prevBorndays.filter(bornday => bornday._id !== borndayId));
+                toast.success(result.message);
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error){
             if(error instanceof Error){
@@ -118,21 +124,22 @@ export function Calendar() {
         }
     }
 
-
     return (
         <div className="calendar">
             <h1>Calendar</h1>
             <div className="calendar-details">
                 <div className="calendar-header">
-                    <div onClick={()=>changeMonth(-1)} className="calendar-button">
-                        <img src="/left.png" alt="img" className="calendar-icon-left"/>
+                    <div onClick={()=>changeMonth(-1)} className="calendar-header-icon-wrapper">
+                        <img src="/left.png" alt="img" className="calendar-left-icon"/>
                     </div>
                     <h2>{currentDate.toLocaleString("default", { month: "long" })} {year}</h2>
-                    <div onClick={()=>changeMonth(1)} className="calendar-button">
-                        <img src="/right.png" alt="img" className="calendar-icon-right"/>
+                    <div onClick={()=>changeMonth(1)} className="calendar-header-icon-wrapper">
+                        <img src="/right.png" alt="img" className="calendar-right-icon"/>
                     </div>
                 </div>
+
                 <hr/>
+                
                 <div className="calendar-grid">
                     {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day=>(
                         <div key={day} className="calendar-day-header">{day}</div>
@@ -158,44 +165,44 @@ export function Calendar() {
                     })}
                 </div>
 
-            {selectedDate && (
-                <div className="calendar-bornday-details">
-                    <div className="calendar-bornday-header">
-                        <h3>{selectedDate}</h3>
-                        <button onClick={()=>addBornday(selectedDate)} className="calendar-add">
-                            Add
-                            <div className="calendar-icon-wrapper">
-                                <img src="/add.png" alt="img" className="calendar-icon"/>
-                            </div>
-                        </button>
-                    </div>
-                    <div className="calendar-bornday-items">
-                    {getBorndaysForDate(selectedDate).map(bornday=>(
-                        <div className="calendar-borndays-item" key={bornday._id} onClick={(e)=>toBornday(e, bornday._id)}>
-                            <div className="calendar-borndays-item-content">
-                                <p>{bornday.name}</p>
-                                <p>{formatDate(bornday.date)}</p>
-                            </div>
-                            <div className="calendar-borndays-buttons">
-                                {openButtons[bornday._id] && (
-                                    <div className="calendar-borndays-icon-wrapper" onClick={(e)=>updateBornday(e, bornday._id)}>
-                                        <img src="/edit.png" alt="img" className="calendar-borndays-icon-edit"/>
+                {selectedDate && (
+                    <div className="calendar-bornday-details">
+                        <div className="calendar-bornday-header">
+                            <h3>{selectedDate}</h3>
+                            <button onClick={()=>addBornday(selectedDate)} className="calendar-bornday-add">
+                                Add
+                                <div className="calendar-bornday-button-icon-wrapper">
+                                    <img src="/add.png" alt="img" className="calendar-bornday-add-icon"/>
+                                </div>
+                            </button>
+                        </div>
+                        <div className="calendar-bornday-items">
+                        {getBorndaysForDate(selectedDate).map(bornday=>(
+                            <div className="calendar-bornday-item" key={bornday._id} onClick={(e)=>toBornday(e, bornday._id)}>
+                                <div className="calendar-bornday-item-content">
+                                    <p>{bornday.name}</p>
+                                    <p>{formatDate(bornday.date)}</p>
+                                </div>
+                                <div className="calendar-bornday-buttons">
+                                    {openButtons[bornday._id] && (
+                                        <div className="calendar-bornday-icon-wrapper" onClick={(e)=>updateBornday(e, bornday._id)}>
+                                            <img src="/edit.png" alt="img" className="calendar-bornday-edit-icon"/>
+                                        </div>
+                                    )}
+                                    {openButtons[bornday._id] && (
+                                        <div className="calendar-bornday-icon-wrapper" onClick={(e)=>deleteBornday(e, bornday._id)}>
+                                            <img src="/delete.png" alt="img" className="calendar-bornday-delete-icon"/>
+                                        </div>
+                                    )}
+                                    <div className="calendar-bornday-icon-wrapper">
+                                        <img src={openButtons[bornday._id] ? "/right.png" : "/left.png"} alt="img" className={openButtons[bornday._id] ? "calendar-bornday-right-icon" : "calendar-bornday-left-icon"} onClick={(e)=>toggleOpen(e, bornday._id)}/>
                                     </div>
-                                )}
-                                {openButtons[bornday._id] && (
-                                    <div className="calendar-borndays-icon-wrapper" onClick={(e)=>deleteBornday(e, bornday._id)}>
-                                        <img src="/delete.png" alt="img" className="calendar-borndays-icon-delete"/>
-                                    </div>
-                                )}
-                                <div className="calendar-borndays-icon-wrapper">
-                                    <img src={openButtons[bornday._id] ? "/right.png" : "/left.png"} alt="img" className={openButtons[bornday._id] ? "calendar-borndays-icon-right" : "calendar-borndays-icon-left"} onClick={(e)=>toggleOpen(e, bornday._id)}/>
                                 </div>
                             </div>
+                        ))}
                         </div>
-                    ))}
                     </div>
-                </div>
-            )}
+                )}
             </div>
         </div>
     );

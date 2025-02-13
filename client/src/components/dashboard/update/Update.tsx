@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Update.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface BorndayData{
     name: string;
@@ -8,17 +9,17 @@ interface BorndayData{
 };
 
 export function Update(){
+    const navigate=useNavigate();
+    const { borndayId }=useParams<{ borndayId: string }>();
+
+    const apiUrl=import.meta.env.MODE==="development" 
+        ? import.meta.env.VITE_APP_DEV_URL 
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const [updateData, setUpdateData]=useState<BorndayData>({
         name: "",
         date: ""
     });
-    const { borndayId }=useParams<{ borndayId: string }>();
-
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==="development" 
-        ? import.meta.env.VITE_APP_DEV_URL 
-        : import.meta.env.VITE_APP_PROD_URL
-    const navigate=useNavigate();
 
     useEffect(()=>{
         async function fetchBornday(){
@@ -32,8 +33,11 @@ export function Update(){
                     const data=result.bornday;
                     data.date=data.date.split("T")[0];
                     setUpdateData(data);
+                    toast.success(result.message);
                 }
-                console.log(result.message);
+                else{
+                    toast.error(result.message);
+                }
             }
             catch(error){
                 if(error instanceof Error){
@@ -60,8 +64,11 @@ export function Update(){
             const result=await response.json();
             if(response.ok){
                 navigate("/dashboard/borndays");
+                toast.success(result.message);
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error){
             if(error instanceof Error){

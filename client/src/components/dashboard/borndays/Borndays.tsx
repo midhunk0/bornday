@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Borndays.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface Bornday {
     _id: string;
@@ -11,14 +12,14 @@ interface Bornday {
 type BorndayData = Bornday[];
 
 export function Borndays(){
+    const navigate=useNavigate();
+
+    const apiUrl=import.meta.env.MODE==="development"
+        ? import.meta.env.VITE_APP_DEV_URL
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const [borndays, setBorndays]=useState<BorndayData>([]);
     const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
-
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==="development"
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL
-    const navigate=useNavigate();
 
     useEffect(()=>{
         async function fetchBorndays(){
@@ -30,8 +31,11 @@ export function Borndays(){
                 const result=await response.json();
                 if(response.ok){
                     setBorndays(result.borndays);
+                    toast.success(result.message);
                 }
-                console.log(result.message);
+                else{
+                    toast.error(result.message);
+                }
             }
             catch(error){
                 if(error instanceof Error){
@@ -84,8 +88,11 @@ export function Borndays(){
             const result=await response.json();
             if(response.ok){
                 setBorndays((prevBorndays) => prevBorndays.filter(bornday => bornday._id !== borndayId));
+                toast.success(result.message);
             }
-            console.log(result.message);
+            else{
+                toast.error(result.message);
+            }
         }
         catch(error){
             if(error instanceof Error){

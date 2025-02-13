@@ -19,27 +19,17 @@
     gap: 16px;
 }
 
-.account-form button, .account-buttons button{
-    padding: 16px;
-    font-size: 16px;
-    border: 1px solid black;
-    cursor: pointer;
-    background: whitesmoke;
-    border-radius: 50px;
-}
-
 .account-button{
     padding: 16px;
     font-size: 16px;
     border: 1px solid #CA3f85;
     cursor: pointer;
-    background: whitesmoke;
+    background: white;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 100%;
     transition: background 0.3s ease-in-out;
 }
 
@@ -52,46 +42,34 @@
     border-radius: 50%;
     display: grid;
     place-content: center;
-    outline: none;
-    border: 1px solid #CA3f85;
     overflow: hidden;
+    border: 1px solid #CA3f85;
 }
 
-.account-icon-wrapper.delete{
-    background: white;
-    border: 1px solid white;
-}
-
-.account-icon-update, .account-icon-edit, .account-icon-logout{
+.account-icon-update, .account-icon-edit, .account-icon-logout, .account-icon-delete{
     width: 24px;
     height: 24px;
     filter: invert();
     transition: transform 0.6s ease-in-out;
 }
 
-.account-icon-delete{
-    width: 24px;
-    height: 24px;
-    transition: transform 0.6s ease-in-out;
-}
-
 .account-button:hover{
-    background: #000;
-    color: #fff;
+    background: black;
+    color: white;
 }
 
 .account-button.delete{
-    background: red;
-    color: #fff;
+    background: white;
+    color: red;
 }
 
 .account-button.delete:hover{
-    background: #000;
-    color: #fff;
+    background: black;
+    color: white;
 }
 
 .account-button:hover .account-icon-wrapper{
-    background: #fff;
+    background: white;
 }
 
 .account-button:hover .account-icon-edit{
@@ -102,7 +80,6 @@
 .account-button:hover .account-icon-update{
     animation: rotate 0.6s ease-in-out;
     filter: none;
-    transform-origin: center;
 }
 
 .account-button:hover .account-icon-logout{
@@ -183,12 +160,15 @@
 @media(max-width: 864px){
     .account{
         width: 100%;
-        /* padding: 16px; */
     }
 
     .account-form, .account-buttons{
         padding: 0;
         width: 100%;
+    }
+
+    .account-form{
+        margin-top: 16px;
     }
 }
 
@@ -197,18 +177,10 @@
         margin-top: 24px;
         width: 80%;
     }
-
-    .account-form, .account-buttons{
-        padding: 0;
-    }
 }
 
 @media(max-width: 468px){
     .account{
-        width: 100%;
-    }
-
-    .account-form, .account-buttons{
         width: 100%;
     }
 }

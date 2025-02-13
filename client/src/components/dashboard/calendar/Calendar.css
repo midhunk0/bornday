@@ -28,13 +28,11 @@
     gap: 16px;
 }
 
-.calendar-button{
+.calendar-header-icon-wrapper{
     background-color: #ca3f85;
     border: 1px solid #CA3f85;
     color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
     place-content: center;
     border-radius: 50px;
     cursor: pointer;
@@ -43,23 +41,23 @@
     transition: background 0.3s ease;
 }
 
-.calendar-icon-left, .calendar-icon-right{
+.calendar-left-icon, .calendar-right-icon{
     width: 24px;
     height: 24px;
     filter: invert();
     transition: transform 0.6s ease-in-out;
 }
 
-.calendar-button:hover{
-    background: #fff;
+.calendar-header-icon-wrapper:hover{
+    background: white;
 }
 
-.calendar-button:hover .calendar-icon-left{
+.calendar-header-icon-wrapper:hover .calendar-left-icon{
     animation: slideLeft 0.6s ease-in-out;
     filter: none;
 }
 
-.calendar-button:hover .calendar-icon-right{
+.calendar-header-icon-wrapper:hover .calendar-right-icon{
     animation: slideRight 0.6s ease-in-out;
     filter: none;
 }
@@ -100,16 +98,6 @@
     }
 }
 
-.calendar-header h2 {
-    font-size: 24px;
-    margin: 0;
-    color: #333;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 330px;
-}
-
 hr{
     border: none;
     height: 1px;
@@ -138,12 +126,11 @@ hr{
     border: 1px solid #ddd;
     border-radius: 50px;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.3s ease;
+    transition: background 0.3s ease;
     position: relative;
-    display: flex;
+    display: grid;
+    place-content: center;
     padding: 16px;
-    align-items: center;
-    justify-content: center;
 }
 
 .calendar-empty{
@@ -157,13 +144,11 @@ hr{
 
 
 .calendar-day.has-bornday {
-    border: 1px solid #ca3f85;
     background: #ca3f85;
-    color: #fff;
+    color: white;
 }
 
 .calendar-day.selected {
-    border: 1px solid black;
     background-color: black;
     color: white;
 }
@@ -171,10 +156,8 @@ hr{
 .calendar-bornday-details{
     display: flex;
     flex-direction: column;
-    /* padding: 16px; */
     background: white;
     border-radius: 8px;
-    /* gap: 16px; */
 }
 
 .calendar-bornday-header{
@@ -197,7 +180,7 @@ hr{
     margin-top: 16px;
 }
 
-.calendar-borndays-item{
+.calendar-bornday-item{
     display: flex;
     padding: 16px;
     justify-content: space-between;
@@ -211,19 +194,19 @@ hr{
     transition: background 0.3s ease-in-out;
 }
 
-.calendar-borndays-item:hover{
+.calendar-bornday-item:hover{
     background: #000;
     color: #fff;
 }
 
-.calendar-borndays-item-content{
+.calendar-bornday-item-content{
     display: flex;
     width: 100%;
     gap: 16px;
     font-size: 16px;
 }
 
-.calendar-borndays-buttons{
+.calendar-bornday-buttons{
     display: flex;
     gap: 8px;
     width: fit-content;
@@ -231,7 +214,7 @@ hr{
     right: 8px;
 }
 
-.calendar-borndays-icon-wrapper{
+.calendar-bornday-icon-wrapper{
     width: 36px;
     height: 36px;
     background: #CA3F85;
@@ -246,40 +229,40 @@ hr{
     border: 1px solid #CA3F85;
 }
 
-.calendar-borndays-icon-edit, 
-.calendar-borndays-icon-delete, 
-.calendar-borndays-icon-left, 
-.calendar-borndays-icon-right{
+.calendar-bornday-edit-icon, 
+.calendar-bornday-delete-icon, 
+.calendar-bornday-left-icon, 
+.calendar-bornday-right-icon{
     width: 24px;
     height: 24px;
     filter: invert();
     transition: transform 0.6s ease-in-out;
 }
 
-.calendar-borndays-icon-edit{
+.calendar-bornday-edit-icon{
     transform-origin: bottom left;
 }
 
-.calendar-borndays-icon-wrapper:hover{
+.calendar-bornday-icon-wrapper:hover{
     background: #fff;
 }
 
-.calendar-borndays-icon-wrapper:hover .calendar-borndays-icon-edit{
+.calendar-bornday-icon-wrapper:hover .calendar-bornday-edit-icon{
     animation: writing 0.8s ease-in-out;
     filter: none;
 }
 
-.calendar-borndays-icon-wrapper:hover .calendar-borndays-icon-delete{
+.calendar-bornday-icon-wrapper:hover .calendar-bornday-delete-icon{
     animation: shakeAndFlip 0.6s ease-in-out;
     filter: none;
 }
 
-.calendar-borndays-icon-wrapper:hover .calendar-borndays-icon-left{
+.calendar-bornday-icon-wrapper:hover .calendar-bornday-left-icon{
     animation: slideLeft 0.6s ease-in-out;
     filter: none;
 }
 
-.calendar-borndays-icon-wrapper:hover .calendar-borndays-icon-right{
+.calendar-bornday-icon-wrapper:hover .calendar-bornday-right-icon{
     animation: slideRight 0.6s ease-in-out;
     filter: none;
 }
@@ -357,7 +340,7 @@ hr{
 }
 
 
-.calendar-add {
+.calendar-bornday-add{
     padding: 16px;
     font-size: 16px;
     border: 1px solid #CA3f85;
@@ -372,7 +355,7 @@ hr{
     transition: background 0.3s ease-in-out;
 }
 
-.calendar-icon-wrapper {
+.calendar-bornday-button-icon-wrapper{
     position: absolute;
     right: 8px;
     width: 36px;
@@ -382,27 +365,27 @@ hr{
     display: grid;
     place-content: center;
     outline: none;
-    border: none;
+    border: 1px solid #CA3F85;
     overflow: hidden;
 }
 
-.calendar-icon {
+.calendar-bornday-add-icon{
     width: 24px;
     height: 24px;
     transition: transform 0.6s ease-in-out;
     filter: invert(1);
 }
 
-.calendar-add:hover {
+.calendar-bornday-add:hover{
     background: #000;
     color: #fff;
 }
 
-.calendar-add:hover .calendar-icon-wrapper {
+.calendar-bornday-add:hover .calendar-bornday-button-icon-wrapper{
     background: #fff;
 }
 
-.calendar-add:hover .calendar-icon {
+.calendar-bornday-add:hover .calendar-bornday-add-icon{
     animation: rotateIcon 0.6s ease-in-out;
     filter: none;
 }

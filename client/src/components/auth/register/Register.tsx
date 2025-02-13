@@ -10,6 +10,12 @@ interface RegisterData{
 };
 
 export function Register(){
+    const navigate=useNavigate();
+
+    const apiUrl=import.meta.env.MODE==='development'
+        ? import.meta.env.VITE_APP_DEV_URL
+        : import.meta.env.VITE_APP_PROD_URL;
+
     const [registerData, setRegisterData]=useState<RegisterData>({
         username: "",
         email: "",
@@ -17,23 +23,13 @@ export function Register(){
     });
     const [visible, setVisible]=useState<boolean>(false);
 
-    const environment=import.meta.env.MODE;
-    const apiUrl=environment==='development'
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL;
-    const navigate=useNavigate();
-
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
         const { name, value }=e.target;
-        setRegisterData(prevState=>({
-            ...prevState,
+        setRegisterData(prev=>({
+            ...prev,
             [name]: value
         }));
     };
-
-    function toggleVisibility(){
-        setVisible(!visible);
-    }
 
     async function registerUser(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
@@ -83,7 +79,7 @@ export function Register(){
                             <input type={visible ? "text" : "password"} name="password" value={registerData.password} required onChange={handleInputChange} placeholder=" "/>
                             <label>Password</label>
                         </div>
-                        <div className={`register-image-container ${visible ? "visible" : ""}`} onClick={toggleVisibility}>
+                        <div className={`register-image-container ${visible ? "visible" : ""}`} onClick={()=>setVisible(!visible)}>
                             <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                         </div>
                     </div>

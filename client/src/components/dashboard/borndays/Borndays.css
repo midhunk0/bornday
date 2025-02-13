@@ -29,13 +29,13 @@
     position: relative;
     align-items: center;
     cursor: pointer;
-    background: #fff;
+    background: white;
     transition: background 0.3s ease-in-out;
 }
 
 .borndays-item:hover{
-    background: #000;
-    color: #fff;
+    background: black;
+    color: white;
 }
 
 .borndays-item-content{
@@ -48,7 +48,6 @@
 .borndays-buttons{
     display: flex;
     gap: 8px;
-    width: fit-content;
     position: absolute;
     right: 8px;
 }
@@ -60,12 +59,9 @@
     border-radius: 50%;
     display: grid;
     place-content: center;
-    outline: none;
-    border: none;
+    border: 1px solid #CA3f85;
     overflow: hidden;
     cursor: pointer;
-    transition: background 0.3s ease;
-    border: 1px solid #CA3F85;
 }
 
 .borndays-icon-edit, .borndays-icon-delete, .borndays-icon-left, .borndays-icon-right{
@@ -80,7 +76,7 @@
 }
 
 .borndays-icon-wrapper:hover{
-    background: #fff;
+    background: white;
 }
 
 .borndays-icon-wrapper:hover .borndays-icon-edit{
@@ -184,12 +180,12 @@
 @media(max-width: 864px){
     .borndays{
         width: 100%;
-        /* padding: 16px; */
     }
 
     .borndays-items{
         padding: 0;
         width: 100%;
+        margin-top: 16px;
     }
 }
 
@@ -198,18 +194,10 @@
         margin-top: 24px;
         width: 80%;
     }
-
-    .borndays-items{
-        padding: 0;
-    }
 }
 
 @media(max-width: 468px){
     .borndays{
-        width: 100%;
-    }
-
-    .borndays-items{
         width: 100%;
     }
 }
