@@ -33,7 +33,7 @@ export function Update(){
                     const data=result.bornday;
                     data.date=data.date.split("T")[0];
                     setUpdateData(data);
-                    toast.success(result.message);
+                    // toast.success(result.message);
                 }
                 else{
                     toast.error(result.message);

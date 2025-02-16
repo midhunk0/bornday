@@ -20,6 +20,8 @@ export function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
+    const [borndayId, setBorndayId]=useState("");
+    const [showConfirm, setShowConfirm]=useState(false);
 
     useEffect(() => {
         async function fetchBorndays() {
@@ -31,7 +33,7 @@ export function Calendar() {
                 const result = await response.json();
                 if (response.ok) {
                     setBorndays(result.borndays);
-                    toast.success(result.message);
+                    // toast.success(result.message);
                 }
                 else{
                     toast.error(result.message);
@@ -100,6 +102,8 @@ export function Calendar() {
     async function deleteBornday(e: React.FormEvent, borndayId: string){
         e.stopPropagation();
         e.preventDefault();
+
+        setShowConfirm(false);
         try{
             const response=await fetch(`${apiUrl}/deleteBornday/${borndayId}`, {
                 method: "DELETE",
@@ -125,7 +129,7 @@ export function Calendar() {
     }
 
     return (
-        <div className="calendar">
+        <div className={`calendar ${showConfirm ? "blur" : ""}`}>
             <h1>Calendar</h1>
             <div className="calendar-details">
                 <div className="calendar-header">
@@ -190,7 +194,7 @@ export function Calendar() {
                                         </div>
                                     )}
                                     {openButtons[bornday._id] && (
-                                        <div className="calendar-bornday-icon-wrapper" onClick={(e)=>deleteBornday(e, bornday._id)}>
+                                        <div className="calendar-bornday-icon-wrapper" onClick={(e)=>(e.stopPropagation(), setBorndayId(bornday._id), setShowConfirm(true))}>
                                             <img src="/delete.png" alt="img" className="calendar-bornday-delete-icon"/>
                                         </div>
                                     )}
@@ -204,6 +208,15 @@ export function Calendar() {
                     </div>
                 )}
             </div>
+            {showConfirm && (
+                <div className="calendar-confirm-popup">
+                    <p>Are you sure to delete bornday of {borndays.find(bornday => bornday._id === borndayId)?.name}?</p>
+                    <div className="calendar-confirm-buttons">
+                        <button onClick={(e)=>deleteBornday(e, borndayId)} className="calendar-confirm-yes">Yes</button>
+                        <button onClick={()=>setShowConfirm(false)} className="calendar-confirm-no">No</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

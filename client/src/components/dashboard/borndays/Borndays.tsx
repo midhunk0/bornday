@@ -20,6 +20,8 @@ export function Borndays(){
 
     const [borndays, setBorndays]=useState<BorndayData>([]);
     const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
+    const [borndayId, setBorndayId]=useState("");
+    const [showConfirm, setShowConfirm]=useState(false);
 
     useEffect(()=>{
         async function fetchBorndays(){
@@ -31,7 +33,7 @@ export function Borndays(){
                 const result=await response.json();
                 if(response.ok){
                     setBorndays(result.borndays);
-                    toast.success(result.message);
+                    // toast.success(result.message);
                 }
                 else{
                     toast.error(result.message);
@@ -80,6 +82,8 @@ export function Borndays(){
     async function deleteBornday(e: React.FormEvent, borndayId: string){
         e.stopPropagation();
         e.preventDefault();
+
+        setShowConfirm(false);
         try{
             const response=await fetch(`${apiUrl}/deleteBornday/${borndayId}`, {
                 method: "DELETE",
@@ -105,7 +109,7 @@ export function Borndays(){
     }
 
     return(
-        <div className="borndays">
+        <div className={`borndays ${showConfirm ? "blur" : ""}`}>
             <h1>Borndays.</h1>
             {borndays && borndays.length>0 ? (
                 <div className="borndays-items">
@@ -122,7 +126,7 @@ export function Borndays(){
                                     </div>
                                 )}
                                 {openButtons[bornday._id] && (
-                                    <div className="borndays-icon-wrapper" onClick={(e)=>deleteBornday(e, bornday._id)}>
+                                    <div className="borndays-icon-wrapper" onClick={(e)=>(e.stopPropagation(), setBorndayId(bornday._id), setShowConfirm(true))}>
                                         <img src="/delete.png" alt="img" className="borndays-icon-delete"/>
                                     </div>
                                 )}
@@ -135,6 +139,15 @@ export function Borndays(){
                 </div>
             ):(
                 <p>No borndays available</p>
+            )}
+            {showConfirm && (
+                <div className="borndays-confirm-popup">
+                    <p>Are you sure to delete bornday of {borndays.find(bornday => bornday._id === borndayId)?.name}?</p>
+                    <div className="borndays-confirm-buttons">
+                        <button onClick={(e)=>deleteBornday(e, borndayId)} className="borndays-confirm-yes">Yes</button>
+                        <button onClick={()=>setShowConfirm(false)} className="borndays-confirm-no">No</button>
+                    </div>
+                </div>
             )}
         </div>
     );

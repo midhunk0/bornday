@@ -16,6 +16,7 @@ export function Account(){
         email: ""
     });
     const [enableEdit, setEnableEdit]=useState(false);
+    const [showConfirm, setShowConfirm]=useState(false);
 
     useEffect(()=>{
         async function fetchUser(){
@@ -27,7 +28,7 @@ export function Account(){
                 const result=await response.json();
                 if(response.ok){
                     setUserData(result.user);
-                    toast.success(result.message);
+                    // toast.success(result.message);
                 }
                 else{
                     toast.error(result.message);
@@ -112,7 +113,7 @@ export function Account(){
         }
     };
 
-    async function handleDelete(e: React.FormEvent){
+    async function deleteAccount(e: React.FormEvent){
         try{
             e.preventDefault();
             const response=await fetch(`${apiUrl}/deleteUser`, { 
@@ -140,7 +141,7 @@ export function Account(){
     };
 
     return(
-        <div className="account">
+        <div className={`account ${showConfirm ? "blur" : ""}`}>
             <h1>Account</h1>
             <form className="account-form">
                 <div className="input-container">
@@ -172,13 +173,22 @@ export function Account(){
                         <img src="/logout.png" alt="img" className="account-icon-logout"/>
                     </div>
                 </button>
-                <button type="button" onClick={handleDelete} className="account-button delete">
+                <button type="button" onClick={()=>setShowConfirm(true)} className="account-button delete">
                     Delete Account
                     <div className="account-icon-wrapper delete">
                         <img src="/delete.png" alt="img" className="account-icon-delete"/>
                     </div>
                 </button>
             </form>
+            {showConfirm && (
+                <div className="account-confirm-popup">
+                    <p>Are you sure to delete account?</p>
+                    <div className="account-confirm-buttons">
+                        <button onClick={deleteAccount} className="account-confirm-yes">Yes</button>
+                        <button onClick={()=>setShowConfirm(false)} className="account-confirm-no">No</button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
