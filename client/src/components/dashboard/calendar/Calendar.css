@@ -172,7 +172,7 @@ hr{
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-height: 122px;
+    max-height: 126px;
     overflow: scroll;
     padding-bottom: 1px;
 }
@@ -183,12 +183,11 @@ hr{
 
 .calendar-bornday-item{
     display: flex;
-    padding: 16px;
+    padding: 8px;
     justify-content: space-between;
     border: 1px solid #CA3F85;
     border-radius: 50px;
     gap: 16px;
-    position: relative;
     align-items: center;
     cursor: pointer;
     background: #fff;
@@ -200,6 +199,19 @@ hr{
     color: #fff;
 }
 
+.calendar-bornday-item-details{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.calendar-bornday-item-details img{
+    width: 36px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 1px solid #CA3F85;
+}
+
 .calendar-bornday-item-content{
     display: flex;
     width: 100%;
@@ -207,12 +219,14 @@ hr{
     font-size: 16px;
 }
 
+.calendar-bornday-item-content p{
+    text-transform: capitalize;
+}
+
 .calendar-bornday-buttons{
     display: flex;
     gap: 8px;
     width: fit-content;
-    position: absolute;
-    right: 8px;
 }
 
 .calendar-bornday-icon-wrapper{
@@ -223,7 +237,6 @@ hr{
     display: grid;
     place-content: center;
     outline: none;
-    border: none;
     overflow: hidden;
     cursor: pointer;
     transition: background 0.3s ease;

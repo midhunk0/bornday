@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 interface Bornday{
     name: string;
     date: string;
+    imageUrl: string;
 };
 
 export function Bornday(){
@@ -18,7 +19,8 @@ export function Bornday(){
 
     const [bornday, setBornday]=useState<Bornday>({
         name: "",
-        date: ""
+        date: "",
+        imageUrl: ""
     });
     const [showConfirm, setShowConfirm]=useState(false);
 
@@ -32,8 +34,8 @@ export function Bornday(){
                 const result=await response.json();
                 if(response.ok){
                     const data=result.bornday;
-                    data.date=data.date.split("T")[0]
-                    setBornday(data);
+                    data.date=data.date.split("T")[0];
+                    setBornday(data)
                     // toast.success(result.message);
                 }
                 else{
@@ -89,7 +91,7 @@ export function Bornday(){
             <h1>Bornday</h1>
             <div className="bornday-div">
                 <div className="bornday-user">
-                    <img src="/profile.png" alt="img"/>
+                    <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="img"/>
                     <div className="bornday-detail">
                         <h2>{bornday.name}</h2>
                         <h4>{bornday.date}</h4>

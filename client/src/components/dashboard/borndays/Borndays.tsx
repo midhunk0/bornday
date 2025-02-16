@@ -7,6 +7,7 @@ interface Bornday {
     _id: string;
     name: string;
     date: string;
+    imageUrl: string;
 }
 
 type BorndayData = Bornday[];
@@ -64,7 +65,6 @@ export function Borndays(){
     function toggleOpen(e: React.MouseEvent, id: string){
         e.stopPropagation();
         setOpenButtons((prev)=>({
-            ...prev,
             [id]: !prev[id]
         }));
     };
@@ -115,9 +115,12 @@ export function Borndays(){
                 <div className="borndays-items">
                     {borndays.map((bornday)=>(
                         <div className="borndays-item" key={bornday._id} onClick={(e)=>toBornday(e, bornday._id)}>
-                            <div className="borndays-item-content">
-                                <p>{bornday.name}</p>
-                                <p>{formatDate(bornday.date)}</p>
+                            <div className="borndays-item-details">
+                                <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="img" className="borndays-item-image"/>
+                                <div className="borndays-item-content">
+                                    <p>{bornday.name}</p>
+                                    <p>{formatDate(bornday.date)}</p>
+                                </div>
                             </div>
                             <div className="borndays-buttons">
                                 {openButtons[bornday._id] && (

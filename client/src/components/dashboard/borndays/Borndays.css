@@ -22,12 +22,11 @@
 
 .borndays-item{
     display: flex;
-    padding: 16px;
+    padding: 8px;
     justify-content: space-between;
     border: 1px solid #CA3F85;
     border-radius: 50px;
     gap: 16px;
-    position: relative;
     align-items: center;
     cursor: pointer;
     background: white;
@@ -39,6 +38,19 @@
     color: white;
 }
 
+.borndays-item-details{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.borndays-item-image{
+    width: 36px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 1px solid #CA3F85;
+}
+
 .borndays-item-content{
     display: flex;
     width: 100%;
@@ -46,16 +58,18 @@
     font-size: 16px;
 }
 
+.borndays-item-content p{
+    text-transform: capitalize;
+}
+
 .borndays-buttons{
     display: flex;
     gap: 8px;
-    position: absolute;
-    right: 8px;
 }
 
 .borndays-icon-wrapper{
     width: 36px;
-    height: 36px;
+    aspect-ratio: 1/1;
     background: #CA3F85;
     border-radius: 50%;
     display: grid;

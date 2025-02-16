@@ -7,6 +7,7 @@ interface Bornday {
     _id: string;
     name: string;
     date: string;
+    imageUrl: string;
 }
 
 export function Calendar() {
@@ -84,7 +85,6 @@ export function Calendar() {
     function toggleOpen(e: React.MouseEvent, id: string){
         e.stopPropagation();
         setOpenButtons((prev)=>({
-            ...prev,
             [id]: !prev[id]
         }));
     };
@@ -183,9 +183,12 @@ export function Calendar() {
                         <div className="calendar-bornday-items">
                         {getBorndaysForDate(selectedDate).map(bornday=>(
                             <div className="calendar-bornday-item" key={bornday._id} onClick={(e)=>toBornday(e, bornday._id)}>
-                                <div className="calendar-bornday-item-content">
-                                    <p>{bornday.name}</p>
-                                    <p>{formatDate(bornday.date)}</p>
+                                <div className="calendar-bornday-item-details">
+                                    <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="img" className="borndays-item-image"/>
+                                    <div className="calendar-bornday-item-content">
+                                        <p>{bornday.name}</p>
+                                        <p>{formatDate(bornday.date)}</p>
+                                    </div>
                                 </div>
                                 <div className="calendar-bornday-buttons">
                                     {openButtons[bornday._id] && (

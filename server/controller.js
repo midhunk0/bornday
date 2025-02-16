@@ -252,9 +252,25 @@ const addBornday=async(req, res)=>{
             return res.status(400).json({ message: "User not found" });
         }
         const { name, date }=req.body;
+        if(!name){
+            return res.status(400).json({ message: "Name required" });
+        }
+        if(!date){
+            return res.status(400).json({ message: "Date required" });
+        }
+        const file=req.file;
+        let image;
+        if(file){
+            image={
+                imageName: `${Date.now()}.${file.originalname}`,
+                imageType: file.mimetype,
+                image: file.buffer
+            };
+        }
         const bornday={
-            name: name,
-            date: new Date(date)
+            name,
+            date: new Date(date),
+            ...(image && {image})
         };
         user.borndays.push(bornday);
         await user.save();
@@ -265,8 +281,32 @@ const addBornday=async(req, res)=>{
     }
 };
 
+const fetchImage=async(req, res)=>{
+    try{
+        const userId=returnUserId(req);
+        const { borndayId }=req.params;
+        const user=await User.findById(userId);
+        if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        const bornday=user.borndays.find(bornday=>bornday._id.toString()===borndayId);
+        if(!bornday){
+            return res.status(400).json({ message: "Bornday not found" });
+        }
+        if(!bornday.image){
+            return res.status(200).send();
+        }
+        res.set("Content-Type",bornday.image.imageType);
+        return res.status(200).send(bornday.image.image);
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+}
+
 const fetchBorndays=async(req, res)=>{
     try{
+        const apiUrl="http://localhost:4000"
         const userId=returnUserId(req);
         if(!userId){
             return res.status(400).json({ message: "User token not found or invalid" });
@@ -281,7 +321,14 @@ const fetchBorndays=async(req, res)=>{
             const nextB=getNextBornday(b.date, today);
             return nextA.getTime()-nextB.getTime();
         })
-        return res.status(200).json({ message: "Borndays fetched", borndays: borndays });
+        const borndaysWithImage=borndays.map(bornday=>{
+            const { image, ...borndayData }=bornday.toObject();
+            return{
+                ...borndayData,
+                ...(image ? { imageUrl: `${apiUrl}/fetchImage/${bornday._id}` } : {}) 
+            }
+        })
+        return res.status(200).json({ message: "Borndays fetched", borndays: borndaysWithImage });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
@@ -290,6 +337,7 @@ const fetchBorndays=async(req, res)=>{
 
 const fetchBornday=async(req, res)=>{
     try{
+        const apiUrl="http://localhost:4000"
         const userId=returnUserId(req);
         if(!userId){
             return res.status(400).json({ message: "User token not found or invalid" });
@@ -303,7 +351,12 @@ const fetchBornday=async(req, res)=>{
         if(!bornday){
             return res.status(400).json({ message: "Bornday not found" });
         }
-        return res.status(200).json({ message: "Bornday fetched", bornday: bornday });
+        const {image, ...borndayData}=bornday.toObject();
+        const borndayWithImage={
+            ...borndayData,
+            ...(image ? { imageUrl: `${apiUrl}/fetchImage/${bornday._id}` } : {}) 
+        }
+        return res.status(200).json({ message: "Bornday fetched", bornday: borndayWithImage });
     }
     catch(err){
         return res.status(500).json({ message: err.message });
@@ -429,6 +482,7 @@ module.exports={
     updateUser,
     deleteUser,
     addBornday,
+    fetchImage,
     fetchBorndays,
     fetchBornday,
     fetchBorndaysByMonth,

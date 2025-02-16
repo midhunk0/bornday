@@ -9,11 +9,11 @@ const borndaySchema=new mongoose.Schema({
         type: Date,
         required: true
     },
-    // images: [{
-    //     imageName: String,
-    //     imageType: String,
-    //     image: Buffer,
-    // }],
+    image: {
+        imageName: String,
+        imageType: String,
+        image: Buffer,
+    },
 });
 
 const userSchema=new mongoose.Schema({
