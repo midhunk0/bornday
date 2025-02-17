@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Calendar.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BorndayItem } from "../../../components/borndayItem/BorndayItem";
 
 interface Bornday {
     _id: string;
@@ -73,15 +74,6 @@ export function Calendar() {
         navigate("/dashboard/add", { state: { date } });
     }
 
-    function formatDate(dateString: string){
-        const date=new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
-    };
-
     function toggleOpen(e: React.MouseEvent, id: string){
         e.stopPropagation();
         setOpenButtons((prev)=>({
@@ -98,6 +90,11 @@ export function Calendar() {
         e.stopPropagation();
         navigate(`/dashboard/update/${borndayId}`);
     };
+
+    function onSetBorndayId(e: React.MouseEvent, borndayId: string){
+        e.stopPropagation();
+        setBorndayId(borndayId);
+    }
 
     async function deleteBornday(e: React.FormEvent, borndayId: string){
         e.stopPropagation();
@@ -126,6 +123,12 @@ export function Calendar() {
                 console.log("An unknown error occurred");
             }
         }
+    };
+
+    function onSetConfirm(e: React.MouseEvent, borndayId: string){
+        e.stopPropagation();
+        setShowConfirm(true);
+        setBorndayId(borndayId);
     }
 
     return (
@@ -182,30 +185,16 @@ export function Calendar() {
                         </div>
                         <div className="calendar-bornday-items">
                         {getBorndaysForDate(selectedDate).map(bornday=>(
-                            <div className="calendar-bornday-item" key={bornday._id} onClick={(e)=>toBornday(e, bornday._id)}>
-                                <div className="calendar-bornday-item-details">
-                                    <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="img" className="borndays-item-image"/>
-                                    <div className="calendar-bornday-item-content">
-                                        <p>{bornday.name}</p>
-                                        <p>{formatDate(bornday.date)}</p>
-                                    </div>
-                                </div>
-                                <div className="calendar-bornday-buttons">
-                                    {openButtons[bornday._id] && (
-                                        <div className="calendar-bornday-icon-wrapper" onClick={(e)=>updateBornday(e, bornday._id)}>
-                                            <img src="/edit.png" alt="img" className="calendar-bornday-edit-icon"/>
-                                        </div>
-                                    )}
-                                    {openButtons[bornday._id] && (
-                                        <div className="calendar-bornday-icon-wrapper" onClick={(e)=>(e.stopPropagation(), setBorndayId(bornday._id), setShowConfirm(true))}>
-                                            <img src="/delete.png" alt="img" className="calendar-bornday-delete-icon"/>
-                                        </div>
-                                    )}
-                                    <div className="calendar-bornday-icon-wrapper">
-                                        <img src={openButtons[bornday._id] ? "/right.png" : "/left.png"} alt="img" className={openButtons[bornday._id] ? "calendar-bornday-right-icon" : "calendar-bornday-left-icon"} onClick={(e)=>toggleOpen(e, bornday._id)}/>
-                                    </div>
-                                </div>
-                            </div>
+                            <BorndayItem
+                                key={bornday._id}
+                                bornday={bornday}
+                                open={openButtons[bornday._id] || false}
+                                onView={toBornday}
+                                onEdit={updateBornday}
+                                onSetId={onSetBorndayId}
+                                onToggle={toggleOpen}
+                                onSetConfirm={onSetConfirm}
+                            />
                         ))}
                         </div>
                     </div>

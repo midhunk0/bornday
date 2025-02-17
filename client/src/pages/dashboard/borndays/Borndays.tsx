@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Borndays.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BorndayItem } from "../../../components/borndayItem/BorndayItem";
 
 interface Bornday {
     _id: string;
@@ -53,14 +54,14 @@ export function Borndays(){
         fetchBorndays();
     }, [apiUrl]);
 
-    function formatDate(dateString: string){
-        const date=new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
-    };
+    // function formatDate(dateString: string){
+    //     const date=new Date(dateString);
+    //     return date.toLocaleDateString("en-US", {
+    //         year: "numeric",
+    //         month: "long",
+    //         day: "numeric"
+    //     });
+    // };
 
     function toggleOpen(e: React.MouseEvent, id: string){
         e.stopPropagation();
@@ -78,6 +79,11 @@ export function Borndays(){
         e.stopPropagation();
         navigate(`/dashboard/update/${borndayId}`);
     };
+
+    function onSetBorndayId(e: React.MouseEvent, borndayId: string){
+        e.stopPropagation();
+        setBorndayId(borndayId);
+    }
 
     async function deleteBornday(e: React.FormEvent, borndayId: string){
         e.stopPropagation();
@@ -108,36 +114,28 @@ export function Borndays(){
         }
     }
 
+    function onSetConfirm(e: React.MouseEvent, borndayId: string){
+        e.stopPropagation();
+        setShowConfirm(true);
+        setBorndayId(borndayId);
+    }
+
     return(
         <div className={`borndays ${showConfirm ? "blur" : ""}`}>
             <h1>Borndays.</h1>
             {borndays && borndays.length>0 ? (
                 <div className="borndays-items">
                     {borndays.map((bornday)=>(
-                        <div className="borndays-item" key={bornday._id} onClick={(e)=>toBornday(e, bornday._id)}>
-                            <div className="borndays-item-details">
-                                <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="img" className="borndays-item-image"/>
-                                <div className="borndays-item-content">
-                                    <p>{bornday.name}</p>
-                                    <p>{formatDate(bornday.date)}</p>
-                                </div>
-                            </div>
-                            <div className="borndays-buttons">
-                                {openButtons[bornday._id] && (
-                                    <div className="borndays-icon-wrapper" onClick={(e)=>updateBornday(e, bornday._id)}>
-                                        <img src="/edit.png" alt="img" className="borndays-icon-edit"/>
-                                    </div>
-                                )}
-                                {openButtons[bornday._id] && (
-                                    <div className="borndays-icon-wrapper" onClick={(e)=>(e.stopPropagation(), setBorndayId(bornday._id), setShowConfirm(true))}>
-                                        <img src="/delete.png" alt="img" className="borndays-icon-delete"/>
-                                    </div>
-                                )}
-                                <div className="borndays-icon-wrapper">
-                                    <img src={openButtons[bornday._id] ? "/right.png" : "/left.png"} alt="img" className={openButtons[bornday._id] ? "borndays-icon-right" : "borndays-icon-left"} onClick={(e)=>toggleOpen(e, bornday._id)}/>
-                                </div>
-                            </div>
-                        </div>
+                        <BorndayItem 
+                            key={bornday._id}
+                            bornday={bornday}
+                            open={openButtons[bornday._id] || false}
+                            onView={toBornday}
+                            onEdit={updateBornday}
+                            onSetId={onSetBorndayId}
+                            onToggle={toggleOpen}
+                            onSetConfirm={onSetConfirm}
+                        />
                     ))}
                 </div>
             ):(
@@ -148,7 +146,7 @@ export function Borndays(){
                     <p>Are you sure to delete bornday of {borndays.find(bornday => bornday._id === borndayId)?.name}?</p>
                     <div className="borndays-confirm-buttons">
                         <button onClick={(e)=>deleteBornday(e, borndayId)} className="borndays-confirm-yes">Yes</button>
-                        <button onClick={()=>setShowConfirm(false)} className="borndays-confirm-no">No</button>
+                        <button onClick={(e)=>onSetConfirm(e, borndayId)} className="borndays-confirm-no">No</button>
                     </div>
                 </div>
             )}

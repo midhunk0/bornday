@@ -1,26 +1,4 @@
-.borndays{
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    position: relative;
-}
-
-.borndays h1{
-    font-family: "Oswald", serif;
-    text-transform: capitalize;
-    font-size: 50px;
-}
-
-.borndays-items{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 70%;
-    padding: 16px;
-    overflow: scroll;
-}
-
-.borndays-item{
+.borndayItem{
     display: flex;
     padding: 8px;
     justify-content: space-between;
@@ -33,41 +11,41 @@
     transition: background 0.3s ease-in-out;
 }
 
-.borndays-item:hover{
+.borndayItem:hover{
     background: black;
     color: white;
 }
 
-.borndays-item-details{
+.borndayItem-details{
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-.borndays-item-image{
+.borndayItem-details img{
     width: 36px;
     aspect-ratio: 1/1;
     border-radius: 50%;
     border: 1px solid #CA3F85;
 }
 
-.borndays-item-content{
+.borndayItem-content{
     display: flex;
     width: 100%;
     gap: 16px;
     font-size: 16px;
 }
 
-.borndays-item-content p{
+.borndayItem-content p{
     text-transform: capitalize;
 }
 
-.borndays-buttons{
+.borndayItem-buttons{
     display: flex;
     gap: 8px;
 }
 
-.borndays-icon-wrapper{
+.borndayItem-icon-wrapper{
     width: 36px;
     aspect-ratio: 1/1;
     background: #CA3F85;
@@ -79,89 +57,42 @@
     cursor: pointer;
 }
 
-.borndays-icon-edit, .borndays-icon-delete, .borndays-icon-left, .borndays-icon-right{
+.borndayItem-icon-edit, .borndayItem-icon-delete, .borndayItem-icon-left, .borndayItem-icon-right{
     width: 24px;
     height: 24px;
     filter: invert();
     transition: transform 0.6s ease-in-out;
 }
 
-.borndays-icon-edit{
+.borndayItem-icon-edit{
     transform-origin: bottom left;
 }
 
-.borndays-confirm-popup{
-    padding: 16px;
-    border-radius: 16px;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    gap: 10px;
-    width: 70%;
-    text-align: center;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-.borndays.blur>*:not(.borndays-confirm-popup) {
-    filter: blur(2px);
-    pointer-events: none;
-}
-
-
-.borndays-confirm-buttons{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.borndays-confirm-yes, .borndays-confirm-no{
-    padding: 8px 20px;
-    border: 1px solid #CA3f85;
-    outline: none;
-    background: white;
-    font-size: 16px;
-    border-radius: 24px;
-    cursor: pointer;
-}
-
-.borndays-confirm-yes{
-    color: red;
-}
-
-.borndays-confirm-yes:hover{
-    color: white;
-    background: red;
-}
-
-.borndays-confirm-no:hover{
-    color: white;
-    background: black;
-}
-
-.borndays-icon-wrapper:hover{
+.borndayItem-icon-wrapper:hover{
     background: white;
 }
 
-.borndays-icon-wrapper:hover .borndays-icon-edit{
+
+.borndayItem-icon-wrapper:hover .borndayItem-icon-edit{
     animation: writing 0.8s ease-in-out;
     filter: none;
 }
 
-.borndays-icon-wrapper:hover .borndays-icon-delete{
+.borndayItem-icon-wrapper:hover .borndayItem-icon-delete{
     animation: shakeAndFlip 0.6s ease-in-out;
     filter: none;
 }
 
-.borndays-icon-wrapper:hover .borndays-icon-left{
+.borndayItem-icon-wrapper:hover .borndayItem-icon-left{
     animation: slideLeft 0.6s ease-in-out;
     filter: none;
 }
 
-.borndays-icon-wrapper:hover .borndays-icon-right{
+.borndayItem-icon-wrapper:hover .borndayItem-icon-right{
     animation: slideRight 0.6s ease-in-out;
     filter: none;
 }
+
 
 @keyframes slideLeft{
     0%{
@@ -232,40 +163,5 @@
     }
     100% {
         transform: rotate(-45deg) translate(40px, 0);
-    }
-}
-
-@media(max-width: 1080px){
-    .borndays-items{
-        width: calc(100% - 32px);
-    }
-    
-    .borndays-confirm-popup{
-        width: calc(100% - 32px);
-    }
-}
-
-@media(max-width: 864px){
-    .borndays{
-        width: 100%;
-    }
-
-    .borndays-items{
-        padding: 0;
-        width: 100%;
-        margin-top: 16px;
-    }
-}
-
-@media(max-width: 720px){
-    .borndays{
-        margin-top: 24px;
-        width: 80%;
-    }
-}
-
-@media(max-width: 468px){
-    .borndays{
-        width: 100%;
     }
 }
