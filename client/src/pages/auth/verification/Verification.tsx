@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Verification.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthButton } from "../../../components/buttons/authButton/AuthButton";
 
 export function Verification(){
     const navigate=useNavigate();
@@ -82,12 +83,7 @@ export function Verification(){
                         <input type="text" name="otp" value={otp} required onChange={(e)=>setOtp(e.target.value)} placeholder=" "/>
                         <label>OTP</label>
                     </div>
-                    <button className="verification-button" type="submit">
-                        <span className="verification-icon-wrapper">
-                            <img src="arrow.png" alt="img" className="verification-icon"/>
-                        </span>
-                        Verify
-                    </button>
+                    <AuthButton text="Verify"/>
                 </form>
             </div>
         </div>

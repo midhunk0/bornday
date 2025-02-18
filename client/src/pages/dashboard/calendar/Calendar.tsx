@@ -3,6 +3,8 @@ import "./Calendar.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BorndayItem } from "../../../components/borndayItem/BorndayItem";
+import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
+import { CalendarComponent } from "../../../components/calendarComponent/CalendarComponent";
 
 interface Bornday {
     _id: string;
@@ -20,7 +22,7 @@ export function Calendar() {
 
     const [borndays, setBorndays] = useState<Bornday[]>([]);
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<string>("");
     const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
     const [borndayId, setBorndayId]=useState("");
     const [showConfirm, setShowConfirm]=useState(false);
@@ -135,42 +137,17 @@ export function Calendar() {
         <div className={`calendar ${showConfirm ? "blur" : ""}`}>
             <h1>Calendar</h1>
             <div className="calendar-details">
-                <div className="calendar-header">
-                    <div onClick={()=>changeMonth(-1)} className="calendar-header-icon-wrapper">
-                        <img src="/left.png" alt="img" className="calendar-left-icon"/>
-                    </div>
-                    <h2>{currentDate.toLocaleString("default", { month: "long" })} {year}</h2>
-                    <div onClick={()=>changeMonth(1)} className="calendar-header-icon-wrapper">
-                        <img src="/right.png" alt="img" className="calendar-right-icon"/>
-                    </div>
-                </div>
-
-                <hr/>
-                
-                <div className="calendar-grid">
-                    {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day=>(
-                        <div key={day} className="calendar-day-header">{day}</div>
-                    ))}
-
-                    {Array.from({ length: firstDay }).map((_, idx)=>(
-                        <div key={"empty-" + idx} className="calendar-empty"></div>
-                    ))}
-
-                    {Array.from({ length: totalDays }, (_, day)=>{
-                        const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day + 1).padStart(2, "0")}`;
-                        const borndaysOnDate = getBorndaysForDate(date);
-
-                        return (
-                            <div
-                                key={date}
-                                className={`calendar-day ${borndaysOnDate.length > 0 ? "has-bornday" : ""} ${selectedDate === date ? "selected" : ""}`}
-                                onClick={() => setSelectedDate(date)}
-                            >
-                                {day + 1}
-                            </div>
-                        );
-                    })}
-                </div>
+                <CalendarComponent
+                    year={year}
+                    firstDay={firstDay}
+                    totalDays={totalDays}
+                    month={month}
+                    currentDate={currentDate}
+                    selectedDate={selectedDate}
+                    onChangeMonth={changeMonth}
+                    onSetSelectedDate={setSelectedDate}
+                    getBorndaysForDate={getBorndaysForDate}
+                />
 
                 {selectedDate && (
                     <div className="calendar-bornday-details">
@@ -201,13 +178,11 @@ export function Calendar() {
                 )}
             </div>
             {showConfirm && (
-                <div className="calendar-confirm-popup">
-                    <p>Are you sure to delete bornday of {borndays.find(bornday => bornday._id === borndayId)?.name}?</p>
-                    <div className="calendar-confirm-buttons">
-                        <button onClick={(e)=>deleteBornday(e, borndayId)} className="calendar-confirm-yes">Yes</button>
-                        <button onClick={()=>setShowConfirm(false)} className="calendar-confirm-no">No</button>
-                    </div>
-                </div>
+                <ConfirmPopup
+                    text={`Are you sure to delete bornday of ${borndays.find(bornday=>bornday._id===borndayId)?.name}`}
+                    onYes={(e)=>deleteBornday(e, borndayId)}
+                    onNo={()=>setShowConfirm(false)}
+                />
             )}
         </div>
     );

@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./Account.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
+import { Button } from "../../../components/buttons/button/Button";
+
+interface UserData{
+    _id: string;
+    username: string;
+    email: string;
+}
 
 export function Account(){
     const navigate=useNavigate();
@@ -10,7 +18,7 @@ export function Account(){
         ? import.meta.env.VITE_APP_DEV_URL 
         : import.meta.env.VITE_APP_PROD_URL;
 
-    const [userData, setUserData]=useState({
+    const [userData, setUserData]=useState<UserData>({
         _id: "",
         username: "",
         email: ""
@@ -55,8 +63,7 @@ export function Account(){
         }))
     }
 
-    async function handleUpdate(e: React.FormEvent){
-        e.preventDefault();
+    async function handleUpdate(){
         try{
             const response=await fetch(`${apiUrl}/updateUser`, {
                 method: "PUT",
@@ -86,8 +93,7 @@ export function Account(){
         }
     };
 
-    async function handleLogout(e: React.FormEvent){
-        e.preventDefault();
+    async function handleLogout(){
         try{
             const response=await fetch(`${apiUrl}/logoutUser`, {
                 method: "POST",
@@ -113,9 +119,8 @@ export function Account(){
         }
     };
 
-    async function deleteAccount(e: React.FormEvent){
+    async function deleteAccount(){
         try{
-            e.preventDefault();
             const response=await fetch(`${apiUrl}/deleteUser`, { 
                 method: "delete",
                 headers: { "Content-Type": "application/json" },
@@ -143,7 +148,7 @@ export function Account(){
     return(
         <div className={`account ${showConfirm ? "blur" : ""}`}>
             <h1>Account</h1>
-            <form className="account-form">
+            <form className="account-form" onSubmit={handleUpdate}>
                 <div className="input-container">
                     <input disabled={!enableEdit} type="text" name="username" value={userData.username} required onChange={handleInputChange} placeholder=" "/>
                     <label>Username</label>
@@ -153,41 +158,44 @@ export function Account(){
                     <label>Email</label>
                 </div>
                 {enableEdit ? 
-                    <button type="button" className="account-button" onClick={handleUpdate}>
-                        Update User
-                        <div className="account-icon-wrapper">
-                            <img src="/update.png" alt="img" className="account-icon-update"/>
-                        </div>
-                    </button>
+                    <Button
+                        type="button"
+                        text="Update User"
+                        functionName={handleUpdate} 
+                        imageUrl="/update.png"
+                        imageClassName="update-icon"
+                    />
                 : 
-                    <button type="button" className="account-button" onClick={()=>setEnableEdit(!enableEdit)}>
-                        Edit User
-                        <div className="account-icon-wrapper">
-                            <img src="/edit.png" alt="img" className="account-icon-edit"/>
-                        </div>
-                    </button>
+                    <Button 
+                        type="button"
+                        text="Edit User"
+                        functionName={()=>setEnableEdit(!enableEdit)} 
+                        imageUrl="/edit.png"
+                        imageClassName="edit-icon"
+                    />
                 }
-                <button type="button" onClick={handleLogout} className="account-button">
-                    Logout
-                    <div className="account-icon-wrapper">
-                        <img src="/logout.png" alt="img" className="account-icon-logout"/>
-                    </div>
-                </button>
-                <button type="button" onClick={()=>setShowConfirm(true)} className="account-button delete">
-                    Delete Account
-                    <div className="account-icon-wrapper delete">
-                        <img src="/delete.png" alt="img" className="account-icon-delete"/>
-                    </div>
-                </button>
+                <Button 
+                    type="button"
+                    text="Logout"
+                    functionName={handleLogout}
+                    imageUrl="/logout.png"
+                    imageClassName="logout-icon"
+                />
+                <Button 
+                    type="button"
+                    className="delete"
+                    text="Delete Account"
+                    functionName={()=>setShowConfirm(true)}
+                    imageUrl="/delete.png"
+                    imageClassName="delete-icon"
+                />
             </form>
             {showConfirm && (
-                <div className="account-confirm-popup">
-                    <p>Are you sure to delete account?</p>
-                    <div className="account-confirm-buttons">
-                        <button onClick={deleteAccount} className="account-confirm-yes">Yes</button>
-                        <button onClick={()=>setShowConfirm(false)} className="account-confirm-no">No</button>
-                    </div>
-                </div>
+                <ConfirmPopup
+                    text="Are you sure to delete account?"
+                    onYes={deleteAccount}
+                    onNo={()=>setShowConfirm(false)}
+                />
             )}
         </div>
     )

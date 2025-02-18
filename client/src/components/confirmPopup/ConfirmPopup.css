@@ -1,0 +1,49 @@
+.confirmPopup{
+    padding: 16px;
+    border-radius: 16px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    gap: 10px;
+    width: 70%;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.confirmPopup-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.confirmPopup-yes, .confirmPopup-no{
+    padding: 8px 20px;
+    border: 1px solid #CA3f85;
+    outline: none;
+    background: white;
+    font-size: 16px;
+    border-radius: 24px;
+    cursor: pointer;
+}
+
+.confirmPopup-yes{
+    color: red;
+
+}
+
+.confirmPopup-yes:hover{
+    color: white;
+    background: red;
+}
+
+.confirmPopup-no:hover{
+    color: white;
+    background: black;
+}
+
+@media(max-width: 1080px){
+    .confirmPopup{
+        width: calc(100% - 32px);
+    }
+}

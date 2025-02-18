@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthButton } from "../../../components/buttons/authButton/AuthButton";
 
 interface RegisterData{
     username: string,
@@ -83,12 +84,7 @@ export function Register(){
                             <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
                         </div>
                     </div>
-                    <button className="register-button" type="submit">
-                        <div className="register-icon-wrapper">
-                            <img src="/arrow.png" alt="icon" className="register-icon" />
-                        </div>
-                        Register
-                    </button>
+                    <AuthButton text="Register"/>
                 </form>
                 <p className="register-footer">
                     Already have an account? <a href="/login">Login</a>

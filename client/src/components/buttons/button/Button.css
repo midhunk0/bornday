@@ -1,26 +1,4 @@
-.account{
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    position: relative;
-}
-
-.account h1{
-    font-family: "Oswald", serif;
-    text-transform: capitalize;
-    font-size: 50px;
-}
-
-.account-form{
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    justify-content: center;
-    padding: 16px;
-    gap: 16px;
-}
-
-.account-button{
+.button{
     padding: 16px;
     font-size: 16px;
     border: 1px solid #CA3f85;
@@ -34,7 +12,7 @@
     transition: background 0.3s ease-in-out;
 }
 
-.account-icon-wrapper{
+.button-icon-wrapper{
     position: absolute;
     right: 8px;
     width: 36px;
@@ -47,52 +25,47 @@
     border: 1px solid #CA3f85;
 }
 
-.account-icon-update, .account-icon-edit, .account-icon-logout, .account-icon-delete{
+.button-icon-wrapper img{
     width: 24px;
     height: 24px;
     filter: invert();
-    transition: transform 0.6s ease-in-out;
 }
 
-.account-button:hover{
+.button:hover{
     background: black;
     color: white;
 }
 
-.account-button.delete{
+.button.delete{
     background: white;
     color: red;
 }
 
-.account-button.delete:hover{
-    background: black;
-    color: white;
-}
-
-.account-button:hover .account-icon-wrapper{
+.button:hover .button-icon-wrapper{
     background: white;
 }
 
-.account-button:hover .account-icon-edit{
+.button:hover .edit-icon{
     animation: writing 0.8s ease-in-out;
     filter: none;
 }
 
-.account-button:hover .account-icon-update{
+.button:hover .update-icon{
     animation: rotate 0.6s ease-in-out;
     filter: none;
 }
 
-.account-button:hover .account-icon-logout{
+.button:hover .logout-icon{
     transform: translateX(10px) scale(1.1);
     animation: pulse 1.5s infinite ease-in-out;
     filter: none;
 }
 
-.account-button:hover .account-icon-delete{
+.button:hover .delete-icon{
     animation:  shake 0.6s ease-in-out;
     filter: none;
 }
+
 
 @keyframes writing{
     0% {
@@ -148,40 +121,5 @@
     }
     100%{ 
         transform: rotate(0deg) translateY(0); 
-    }
-}
-
-
-@media(max-width: 1080px){
-    .account-form, .account-buttons{
-        width: calc(100% - 32px);
-    }
-}
-
-@media(max-width: 864px){
-    .account{
-        width: 100%;
-    }
-
-    .account-form, .account-buttons{
-        padding: 0;
-        width: 100%;
-    }
-
-    .account-form{
-        margin-top: 16px;
-    }
-}
-
-@media(max-width: 720px){
-    .account{
-        margin-top: 24px;
-        width: 80%;
-    }
-}
-
-@media(max-width: 468px){
-    .account{
-        width: 100%;
     }
 }

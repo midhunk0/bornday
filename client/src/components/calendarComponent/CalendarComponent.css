@@ -1,0 +1,131 @@
+.calendarComponent-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.calendarComponent-header-icon-wrapper{
+    background-color: #ca3f85;
+    border: 1px solid #CA3f85;
+    color: white;
+    display: grid;
+    place-content: center;
+    border-radius: 50px;
+    cursor: pointer;
+    padding: 4px;
+    overflow: hidden;
+    transition: background 0.3s ease;
+}
+
+.calendarComponent-left-icon, .calendarComponent-right-icon{
+    width: 24px;
+    height: 24px;
+    filter: invert();
+    transition: transform 0.6s ease-in-out;
+}
+
+.calendarComponent-header-icon-wrapper:hover{
+    background: white;
+}
+
+.calendarComponent-header-icon-wrapper:hover .calendarComponent-left-icon{
+    animation: slideLeft 0.6s ease-in-out;
+    filter: none;
+}
+
+.calendarComponent-header-icon-wrapper:hover .calendarComponent-right-icon{
+    animation: slideRight 0.6s ease-in-out;
+    filter: none;
+}
+
+@keyframes slideLeft{
+    0%{
+        transform: translateX(0);
+    }
+    50%{
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    51%{
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100%{
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideRight{
+    0%{
+        transform: translateX(0);
+    }
+    50%{
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    51%{
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100%{
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+hr{
+    border: none;
+    height: 1px;
+    background: #CA3f85;
+}
+
+.calendarComponent-grid {
+    display: grid;
+    flex-wrap: nowrap;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    width: 100%;
+    text-align: center;
+    overflow: scroll;
+    padding-bottom: 1px;
+}
+
+.calendarComponent-day-header{
+    font-weight: bold;
+    padding: 8px 0;
+}
+
+.calendarComponent-day, .calendarComponent-empty {
+    aspect-ratio: 1 / 1;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    position: relative;
+    display: grid;
+    place-content: center;
+    padding: 16px;
+}
+
+.calendarComponent-empty{
+    background: #ddd;
+    cursor: auto;
+}
+
+.calendarComponent-day:hover {
+    background-color: #fce4ef;
+}
+
+
+.calendarComponent-day.has-bornday {
+    background: #ca3f85;
+    color: white;
+}
+
+.calendarComponent-day.selected {
+    background-color: black;
+    color: white;
+}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthButton } from "../../../components/buttons/authButton/AuthButton";
 
 interface LoginData{
     credential: string,
@@ -113,12 +114,7 @@ export function Login(){
                             </div>
                         </div>
                         <a onClick={()=>setForgotPassword(true)} className="login-forgot-password">Forgot password.</a>
-                        <button type="submit" className="login-button">
-                            <span className="login-icon-wrapper">
-                                <img src="arrow.png" alt="icon" className="login-icon"/>
-                            </span>
-                            Login
-                        </button>
+                        <AuthButton text="Login"/>
                     </form>
                 ):(
                     <form onSubmit={verifyOTP}>

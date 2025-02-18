@@ -3,6 +3,7 @@ import "./Borndays.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BorndayItem } from "../../../components/borndayItem/BorndayItem";
+import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 
 interface Bornday {
     _id: string;
@@ -53,15 +54,6 @@ export function Borndays(){
 
         fetchBorndays();
     }, [apiUrl]);
-
-    // function formatDate(dateString: string){
-    //     const date=new Date(dateString);
-    //     return date.toLocaleDateString("en-US", {
-    //         year: "numeric",
-    //         month: "long",
-    //         day: "numeric"
-    //     });
-    // };
 
     function toggleOpen(e: React.MouseEvent, id: string){
         e.stopPropagation();
@@ -116,7 +108,7 @@ export function Borndays(){
 
     function onSetConfirm(e: React.MouseEvent, borndayId: string){
         e.stopPropagation();
-        setShowConfirm(true);
+        setShowConfirm(!showConfirm);
         setBorndayId(borndayId);
     }
 
@@ -142,13 +134,11 @@ export function Borndays(){
                 <p>No borndays available</p>
             )}
             {showConfirm && (
-                <div className="borndays-confirm-popup">
-                    <p>Are you sure to delete bornday of {borndays.find(bornday => bornday._id === borndayId)?.name}?</p>
-                    <div className="borndays-confirm-buttons">
-                        <button onClick={(e)=>deleteBornday(e, borndayId)} className="borndays-confirm-yes">Yes</button>
-                        <button onClick={(e)=>onSetConfirm(e, borndayId)} className="borndays-confirm-no">No</button>
-                    </div>
-                </div>
+                <ConfirmPopup
+                    text={`Are you sure to delete ${borndays.find(bornday=>bornday._id===borndayId)?.name}`}
+                    onYes={(e)=>deleteBornday(e, borndayId)}
+                    onNo={()=>setShowConfirm(false)}
+                />
             )}
         </div>
     );
