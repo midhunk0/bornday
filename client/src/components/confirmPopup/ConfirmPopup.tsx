@@ -1,5 +1,6 @@
 import React from "react";
 import "./ConfirmPopup.css";
+import { Button } from "../buttons/button/Button";
 
 interface ConfirmPopupProps{
     text: string;
@@ -12,8 +13,8 @@ export function ConfirmPopup({text, onYes, onNo}: ConfirmPopupProps){
         <div className="confirmPopup">
             <p>{text}</p>
             <div className="confirmPopup-buttons">
-                <button onClick={onYes} className="confirmPopup-yes">Yes</button>
-                <button onClick={onNo} className="confirmPopup-no">No</button>
+                <Button type="button"className="delete"functionName={onYes} text="Yes"imageUrl="/yes.png"imageClassName="yes-icon"/>
+                <Button type="button"functionName={onNo}text="No"imageUrl="/no.png"imageClassName="no-icon"/>
             </div>
         </div>
     )

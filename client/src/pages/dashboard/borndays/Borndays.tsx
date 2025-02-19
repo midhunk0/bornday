@@ -136,8 +136,7 @@ export function Borndays(){
             {showConfirm && (
                 <ConfirmPopup
                     text={`Are you sure to delete ${borndays.find(bornday=>bornday._id===borndayId)?.name}`}
-                    onYes={(e)=>deleteBornday(e, borndayId)}
-                    onNo={()=>setShowConfirm(false)}
+                    onYes={(e)=>deleteBornday(e, borndayId)} onNo={()=>setShowConfirm(false)}
                 />
             )}
         </div>

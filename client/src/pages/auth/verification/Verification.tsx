@@ -3,6 +3,7 @@ import "./Verification.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthButton } from "../../../components/buttons/authButton/AuthButton";
+import { Input } from "../../../components/input/Input";
 
 export function Verification(){
     const navigate=useNavigate();
@@ -75,14 +76,8 @@ export function Verification(){
             <div className="verification-contents">
                 <h1>Enter OTP</h1>
                 <form onSubmit={verifyOTP}>
-                    <div className="input-container">
-                        <input type="email" name="email" value={email} required onChange={(e)=>setEmail(e.target.value)} placeholder=" "/>
-                        <label>Email</label>
-                    </div>
-                    <div className="input-container">
-                        <input type="text" name="otp" value={otp} required onChange={(e)=>setOtp(e.target.value)} placeholder=" "/>
-                        <label>OTP</label>
-                    </div>
+                    <Input type="email" name="email" value={email} inputFunction={(e)=>setEmail(e.target.value)} text="Email"/>
+                    <Input type="text" name="otp" value={otp} inputFunction={(e)=>setOtp(e.target.value)} text="OTP"/>
                     <AuthButton text="Verify"/>
                 </form>
             </div>

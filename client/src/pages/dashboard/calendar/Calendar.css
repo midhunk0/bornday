@@ -36,6 +36,10 @@
     align-items: center;
 }
 
+.calendar-bornday-header h3{
+    width: 100%;
+}
+
 .calendar-bornday-items{
     display: flex;
     flex-direction: column;
@@ -49,76 +53,13 @@
     margin-top: 16px;
 }
 
-.calendar-bornday-add{
-    padding: 16px;
-    font-size: 16px;
-    border: 1px solid #CA3f85;
-    cursor: pointer;
-    background: white;
-    border-radius: 50px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 50%;
-    transition: background 0.3s ease-in-out;
-}
-
 .calendar.blur>*:not(.confirmPopup) {
     filter: blur(2px);
     pointer-events: none;
 }
 
-.calendar-bornday-button-icon-wrapper{
-    position: absolute;
-    right: 8px;
-    width: 36px;
-    height: 36px;
-    background: #CA3f85;
-    border-radius: 50%;
-    display: grid;
-    place-content: center;
-    outline: none;
-    border: 1px solid #CA3F85;
-    overflow: hidden;
-}
-
-.calendar-bornday-add-icon{
-    width: 24px;
-    height: 24px;
-    transition: transform 0.6s ease-in-out;
-    filter: invert(1);
-}
-
-.calendar-bornday-add:hover{
-    background: #000;
-    color: #fff;
-}
-
-.calendar-bornday-add:hover .calendar-bornday-button-icon-wrapper{
-    background: #fff;
-}
-
-.calendar-bornday-add:hover .calendar-bornday-add-icon{
-    animation: rotateIcon 0.6s ease-in-out;
-    filter: none;
-}
-
-@keyframes rotateIcon {
-    from{
-        transform: rotate(0deg);
-    }
-    to{
-        transform: rotate(90deg);
-    }
-}
-
 @media(max-width: 1080px){
     .calendar-details{
-        width: calc(100% - 32px);
-    }
-    
-    .calendar-confirm-popup{
         width: calc(100% - 32px);
     }
 }

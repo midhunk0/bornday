@@ -45,37 +45,6 @@
     width: 80%;
 }
 
-.register-password-container{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: relative;
-}
-
-.register-image-container{
-    position: absolute;
-    display: grid;
-    background: #CA3F85;
-    border: 1px solid #CA3F85;
-    border-radius: 50%;
-    cursor: pointer;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    right: 8px;
-    transition: background 0.3s ease-in-out;
-}
-
-.register-image-container:hover{
-    background: black;
-}
-
-.register-image-container img{
-    width: 24px;
-    height: 24px;
-    filter: invert(1);
-}
-
 .register-footer{
     margin-top: 12px;
     text-align: center;

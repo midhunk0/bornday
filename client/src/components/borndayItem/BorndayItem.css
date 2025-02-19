@@ -4,8 +4,6 @@
     justify-content: space-between;
     border: 1px solid #CA3F85;
     border-radius: 50px;
-    gap: 16px;
-    align-items: center;
     cursor: pointer;
     background: white;
     transition: background 0.3s ease-in-out;
@@ -31,9 +29,7 @@
 
 .borndayItem-content{
     display: flex;
-    width: 100%;
     gap: 16px;
-    font-size: 16px;
 }
 
 .borndayItem-content p{
@@ -91,77 +87,4 @@
 .borndayItem-icon-wrapper:hover .borndayItem-icon-right{
     animation: slideRight 0.6s ease-in-out;
     filter: none;
-}
-
-
-@keyframes slideLeft{
-    0%{
-        transform: translateX(0);
-    }
-    50%{
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    51%{
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    100%{
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideRight{
-    0%{
-        transform: translateX(0);
-    }
-    50%{
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    51%{
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    100%{
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes shakeAndFlip{
-    0%{ 
-        transform: rotate(0deg) translateY(0); 
-    }
-    25%{ 
-        transform: rotate(-10deg) translateY(-4px); 
-    }
-    50%{ 
-        transform: rotate(10deg) translateY(-6px); 
-    }
-    75%{ 
-        transform: rotate(-5deg) translateY(-3px); 
-    }
-    100%{ 
-        transform: rotate(0deg) translateY(0); 
-    }
-}
-
-@keyframes writing{
-    0% {
-        transform: rotate(0deg) translate(0, 0);
-    }
-    25% {
-        transform: rotate(-15deg) translate(10px, 5px);
-    }
-    50% {
-        transform: rotate(-25deg) translate(20px, 10px);
-    }
-    75% {
-        transform: rotate(-35deg) translate(30px, 15px);
-    }
-    100% {
-        transform: rotate(-45deg) translate(40px, 0);
-    }
 }

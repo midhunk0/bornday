@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./Update.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button } from "../../../components/buttons/button/Button";
+import { Input } from "../../../components/input/Input";
 
 interface BorndayData{
     name: string;
@@ -84,20 +86,9 @@ export function Update(){
         <div className="update">
             <h1>Update Bornday</h1>
             <form onSubmit={updateBornday} className="update-form">
-                <div className="input-container">
-                    <input type="text" name="name" value={updateData.name} required onChange={(e)=>setUpdateData({ ...updateData, name: e.target.value })} placeholder=" "/>
-                    <label>Name</label>
-                </div>
-                <div className="input-container">
-                    <input type="date" name="date" value={updateData.date} required onChange={(e)=>setUpdateData({ ...updateData, date: e.target.value })} placeholder=" "/>
-                    <label>DOB</label>
-                </div>
-                <button type="submit" className="update-button">
-                    Update
-                    <div className="update-button-icon-wrapper">
-                        <img src="/update.png" alt="img" className="update-button-icon"/>
-                    </div>
-                </button>
+                <Input type="text" name="name" value={updateData.name} inputFunction={(e)=>setUpdateData({...updateData, name: e.target.value})} text="Name"/>
+                <Input type="date" name="date" value={updateData.date} inputFunction={(e)=>setUpdateData({...updateData, date: e.target.value})} text="DOB"/>
+                <Button type="submit" text="Update" imageUrl="/update.png" imageClassName="update-icon"/>
             </form>
         </div>
     )

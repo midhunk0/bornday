@@ -1,7 +1,6 @@
 .dashboard{
     display: flex;
     height: 100vh;
-
 }
 
 .sidebar{
@@ -15,7 +14,6 @@
     padding: 16px;
     background: #fce4ef;
     justify-content: center;
-    position: relative;
     margin-left: 340px;   
 }
 

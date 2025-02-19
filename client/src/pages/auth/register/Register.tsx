@@ -3,6 +3,8 @@ import "./Register.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthButton } from "../../../components/buttons/authButton/AuthButton";
+import { Input } from "../../../components/input/Input";
+import { Password } from "../../../components/password/Password";
 
 interface RegisterData{
     username: string,
@@ -22,7 +24,6 @@ export function Register(){
         email: "",
         password: ""
     });
-    const [visible, setVisible]=useState<boolean>(false);
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
         const { name, value }=e.target;
@@ -67,23 +68,9 @@ export function Register(){
             <div className="register-contents">
                 <h1>Welcome To Bornday.</h1>
                 <form onSubmit={registerUser}>
-                    <div className="input-container">
-                        <input type="text" name="username" value={registerData.username} required onChange={handleInputChange} placeholder=" "/>
-                        <label>Username</label>
-                    </div>
-                    <div className="input-container">
-                        <input type="email" name="email" value={registerData.email} required onChange={handleInputChange} placeholder=" "/>
-                        <label>Email</label>
-                    </div>
-                    <div className="register-password-container">
-                        <div className="input-container">
-                            <input type={visible ? "text" : "password"} name="password" value={registerData.password} required onChange={handleInputChange} placeholder=" "/>
-                            <label>Password</label>
-                        </div>
-                        <div className={`register-image-container ${visible ? "visible" : ""}`} onClick={()=>setVisible(!visible)}>
-                            <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
-                        </div>
-                    </div>
+                    <Input type="text" name="username" value={registerData.username} inputFunction={handleInputChange}text="Username"/>
+                    <Input type="email" name="email" value={registerData.email} inputFunction={handleInputChange}text="Email"/>
+                    <Password name="password"    value={registerData.password} inputFunction={handleInputChange}/>
                     <AuthButton text="Register"/>
                 </form>
                 <p className="register-footer">

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 import { Button } from "../../../components/buttons/button/Button";
+import { Input } from "../../../components/input/Input";
 
 interface UserData{
     _id: string;
@@ -149,52 +150,20 @@ export function Account(){
         <div className={`account ${showConfirm ? "blur" : ""}`}>
             <h1>Account</h1>
             <form className="account-form" onSubmit={handleUpdate}>
-                <div className="input-container">
-                    <input disabled={!enableEdit} type="text" name="username" value={userData.username} required onChange={handleInputChange} placeholder=" "/>
-                    <label>Username</label>
-                </div>
-                <div className="input-container">
-                    <input disabled={!enableEdit} type="email" name="email" value={userData.email} required onChange={handleInputChange} placeholder=" "/>
-                    <label>Email</label>
-                </div>
+                <Input disable={!enableEdit} type="text" name="username" value={userData.username} inputFunction={handleInputChange} text="Username"/>
+                <Input disable={!enableEdit} type="email" name="email" value={userData.email} inputFunction={handleInputChange} text="Email"/>
                 {enableEdit ? 
-                    <Button
-                        type="button"
-                        text="Update User"
-                        functionName={handleUpdate} 
-                        imageUrl="/update.png"
-                        imageClassName="update-icon"
-                    />
+                    <Button type="button" text="Update User" functionName={handleUpdate}  imageUrl="/update.png" imageClassName="update-icon"/>
                 : 
-                    <Button 
-                        type="button"
-                        text="Edit User"
-                        functionName={()=>setEnableEdit(!enableEdit)} 
-                        imageUrl="/edit.png"
-                        imageClassName="edit-icon"
-                    />
+                    <Button type="button"text="Edit User"functionName={()=>setEnableEdit(!enableEdit)} imageUrl="/edit.png"imageClassName="edit-icon"/>
                 }
-                <Button 
-                    type="button"
-                    text="Logout"
-                    functionName={handleLogout}
-                    imageUrl="/logout.png"
-                    imageClassName="logout-icon"
-                />
-                <Button 
-                    type="button"
-                    className="delete"
-                    text="Delete Account"
-                    functionName={()=>setShowConfirm(true)}
-                    imageUrl="/delete.png"
-                    imageClassName="delete-icon"
-                />
+                <Button type="button"text="Logout"functionName={handleLogout}imageUrl="/logout.png"imageClassName="logout-icon"/>
+                <Button type="button"className="delete"text="Delete Account"functionName={()=>setShowConfirm(true)}imageUrl="/delete.png"imageClassName="delete-icon"/>
             </form>
             {showConfirm && (
                 <ConfirmPopup
                     text="Are you sure to delete account?"
-                    onYes={deleteAccount}
-                    onNo={()=>setShowConfirm(false)}
+                    onYes={deleteAccount} onNo={()=>setShowConfirm(false)}
                 />
             )}
         </div>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Add.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button } from "../../../components/buttons/button/Button";
+import { Input } from "../../../components/input/Input";
 
 interface BorndayData{
     name: string,
@@ -62,20 +64,9 @@ export function Add(){
         <div className="add">
             <h1>Add Bornday</h1>
             <form onSubmit={addBornday} className="add-form">
-                <div className="input-container">
-                    <input type="text" name="name" value={borndayData.name} required onChange={handleInputChange} placeholder=" "/>
-                    <label>Name</label>
-                </div>
-                <div className="input-container">
-                    <input type="date" name="date" value={borndayData.date} required onChange={handleInputChange} placeholder=" "/>
-                    <label>DOB</label>
-                </div>
-                <button type="submit" className="add-button">
-                    Add
-                    <span className="add-button-icon-wrapper">
-                        <img src="/add.png" alt="img" className="add-button-icon"/>
-                    </span>
-                </button>
+                <Input type="text" name="name" value={borndayData.name} inputFunction={handleInputChange} text="Name"/>
+                <Input type="date" name="date" value={borndayData.date} inputFunction={handleInputChange} text="DOB"/>
+                <Button type="submit"text="Add"imageUrl="/add.png"imageClassName="add-icon"/>
             </form>
         </div>
     );

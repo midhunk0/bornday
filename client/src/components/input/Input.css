@@ -1,0 +1,43 @@
+.input-container{
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+
+.input-container input{
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border: 1px solid #aaa;
+    border-radius: 30px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.input-container label{
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: gray;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.input-container input:focus,
+.input-container input:not(:placeholder-shown){
+    border-color: #CA3F85;
+}
+
+.input-container input:focus+label,
+.input-container input:not(:placeholder-shown)+label{
+    top: 0;
+    left: 12px;
+    font-size: 12px;
+    color: white;
+    background: #CA3F85;
+    padding: 2px 12px;
+    border: 1px solid #CA3f85;
+    border-radius: 12px;
+}

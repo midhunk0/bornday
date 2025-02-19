@@ -70,26 +70,10 @@ export function Sidebar(){
                     <img src="/cake.png" alt="Toggle" onClick={toggle}/>
                 </div>
                 <div className="sidebar-menus">
-                    <SidebarMenu text="Add Bornday" dest="/dashboard/add" imageUrl="/add.png" imageClassName="sidebar-icon-add"/>
-                    <SidebarMenu 
-                        dest="/dashboard/calendar" 
-                        imageUrl="/month.png" 
-                        imageClassName="sidebar-icon-month" 
-                        text="Calendar View"
-                    />
-                    <SidebarMenu 
-                        dest="/dashboard/borndays" 
-                        imageUrl="/bornday.png" 
-                        imageClassName="sidebar-icon-bornday" 
-                        text="All Borndays"
-                    />
-                    <SidebarMenu
-                        className="footer"
-                        dest="/dashboard/account"
-                        imageUrl="/option.png"
-                        imageClassName="sidebar-icon-option"
-                        text="Account"
-                    />
+                    <SidebarMenu dest="/dashboard/add" imageUrl="/add.png" imageClassName="sidebar-icon-add" text="Add Bornday" />
+                    <SidebarMenu dest="/dashboard/calendar" imageUrl="/month.png" imageClassName="sidebar-icon-month" text="Calendar View"/>
+                    <SidebarMenu dest="/dashboard/borndays" imageUrl="/bornday.png" imageClassName="sidebar-icon-bornday" text="All Borndays"/>
+                    <SidebarMenu className="footer" dest="/dashboard/account" imageUrl="/option.png" imageClassName="sidebar-icon-option" text="Account"/>
                 </div>
             </div>
         </>

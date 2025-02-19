@@ -1,5 +1,5 @@
 .authButton{
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid #CA3F85;
@@ -16,7 +16,7 @@
     position: absolute;
     left: 8px;
     width: 36px;
-    height: 36px;
+    aspect-ratio: 1/1;
     background: #CA3F85;
     border: 1px solid #CA3F85;
     border-radius: 50%;
@@ -27,7 +27,7 @@
 
 .authButton-icon-wrapper img{
     width: 24px;
-    height: 24px;
+    aspect-ratio: 1/1;
     transition: transform 0.6s ease-in-out;
     filter: invert();
 }
@@ -43,23 +43,5 @@
 
 .authButton:hover .authButton-icon-wrapper img{
     filter: none;
-    animation: slideIcon 0.6s ease-in-out;
-}
-
-@keyframes slideIcon{
-    0%{
-        transform: translateX(0);
-    }
-    50%{
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    51%{
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    100%{
-        transform: translateX(0);
-        opacity: 1;
-    }
+    animation: slideRight 0.6s ease-in-out;
 }

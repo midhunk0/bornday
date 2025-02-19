@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import "./Bornday.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button } from "../../../components/buttons/button/Button";
+import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 
 interface Bornday{
     name: string;
@@ -97,27 +99,14 @@ export function Bornday(){
                         <h4>{bornday.date}</h4>
                     </div>
                 </div>
-                <button type="button" className="bornday-button" onClick={()=>updateBornday(borndayId!)}>
-                    Edit 
-                    <div className="bornday-icon-wrapper">
-                        <img src="/edit.png" alt="img" className="bornday-icon-edit"/>
-                    </div>
-                </button>
-                <button type="button" className="bornday-button delete" onClick={()=>setShowConfirm(true)}>
-                    Delete 
-                    <div className="bornday-icon-wrapper">
-                        <img src="/delete.png" alt="img" className="bornday-icon-delete"/>
-                    </div>
-                </button>
+                <Button type="button" text="Edit" functionName={()=>updateBornday(borndayId!)} imageUrl="/edit.png" imageClassName="edit-icon"/>
+                <Button className="delete" type="button" text="Delete" functionName={()=>setShowConfirm(true)} imageUrl="/delete.png" imageClassName="delete-icon"/>
             </div>
             {showConfirm && (
-                <div className="bornday-confirm-popup">
-                    <p>Are you sure to delete bornday of {bornday.name}?</p>
-                    <div className="bornday-confirm-buttons">
-                        <button onClick={deleteBornday} className="bornday-confirm-yes">Yes</button>
-                        <button onClick={()=>setShowConfirm(false)} className="bornday-confirm-no">No</button>
-                    </div>
-                </div>
+                <ConfirmPopup
+                    text={`Are you sure to delete bornday of ${bornday.name}?`}
+                    onYes={deleteBornday} onNo={()=>setShowConfirm(false)}
+                />
             )}
         </div>
     )

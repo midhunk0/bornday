@@ -3,6 +3,8 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthButton } from "../../../components/buttons/authButton/AuthButton";
+import { Input } from "../../../components/input/Input";
+import { Password } from "../../../components/password/Password";
 
 interface LoginData{
     credential: string,
@@ -20,7 +22,7 @@ export function Login(){
         credential: "",
         password: ""
     });
-    const [visible, setVisible]=useState<boolean>(false);
+    // const [visible, setVisible]=useState<boolean>(false);
     const [verified, setVerified]=useState<boolean>(true);
     const [email, setEmail]=useState("");
     const [forgotPassword, setForgotPassword]=useState<boolean>(false);
@@ -100,34 +102,15 @@ export function Login(){
                 <h1>Welcome Back.</h1>
                 {verified && !forgotPassword ? (
                     <form onSubmit={loginUser}>
-                        <div className="input-container">
-                            <input type="text" name="credential" value={loginData.credential} required onChange={handleInputChange} placeholder=" "/>
-                            <label>Username/Email</label>
-                        </div>
-                        <div className="login-password-container">
-                            <div className="input-container">
-                                <input type={visible ? "text" : "password"} name="password" value={loginData.password} required onChange={handleInputChange} placeholder=" "/>
-                                <label>Password</label>
-                            </div>
-                            <div className={`login-image-container ${visible ? "visible" : ""}`} onClick={()=>setVisible(!visible)}>
-                                <img src={visible ? "visible.png" : "visible_off.png"} alt="img"/>
-                            </div>
-                        </div>
+                        <Input type="text"     name="credential" value={loginData.credential} inputFunction={handleInputChange}text="Username/Email"/>
+                        <Password name="password" value={loginData.password} inputFunction={handleInputChange}/>
                         <a onClick={()=>setForgotPassword(true)} className="login-forgot-password">Forgot password.</a>
                         <AuthButton text="Login"/>
                     </form>
                 ):(
                     <form onSubmit={verifyOTP}>
-                        <div className="input-container">
-                            <input type="email" name="email" value={email} required onChange={(e)=>setEmail(e.target.value)} placeholder=" "/>
-                            <label>Email</label>
-                        </div>
-                        <button className="login-button" type="submit">
-                            <span className="login-icon-wrapper">
-                                <img src="arrow.png" alt="img" className="login-icon"/>
-                            </span>
-                            Send OTP
-                        </button>
+                        <Input type="email" name="email" value={email} inputFunction={(e)=>setEmail(e.target.value)} text="Email"/>
+                        <AuthButton text="Send OTP"/>
                     </form>
                 )}
                 <p className="login-footer">

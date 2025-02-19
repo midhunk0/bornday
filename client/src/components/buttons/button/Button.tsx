@@ -1,15 +1,16 @@
+import React from "react";
 import "./Button.css";
 
 interface ButtonProps{
-    type: "button" | "submit";
+    type?: "button" | "submit";
     className?: string;
-    functionName?: ()=>void;
-    text: string;
+    functionName?: (e: React.MouseEvent)=>void;
+    text?: string;
     imageUrl: string;
     imageClassName: string;
 }
 
-export function Button({ type, className="", functionName, text, imageUrl, imageClassName }: ButtonProps){
+export function Button({ type="button", className="", functionName=()=>{}, text="", imageUrl, imageClassName }: ButtonProps){
     return(
         <button type={type} className={`button ${className}`} onClick={functionName}>
             {text}

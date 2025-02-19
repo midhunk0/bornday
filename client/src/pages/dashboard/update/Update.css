@@ -18,64 +18,6 @@
     padding: 16px;
 }
 
-.update-button{
-    padding: 16px;
-    font-size: 16px;
-    border: 1px solid #CA3f85;
-    cursor: pointer;
-    background: white;
-    border-radius: 50px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: background 0.3s ease-in-out;
-}
-
-.update-button-icon-wrapper{
-    position: absolute;
-    right: 8px;
-    width: 36px;
-    height: 36px;
-    background: #CA3f85;
-    border-radius: 50%;
-    display: grid;
-    place-content: center;
-    overflow: hidden;
-    border: 1px solid #CA3f85;
-}
-
-.update-button-icon{
-    width: 24px;
-    height: 24px;
-    transition: transform 0.6s ease-in-out;
-    filter: invert(1);
-}
-
-.update-button:hover{
-    background: black;
-    color: white;
-}
-
-.update-button:hover .update-button-icon-wrapper{
-    background: white;
-}
-
-.update-button:hover .update-button-icon{
-    animation: rotateIcon 0.6s ease-in-out;
-    filter: none;
-}
-
-@keyframes rotateIcon{
-    from{
-        transform: rotate(0deg);
-    }
-    to{
-        transform: rotate(360deg);
-    }
-}
-
-
 @media(max-width: 1080px){
     .update-form{
         width: calc(100% - 32px);

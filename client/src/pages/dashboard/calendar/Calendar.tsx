@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { BorndayItem } from "../../../components/borndayItem/BorndayItem";
 import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 import { CalendarComponent } from "../../../components/calendarComponent/CalendarComponent";
+import { Button } from "../../../components/buttons/button/Button";
 
 interface Bornday {
     _id: string;
@@ -153,12 +154,7 @@ export function Calendar() {
                     <div className="calendar-bornday-details">
                         <div className="calendar-bornday-header">
                             <h3>{selectedDate}</h3>
-                            <button onClick={()=>addBornday(selectedDate)} className="calendar-bornday-add">
-                                Add
-                                <div className="calendar-bornday-button-icon-wrapper">
-                                    <img src="/add.png" alt="img" className="calendar-bornday-add-icon"/>
-                                </div>
-                            </button>
+                            <Button type="button" text="Add" functionName={()=>addBornday(selectedDate)} imageUrl="/add.png" imageClassName="add-icon"/>
                         </div>
                         <div className="calendar-bornday-items">
                         {getBorndaysForDate(selectedDate).map(bornday=>(
@@ -180,8 +176,7 @@ export function Calendar() {
             {showConfirm && (
                 <ConfirmPopup
                     text={`Are you sure to delete bornday of ${borndays.find(bornday=>bornday._id===borndayId)?.name}`}
-                    onYes={(e)=>deleteBornday(e, borndayId)}
-                    onNo={()=>setShowConfirm(false)}
+                    onYes={(e)=>deleteBornday(e, borndayId)} onNo={()=>setShowConfirm(false)}
                 />
             )}
         </div>

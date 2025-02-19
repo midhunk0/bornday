@@ -6,7 +6,6 @@
     background: #fff;
     height: 100vh;
     z-index: 1;
-    position: fixed;
 }
 
 .sidebar.collapsed{
@@ -22,7 +21,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    gap: 16px;
     cursor: pointer;
 }
 
@@ -87,7 +85,7 @@
 
 .sidebar-menu:hover .sidebar-icon-option{
     filter: invert();
-    animation: rotate 1s linear infinite;
+    animation: rotateIcon 1s linear infinite;
 }
 
 .sidebar-toggle{
@@ -103,24 +101,6 @@
 .sidebar-toggle img{
     width: 24px;
     height: 24px;
-}
-
-@keyframes vibrate{
-    0%{
-        transform: rotate(-10deg);
-    }
-    100%{
-        transform: rotate(10deg);
-    }    
-}
-
-@keyframes rotate{
-    from{
-        transform: rotate(0);
-    }
-    to{
-        transform: rotate(360deg);
-    }
 }
 
 @media (min-width: 720px) {
