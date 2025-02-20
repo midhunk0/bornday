@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "./Register.css";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { AuthButton } from "../../../components/buttons/authButton/AuthButton";
 import { Input } from "../../../components/input/Input";
 import { Password } from "../../../components/password/Password";
+import { useAuth } from "../../../hooks/useAuth";
 
 interface RegisterData{
     username: string,
@@ -13,12 +12,7 @@ interface RegisterData{
 };
 
 export function Register(){
-    const navigate=useNavigate();
-
-    const apiUrl=import.meta.env.MODE==='development'
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL;
-
+    const {register}=useAuth();
     const [registerData, setRegisterData]=useState<RegisterData>({
         username: "",
         email: "",
@@ -33,32 +27,9 @@ export function Register(){
         }));
     };
 
-    async function registerUser(e: React.FormEvent<HTMLFormElement>){
+    function handleRegister(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
-        try{
-            const response=await fetch(`${apiUrl}/registerUser`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(registerData),
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                toast.success(result.message)
-                navigate("/verify");
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error: unknown){
-            if(error instanceof Error){
-                toast.error("Error during registration: "+ error.message);
-            }
-            else{
-                toast.error("An unknown error occurred");
-            }
-        }
+        register(registerData);
     };
 
     return(
@@ -67,7 +38,7 @@ export function Register(){
             <img src="/cake.png" alt="img" className="register-logo"/>
             <div className="register-contents">
                 <h1>Welcome To Bornday.</h1>
-                <form onSubmit={registerUser}>
+                <form onSubmit={handleRegister}>
                     <Input type="text" name="username" value={registerData.username} inputFunction={handleInputChange}text="Username"/>
                     <Input type="email" name="email" value={registerData.email} inputFunction={handleInputChange}text="Email"/>
                     <Password name="password"    value={registerData.password} inputFunction={handleInputChange}/>

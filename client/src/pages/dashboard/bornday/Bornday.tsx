@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/buttons/button/Button";
 import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
+import { useBorndays } from "../../../hooks/useBorndays";
 
 interface Bornday{
     name: string;
@@ -13,81 +14,33 @@ interface Bornday{
 
 export function Bornday(){
     const navigate=useNavigate();
-    const { borndayId }=useParams<{ borndayId: string }>() || "";
-
-    const apiUrl=import.meta.env.MODE==="development"
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL;
-
-    const [bornday, setBornday]=useState<Bornday>({
-        name: "",
-        date: "",
-        imageUrl: ""
-    });
+    const { borndayId }=useParams<{ borndayId: string }>();
+        
+    const { bornday, fetchBornday, deleteBornday, setBorndays }=useBorndays();
     const [showConfirm, setShowConfirm]=useState(false);
 
     useEffect(()=>{
-        async function fetchBornday(){
-            try{
-                const response=await fetch(`${apiUrl}/fetchBornday/${borndayId}`, {
-                    method: "GET",
-                    credentials: "include"
-                });
-                const result=await response.json();
-                if(response.ok){
-                    const data=result.bornday;
-                    data.date=data.date.split("T")[0];
-                    setBornday(data)
-                    // toast.success(result.message);
-                }
-                else{
-                    toast.error(result.message);
-                }
-            }
-            catch(error){
-                if(error instanceof Error){
-                    console.log("Error while fetching bornday: ", error.message);
-                }
-                else{
-                    console.log("An unknown error occurred");
-                }
-            }
+        if(borndayId){
+            fetchBornday(borndayId);
         }
-
-        fetchBornday();
-    }, [apiUrl, borndayId]);
+    }, [borndayId, fetchBornday]);
 
     function updateBornday(borndayId: string){
         navigate(`/dashboard/update/${borndayId}`);
     };
 
-    async function deleteBornday(){
+    async function handleDelete(){
+        if(!borndayId){
+            toast.error("Bornday ID is not defined");
+            return;
+        }
         setShowConfirm(false);
-
-        try{
-            const response=await fetch(`${apiUrl}/deleteBornday/${borndayId}`, {
-                method: "DELETE",
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                navigate("/dashboard/borndays");
-                toast.success(result.message);
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error){
-            if(error instanceof Error){
-                console.log("Error while deleting bornday: ", error.message);
-            }
-            else{
-                console.log("An unknown error occurred");
-            }
-        }
+        await deleteBornday(borndayId, (borndayId)=>{
+            setBorndays((prev)=>prev.filter((bornday)=>bornday._id!==borndayId));
+            navigate("/dashboard/borndays");
+        })
     }
-  
+
     return(
         <div className={`bornday ${showConfirm ? "blur" : ""}`}>
             <h1>Bornday</h1>
@@ -105,7 +58,7 @@ export function Bornday(){
             {showConfirm && (
                 <ConfirmPopup
                     text={`Are you sure to delete bornday of ${bornday.name}?`}
-                    onYes={deleteBornday} onNo={()=>setShowConfirm(false)}
+                    onYes={handleDelete} onNo={()=>setShowConfirm(false)}
                 />
             )}
         </div>

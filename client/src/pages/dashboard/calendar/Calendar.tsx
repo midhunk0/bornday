@@ -1,54 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Calendar.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { BorndayItem } from "../../../components/borndayItem/BorndayItem";
 import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 import { CalendarComponent } from "../../../components/calendarComponent/CalendarComponent";
 import { Button } from "../../../components/buttons/button/Button";
-
-interface Bornday {
-    _id: string;
-    name: string;
-    date: string;
-    imageUrl: string;
-}
+import { useBorndays } from "../../../hooks/useBorndays";
 
 export function Calendar() {
     const navigate=useNavigate();
-    
-    const apiUrl=import.meta.env.MODE==="development"
-        ? import.meta.env.VITE_APP_DEV_URL
-        : import.meta.env.VITE_APP_PROD_URL;
 
-    const [borndays, setBorndays] = useState<Bornday[]>([]);
+    const { borndays, setBorndays, deleteBornday }=useBorndays();
+    
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
     const [borndayId, setBorndayId]=useState("");
     const [showConfirm, setShowConfirm]=useState(false);
-
-    useEffect(() => {
-        async function fetchBorndays() {
-            try {
-                const response = await fetch(`${apiUrl}/fetchBorndays`, {
-                    method: "GET",
-                    credentials: "include",
-                });
-                const result = await response.json();
-                if (response.ok) {
-                    setBorndays(result.borndays);
-                    // toast.success(result.message);
-                }
-                else{
-                    toast.error(result.message);
-                }
-            } catch (error) {
-                console.error("Error fetching borndays:", error);
-            }
-        }
-        fetchBorndays();
-    }, [apiUrl]);
 
     function changeMonth(offset: number) {
         const newDate = new Date(currentDate);
@@ -99,33 +67,14 @@ export function Calendar() {
         setBorndayId(borndayId);
     }
 
-    async function deleteBornday(e: React.FormEvent, borndayId: string){
+    async function handleDelete(e: React.FormEvent, borndayId: string){
         e.stopPropagation();
         e.preventDefault();
 
         setShowConfirm(false);
-        try{
-            const response=await fetch(`${apiUrl}/deleteBornday/${borndayId}`, {
-                method: "DELETE",
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                setBorndays((prevBorndays) => prevBorndays.filter(bornday => bornday._id !== borndayId));
-                toast.success(result.message);
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error){
-            if(error instanceof Error){
-                console.log("Error while deleting bornday: ", error.message);
-            }
-            else{
-                console.log("An unknown error occurred");
-            }
-        }
+        await deleteBornday(borndayId, (borndayId)=>{
+            setBorndays((prev)=>prev.filter((bornday)=>bornday._id!==borndayId));
+        })
     };
 
     function onSetConfirm(e: React.MouseEvent, borndayId: string){
@@ -176,7 +125,7 @@ export function Calendar() {
             {showConfirm && (
                 <ConfirmPopup
                     text={`Are you sure to delete bornday of ${borndays.find(bornday=>bornday._id===borndayId)?.name}`}
-                    onYes={(e)=>deleteBornday(e, borndayId)} onNo={()=>setShowConfirm(false)}
+                    onYes={(e)=>handleDelete(e, borndayId)} onNo={()=>setShowConfirm(false)}
                 />
             )}
         </div>

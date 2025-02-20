@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/buttons/button/Button";
 import { Input } from "../../../components/input/Input";
+import { useFetchBornday } from "../../../hooks/useFetchBornday";
 
 interface BorndayData{
     name: string;
@@ -18,41 +19,20 @@ export function Update(){
         ? import.meta.env.VITE_APP_DEV_URL 
         : import.meta.env.VITE_APP_PROD_URL;
 
+    const { bornday }=useFetchBornday(apiUrl, borndayId || "");    
     const [updateData, setUpdateData]=useState<BorndayData>({
         name: "",
         date: ""
     });
 
     useEffect(()=>{
-        async function fetchBornday(){
-            try{
-                const response=await fetch(`${apiUrl}/fetchBornday/${borndayId}`, {
-                    method: "GET",
-                    credentials: "include"
-                });
-                const result=await response.json();
-                if(response.ok){
-                    const data=result.bornday;
-                    data.date=data.date.split("T")[0];
-                    setUpdateData(data);
-                    // toast.success(result.message);
-                }
-                else{
-                    toast.error(result.message);
-                }
-            }
-            catch(error){
-                if(error instanceof Error){
-                    console.log("Error while fetching bornday: ", error.message);
-                }
-                else{
-                    console.error("An unknown error occurred");
-                }
-            }
+        if(bornday){
+            setUpdateData({
+                name: bornday.name,
+                date: bornday.date
+            })
         }
-
-        fetchBornday();
-    }, [apiUrl, borndayId]);
+    }, [apiUrl, bornday]);
 
     async function updateBornday(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();

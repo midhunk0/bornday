@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 import { Button } from "../../../components/buttons/button/Button";
 import { Input } from "../../../components/input/Input";
+import { useAuth } from "../../../hooks/useAuth";
 
 interface UserData{
     _id: string;
@@ -19,6 +20,7 @@ export function Account(){
         ? import.meta.env.VITE_APP_DEV_URL 
         : import.meta.env.VITE_APP_PROD_URL;
 
+    const {logout}=useAuth();    
     const [userData, setUserData]=useState<UserData>({
         _id: "",
         username: "",
@@ -94,30 +96,8 @@ export function Account(){
         }
     };
 
-    async function handleLogout(){
-        try{
-            const response=await fetch(`${apiUrl}/logoutUser`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                navigate("/")
-                toast.success(result.message);
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error){
-            if(error instanceof Error){
-                console.log("Error while logout: ", error.message);
-            }
-            else{
-                console.log("An unknown error occurred");
-            }
-        }
+    function handleLogout(){
+        logout();
     };
 
     async function deleteAccount(){
