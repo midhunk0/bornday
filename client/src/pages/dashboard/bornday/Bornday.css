@@ -34,9 +34,15 @@
 
 .bornday-detail{
     display: flex;
+    width: calc(60% - 32px);
     flex-direction: column;
     padding: 16px;
     gap: 16px;
+}
+
+.bornday-detail h2{
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .bornday.blur>*:not(.confirmPopup) {

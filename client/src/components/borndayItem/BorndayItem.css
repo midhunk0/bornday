@@ -36,6 +36,11 @@
     text-transform: capitalize;
 }
 
+.borndayItem-content p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .borndayItem-buttons{
     display: flex;
     gap: 8px;

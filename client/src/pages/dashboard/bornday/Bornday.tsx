@@ -6,12 +6,6 @@ import { Button } from "../../../components/buttons/button/Button";
 import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 import { useBorndays } from "../../../hooks/useBorndays";
 
-interface Bornday{
-    name: string;
-    date: string;
-    imageUrl: string;
-};
-
 export function Bornday(){
     const navigate=useNavigate();
     const { borndayId }=useParams<{ borndayId: string }>();

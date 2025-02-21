@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+interface BorndayInput{
+    name: string;
+    date: string;
+}
+
 interface Bornday {
     _id: string;
     name: string;
@@ -30,6 +35,33 @@ export function useBorndays(){
         ? import.meta.env.VITE_APP_DEV_URL
         : import.meta.env.VITE_APP_PROD_URL;
 
+    async function addBornday(inputData: BorndayInput){
+        try{
+            const response=await fetch(`${apiUrl}/addBornday`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(inputData),
+                credentials: "include"
+            });
+            const result=await response.json();
+            if(response.ok){
+                navigate("/dashboard/borndays");
+                toast.success(result.message);
+            }
+            else{
+                toast.error(result.message);
+            }
+        }
+        catch(error){
+            if(error instanceof Error){
+                console.log("Error while adding bornday: ", error.message);
+            }
+            else{
+                console.log("An unknown error occurred");
+            }
+        }
+    }
+    
     useEffect(()=>{
         async function fetchBorndays(){
             try{
@@ -136,5 +168,5 @@ export function useBorndays(){
         }
     }
 
-    return { borndays, setBorndays, bornday, fetchBornday, deleteBornday, updateBornday };
+    return { addBornday, borndays, setBorndays, bornday, fetchBornday, deleteBornday, updateBornday };
 };

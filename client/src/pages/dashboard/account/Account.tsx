@@ -1,98 +1,37 @@
 import React, { useEffect, useState } from "react";
 import "./Account.css";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 import { Button } from "../../../components/buttons/button/Button";
 import { Input } from "../../../components/input/Input";
 import { useAuth } from "../../../hooks/useAuth";
-
-interface UserData{
-    _id: string;
-    username: string;
-    email: string;
-}
+import { useProfile } from "../../../hooks/useProfile";
 
 export function Account(){
-    const navigate=useNavigate();
-    
-    const apiUrl=import.meta.env.MODE==="development"
-        ? import.meta.env.VITE_APP_DEV_URL 
-        : import.meta.env.VITE_APP_PROD_URL;
-
     const {logout}=useAuth();    
-    const [userData, setUserData]=useState<UserData>({
-        _id: "",
-        username: "",
-        email: ""
-    });
+    const { userData, updateUser, deleteAccount }=useProfile();
+
+    const [updateData, setUpdateData]=useState(userData || {});
     const [enableEdit, setEnableEdit]=useState(false);
     const [showConfirm, setShowConfirm]=useState(false);
 
     useEffect(()=>{
-        async function fetchUser(){
-            try{
-                const response=await fetch(`${apiUrl}/fetchUser`, {
-                    method: "GET",
-                    credentials: "include"
-                });
-                const result=await response.json();
-                if(response.ok){
-                    setUserData(result.user);
-                    // toast.success(result.message);
-                }
-                else{
-                    toast.error(result.message);
-                }
-            }
-            catch(error: unknown){
-                if(error instanceof Error){
-                    console.log("Error while fetching data: ", error.message);
-                }
-                else{
-                    console.log("An unknown error occurred");
-                }
-            }
+        if(userData){
+            setUpdateData(userData);
         }
-
-        fetchUser();
-    }, [apiUrl]);
+    }, [userData])
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
-        const { name, value }=e.target;
-        setUserData((prev)=>({
+        setUpdateData((prev)=>({
             ...prev,
-            [name]: value
+            [e.target.name]: e.target.value
         }))
     }
 
-    async function handleUpdate(){
-        try{
-            const response=await fetch(`${apiUrl}/updateUser`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userData),
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                if(!result.verified){
-                    navigate("/verify");
-                }
-                setEnableEdit(false);
-                toast.success(result.message);
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error: unknown){
-            if(error instanceof Error){
-                console.log("Error while updating: ", error.message);
-            }
-            else{
-                console.log("An unknown error occurred");
-            }
+    async function handleUpdate(e: React.FormEvent){
+        e.preventDefault();
+        const result=await updateUser(updateData);
+        if(result){
+            setEnableEdit(false);
         }
     };
 
@@ -100,38 +39,16 @@ export function Account(){
         logout();
     };
 
-    async function deleteAccount(){
-        try{
-            const response=await fetch(`${apiUrl}/deleteUser`, { 
-                method: "delete",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                navigate("/register");
-                toast.success(result.message);
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error){
-            if(error instanceof Error){
-                console.log("Error while deleting user: ", error.message);
-            }
-            else{
-                console.log("An unknown error occurred");
-            }
-        }
+    function handleDelete(){
+        deleteAccount();
     };
 
     return(
         <div className={`account ${showConfirm ? "blur" : ""}`}>
             <h1>Account</h1>
             <form className="account-form" onSubmit={handleUpdate}>
-                <Input disable={!enableEdit} type="text" name="username" value={userData.username} inputFunction={handleInputChange} text="Username"/>
-                <Input disable={!enableEdit} type="email" name="email" value={userData.email} inputFunction={handleInputChange} text="Email"/>
+                <Input disable={!enableEdit} type="text" name="username" value={updateData.username} inputFunction={handleInputChange} text="Username"/>
+                <Input disable={!enableEdit} type="email" name="email" value={updateData.email} inputFunction={handleInputChange} text="Email"/>
                 {enableEdit ? 
                     <Button type="button" text="Update User" functionName={handleUpdate}  imageUrl="/update.png" imageClassName="update-icon"/>
                 : 
@@ -143,7 +60,7 @@ export function Account(){
             {showConfirm && (
                 <ConfirmPopup
                     text="Are you sure to delete account?"
-                    onYes={deleteAccount} onNo={()=>setShowConfirm(false)}
+                    onYes={handleDelete} onNo={()=>setShowConfirm(false)}
                 />
             )}
         </div>

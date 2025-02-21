@@ -23,7 +23,7 @@ export function BorndayItem({ bornday, open, onView,  onEdit, onSetId, onToggle,
         const date=new Date(dateString);
         return date.toLocaleDateString("en-US", {
             year: "numeric",
-            month: "long",
+            month: "short",
             day: "numeric"
         });
     };
