@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
+import { useBorndays } from "../../hooks/useBorndays";
 
 interface SidebarMenuProps{
     className?: string;
@@ -14,6 +15,7 @@ export function Sidebar(){
     const [collapsed, setCollapsed]=useState(false);
     const [show, setShow]=useState(true);
     const navigate=useNavigate();
+    const { notificationsCount }=useBorndays();
 
     useEffect(()=>{
         const handleResize=()=>{
@@ -52,6 +54,7 @@ export function Sidebar(){
         return(
             <div className={`sidebar-menu ${className}`} onClick={()=>handleMenu(dest)}>
                 <img src={imageUrl} alt="image" className={imageClassName} />
+                {text==="Notifications" && notificationsCount>0 && <label>{notificationsCount}</label>}
                 {!collapsed && <a>{text}</a>}
             </div>
         )
@@ -73,6 +76,7 @@ export function Sidebar(){
                     <SidebarMenu dest="/dashboard/add" imageUrl="/add.png" imageClassName="sidebar-icon-add" text="Add Bornday" />
                     <SidebarMenu dest="/dashboard/calendar" imageUrl="/month.png" imageClassName="sidebar-icon-month" text="Calendar View"/>
                     <SidebarMenu dest="/dashboard/borndays" imageUrl="/bornday.png" imageClassName="sidebar-icon-bornday" text="All Borndays"/>
+                    <SidebarMenu dest="/dashboard/notifications" imageUrl="/notifications.png" imageClassName="sidebar-icon-notifications" text="Notifications"/>
                     <SidebarMenu className="footer" dest="/dashboard/account" imageUrl="/option.png" imageClassName="sidebar-icon-option" text="Account"/>
                 </div>
             </div>

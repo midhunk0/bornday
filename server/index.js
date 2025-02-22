@@ -5,6 +5,9 @@ const cookieParser=require("cookie-parser");
 const mongoose=require("mongoose");
 const multer=require("multer");
 require("dotenv").config();
+const http=require("http");
+const { Server }=require("socket.io");
+const scheduleNotifications = require("./scheduler");
 
 const port=4000;
 const app=express();
@@ -26,7 +29,18 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((err)=>console.log("database not connected: ", err));
 
 app.use("/", require("./routes"));
+scheduleNotifications();
 
-app.listen(port, ()=>{
+const server=http.createServer(app);
+const io=new Server(server, {
+    cors: { origin: "*" }
+});
+
+io.on("connection", (socket)=>{
+    console.log("User connected: ", socket.id);
+    socket.on("disconnect", ()=>console.log("User disconnected"));
+})
+
+server.listen(port, ()=>{
     console.log(`server listening on port ${port}`);
 })

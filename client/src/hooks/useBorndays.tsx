@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-interface BorndayInput{
-    name: string;
-    date: string;
-}
-
 interface Bornday {
     _id: string;
     name: string;
@@ -19,30 +14,40 @@ interface UpdataDataProps{
     date: string;
 }
 
-type BorndayData = Bornday[];
+interface Notification{
+    _id: string;
+    message: string;
+    createdAt: string;
+    isRead: boolean;
+}
+
+type Borndays=Bornday[];
+type Notifications=Notification[];
 
 export function useBorndays(){
     const navigate=useNavigate();
-    const [borndays, setBorndays]=useState<BorndayData>([]);
+    const [borndays, setBorndays]=useState<Borndays>([]);
     const [bornday, setBornday]=useState<Bornday>({
         _id: "",
         name: "",
         date: "",
         imageUrl: "/profile.png",        
     });
+    const [notifications, setNotifications]=useState<Notifications>([]);
+    const [notificationsCount, setNotificationsCount]=useState(0);
 
     const apiUrl=import.meta.env.MODE==="development"
         ? import.meta.env.VITE_APP_DEV_URL
         : import.meta.env.VITE_APP_PROD_URL;
 
-    async function addBornday(inputData: BorndayInput){
+    async function addBornday(inputData: FormData){
         try{
             const response=await fetch(`${apiUrl}/addBornday`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(inputData),
+                body: inputData,
                 credentials: "include"
             });
+            console.log(inputData);
             const result=await response.json();
             if(response.ok){
                 navigate("/dashboard/borndays");
@@ -168,5 +173,73 @@ export function useBorndays(){
         }
     }
 
-    return { addBornday, borndays, setBorndays, bornday, fetchBornday, deleteBornday, updateBornday };
+    async function fetchNotifications(){
+        try{
+            const response=await fetch(`${apiUrl}/fetchNotifications`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include"
+            })
+            const result=await response.json();
+            if(response.ok){
+                setNotifications(result.notifications);
+                setNotificationsCount(result.count);
+            }
+            else{
+                toast.error(result.message);
+            }
+        }
+        catch(error){
+            if(error instanceof Error){
+                console.log("Error while fetching notifications: ", error.message);
+            }
+            else{
+                console.log("An unknown error occurred");
+            }
+        }
+    }
+
+    useEffect(()=>{
+        fetchNotifications();
+    }, [apiUrl])
+
+    async function readNotification(notificationId: string){
+        try{
+            const response=await fetch(`${apiUrl}/readNotification/${notificationId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include"
+            });
+            const result=await response.json();
+            if(response.ok){
+                fetchNotifications();
+            }
+            else{
+                toast.error(result.message);
+            }
+        }
+        catch(error){
+            if(error instanceof Error){
+                console.log("Error while reading notification")
+            }
+            else{
+                console.log("An unknown error occurred");
+            }
+        }
+    }
+
+    return { 
+        addBornday, 
+        borndays, 
+        setBorndays, 
+        bornday, 
+        fetchBornday, 
+        updateBornday, 
+        deleteBornday,
+        notifications, 
+        setNotifications,
+        notificationsCount, 
+        setNotificationsCount,
+        readNotification
+    };
 };

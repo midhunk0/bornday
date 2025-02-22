@@ -35,7 +35,8 @@ const registerUser=async(req, res)=>{
             password: hashedPassword,
             otp: otp,
             otpExpires: otpExpires,
-            borndays: []
+            borndays: [],
+            notifications: []
         });
         await user.save();
         const message=`Your verification code is: ${otp}`;
@@ -259,6 +260,7 @@ const addBornday=async(req, res)=>{
             return res.status(400).json({ message: "Date required" });
         }
         const file=req.file;
+        console.log(file);
         let image;
         if(file){
             image={
@@ -270,7 +272,7 @@ const addBornday=async(req, res)=>{
         const bornday={
             name,
             date: new Date(date),
-            ...(image && {image})
+            image: image
         };
         user.borndays.push(bornday);
         await user.save();
@@ -472,6 +474,56 @@ const deleteBornday=async(req, res)=>{
     }
 };
 
+const fetchNotifications=async(req, res)=>{
+    try{
+        const userId=returnUserId(req);
+        if(!userId){
+            return res.status(400).json({ message: "User token not found or invalid" });
+        }
+        const user=await User.findById(userId).select("notifications");
+        if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        const notifications=user.notifications.sort((a, b)=>{
+            if(!a.isRead && b.isRead) return -1;
+            if(a.isRead && !b.isRead) return 1;
+            new Date(b.createdAt) - new Date(a.createdAt)
+        })
+        const count=user.notifications.filter((notification)=>!notification.isRead).length;
+        if(!notifications){
+            return res.status(400).json({ message: "There are no notifications" });
+        }
+        return res.status(200).json({ notifications, count });
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+}
+
+const readNotification=async(req, res)=>{
+    try{        
+        const userId=returnUserId(req);
+        if(!userId){
+            return res.status(400).json({ message: "User token not found or invalid" });
+        }
+        const user=await User.findById(userId).select("notifications");
+        if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        const { notificationId }=req.params;
+        const notification=user.notifications.find((notification)=>notification._id.toString()===notificationId);
+        if(!notification){
+            return res.status(400).json({ message: "Notification not found" });
+        }
+        notification.isRead=true;
+        await user.save();
+        return res.status(200).json({ message: "Notification read" });
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+}
+
 module.exports={
     registerUser,
     sendOTP,
@@ -489,4 +541,6 @@ module.exports={
     fetchBorndaysByDay,
     editBornday,
     deleteBornday,
+    fetchNotifications,
+    readNotification
 }

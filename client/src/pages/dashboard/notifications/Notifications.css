@@ -1,0 +1,94 @@
+.notifications{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.notifications h1{
+    font-family: "Oswald", serif;
+    text-transform: capitalize;
+    font-size: 50px;
+}
+
+.notification-items{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 70%;
+    padding: 16px;
+    overflow: scroll;
+    height: 100vh;
+}
+
+.notification{
+    display: flex;
+    padding: 16px;
+    background: white;
+    border-radius: 32px;
+    border: 1px solid #CA3F85;
+    justify-content: space-between;
+    position: relative;
+    align-items: center;
+}
+
+.notification.read{
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.notification:hover{
+    background: black;
+    color: white;
+}
+
+.notification label{
+    display: flex;
+    background: #CA3F85;
+    position: absolute;
+    color: white;
+    padding: 2px 12px;
+    top: 0;
+    transform: translateY(-50%);
+    border: 1px solid #CA3F85;
+    border-radius: 24px;
+    z-index: 4;
+}
+
+.notification a{
+    cursor: pointer;
+}
+
+.notification a:hover{
+    text-decoration: underline;
+}
+
+@media(max-width: 1080px){
+    .notification-items{
+        width: calc(100% - 32px);
+    }
+}
+
+@media(max-width: 864px){
+    .notifications{
+        width: 100%;
+    }
+
+    .notification-items{
+        padding: 0;
+        width: 100%;
+        padding-top: 16px;
+    }
+}
+
+@media(max-width: 720px){
+    .notifications{
+        margin-top: 24px;
+        width: 80%;
+    }
+}
+
+@media(max-width: 468px){
+    .notifications{
+        width: 100%;
+    }
+}

@@ -13,6 +13,7 @@ import { Verification } from "./pages/auth/verification/Verification";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PrivateRoute } from "./PrivateRoute";
+import { Notifications } from "./pages/dashboard/notifications/Notifications";
 
 function App(){
     return(
@@ -34,6 +35,7 @@ function App(){
                     <Route path="borndays" element={<Borndays/>}/>
                     <Route path="account" element={<Account/>}/>
                     <Route path="update/:borndayId" element={<Update/>}/>
+                    <Route path="notifications" element={<Notifications/>}/>
                 </Route>
             </Routes>
             <ToastContainer 

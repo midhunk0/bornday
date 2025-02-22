@@ -16,6 +16,21 @@ const borndaySchema=new mongoose.Schema({
     },
 });
 
+const notificationSchema=new mongoose.Schema({
+    message: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: String,
+        default: Date.now
+    },
+    isRead: {
+        type: Boolean,
+        default: false
+    }
+});
+
 const userSchema=new mongoose.Schema({
     username: {
         type: String,
@@ -41,7 +56,8 @@ const userSchema=new mongoose.Schema({
     otpExpires: {
         type: Date
     },
-    borndays: [borndaySchema]
+    borndays: [borndaySchema],
+    notifications: [notificationSchema]
 });
 
 const User=mongoose.model("User", userSchema);
