@@ -7,7 +7,6 @@ const multer=require("multer");
 require("dotenv").config();
 const http=require("http");
 const { Server }=require("socket.io");
-const scheduleNotifications = require("./scheduler");
 
 const port=4000;
 const app=express();
@@ -29,7 +28,6 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((err)=>console.log("database not connected: ", err));
 
 app.use("/", require("./routes"));
-scheduleNotifications();
 
 const server=http.createServer(app);
 const io=new Server(server, {

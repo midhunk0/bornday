@@ -474,6 +474,38 @@ const deleteBornday=async(req, res)=>{
     }
 };
 
+const sendNotifications=async(req, res)=>{
+    try{
+        const tomorrow=new Date();
+        tomorrow.setDate(tomorrow.getDate()+1);
+        const formattedTomorrow=tomorrow.toISOString().split("T")[0];
+
+        const users=await User.find({ "borndays.date": formattedTomorrow });
+
+        for(const user of users){
+            const upcomingBorndays=user.borndays.filter(
+                (bornday)=>bornday.date.toISOString().split("T")[0]===formattedTomorrow
+            );
+
+            if(upcomingBorndays.length>0){
+                const notifications=upcomingBorndays.map((bornday)=>({
+                    message: `Tomorrow is ${bornday.name}'s bornday! 🎉`,
+                    createdAt: new Date(),
+                    isRead: false
+                }));
+
+                user.notifications.push(...notifications);
+                await user.save();
+            }
+        }
+
+        return res.status(200).json({ message: "Notifications schedules successfully" });
+    }
+    catch(err){
+        return res.status(500).json({ message: err.message });
+    }
+}
+
 const fetchNotifications=async(req, res)=>{
     try{
         const userId=returnUserId(req);
@@ -541,6 +573,7 @@ module.exports={
     fetchBorndaysByDay,
     editBornday,
     deleteBornday,
+    sendNotifications,
     fetchNotifications,
     readNotification
 }
