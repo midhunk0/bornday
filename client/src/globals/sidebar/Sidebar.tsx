@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
-import { useBorndays } from "../../hooks/useBorndays";
+import { useNotification } from "../../context/notificationContext";
 
 interface SidebarMenuProps{
     className?: string;
@@ -15,7 +15,11 @@ export function Sidebar(){
     const [collapsed, setCollapsed]=useState(false);
     const [show, setShow]=useState(true);
     const navigate=useNavigate();
-    const { notificationsCount }=useBorndays();
+    const { notificationsCount }=useNotification();
+
+    useEffect(()=>{
+        
+    })
 
     useEffect(()=>{
         const handleResize=()=>{

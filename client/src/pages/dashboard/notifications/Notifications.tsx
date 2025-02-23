@@ -1,8 +1,8 @@
-import { useBorndays } from "../../../hooks/useBorndays";
+import { useNotification } from "../../../context/notificationContext";
 import "./Notifications.css";
 
 export function Notifications(){
-    const { notifications, readNotification }=useBorndays();
+    const { notifications, readNotification }=useNotification();
 
     function formatDate(dateString: string){
         const date=new Date(dateString);

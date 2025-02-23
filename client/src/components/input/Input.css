@@ -14,6 +14,15 @@
     transition: border-color 0.3s ease-in-out;
 }
 
+input[type="file"]::file-selector-button {
+    display: none;
+}
+
+.input-container input[type="file"]{
+    cursor: pointer;
+    background: white;
+}
+
 .input-container label{
     position: absolute;
     top: 50%;

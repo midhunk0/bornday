@@ -14,9 +14,11 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PrivateRoute } from "./PrivateRoute";
 import { Notifications } from "./pages/dashboard/notifications/Notifications";
+import { NotificationProvider } from "./context/notificationContext";
 
 function App(){
     return(
+        <NotificationProvider>
         <Router>
             <Routes>
                 <Route path="/" element={<Navigate to="login"/>}/>
@@ -55,6 +57,7 @@ function App(){
                 closeButton={false}
             />
         </Router>
+        </NotificationProvider>
     )
 };
 

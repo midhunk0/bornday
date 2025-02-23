@@ -47,7 +47,6 @@ export function useBorndays(){
                 body: inputData,
                 credentials: "include"
             });
-            console.log(inputData);
             const result=await response.json();
             if(response.ok){
                 navigate("/dashboard/borndays");
@@ -213,6 +212,7 @@ export function useBorndays(){
             const result=await response.json();
             if(response.ok){
                 fetchNotifications();
+                setNotificationsCount(prev=>prev-1);
             }
             else{
                 toast.error(result.message);
