@@ -56,6 +56,11 @@ const userSchema=new mongoose.Schema({
     otpExpires: {
         type: Date
     },
+    profileImage: {
+        imageName: String,
+        imageType: String,
+        image: Buffer,
+    },
     borndays: [borndaySchema],
     notifications: [notificationSchema]
 });

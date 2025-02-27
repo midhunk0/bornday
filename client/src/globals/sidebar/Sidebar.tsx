@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Sidebar.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useNotification } from "../../context/notificationContext";
 
 interface SidebarMenuProps{
@@ -15,11 +15,8 @@ export function Sidebar(){
     const [collapsed, setCollapsed]=useState(false);
     const [show, setShow]=useState(true);
     const navigate=useNavigate();
+    const location=useLocation();
     const { notificationsCount }=useNotification();
-
-    useEffect(()=>{
-        
-    })
 
     useEffect(()=>{
         const handleResize=()=>{
@@ -55,8 +52,9 @@ export function Sidebar(){
     };
 
     function SidebarMenu({ className="", dest, imageUrl, imageClassName, text }: SidebarMenuProps){
+        const isActive=location.pathname===dest;
         return(
-            <div className={`sidebar-menu ${className}`} onClick={()=>handleMenu(dest)}>
+            <div className={`sidebar-menu ${className} ${isActive ? "active" : ""}`} onClick={()=>handleMenu(dest)}>
                 <img src={imageUrl} alt="image" className={imageClassName} />
                 {text==="Notifications" && notificationsCount>0 && <label>{notificationsCount}</label>}
                 {!collapsed && <a>{text}</a>}

@@ -12,13 +12,12 @@ import { Update } from "./pages/dashboard/update/Update";
 import { Verification } from "./pages/auth/verification/Verification";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { PrivateRoute } from "./PrivateRoute";
+import { PrivateRoute } from "./globals/PrivateRoute";
 import { Notifications } from "./pages/dashboard/notifications/Notifications";
 import { NotificationProvider } from "./context/notificationContext";
 
 function App(){
     return(
-        <NotificationProvider>
         <Router>
             <Routes>
                 <Route path="/" element={<Navigate to="login"/>}/>
@@ -27,7 +26,9 @@ function App(){
                 <Route path="/verify" element={<Verification/>}/>
                 <Route path="/dashboard" element={
                     <PrivateRoute>
-                        <Dashboard/>
+                        <NotificationProvider>
+                            <Dashboard/>
+                        </NotificationProvider>
                     </PrivateRoute>
                 }>
                     <Route path="" element={<Add/>}/>
@@ -57,7 +58,6 @@ function App(){
                 closeButton={false}
             />
         </Router>
-        </NotificationProvider>
     )
 };
 

@@ -5,6 +5,7 @@ const cookieParser=require("cookie-parser");
 const mongoose=require("mongoose");
 const multer=require("multer");
 require("dotenv").config();
+const connectDB=require("./config/database");
 const http=require("http");
 const { Server }=require("socket.io");
 
@@ -23,11 +24,11 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URL)
-    .then(()=>console.log("database connected"))
-    .catch((err)=>console.log("database not connected: ", err));
+connectDB();
 
-app.use("/", require("./routes"));
+app.use("/auth", require("./routes/authRoutes"));
+app.use("/bornday", require("./routes/borndayRoutes"));
+app.use("/notifications", require("./routes/notificationRoutes"));
 
 const server=http.createServer(app);
 const io=new Server(server, {

@@ -4,11 +4,9 @@ import { ConfirmPopup } from "../../../components/confirmPopup/ConfirmPopup";
 import { Button } from "../../../components/buttons/button/Button";
 import { Input } from "../../../components/input/Input";
 import { useAuth } from "../../../hooks/useAuth";
-import { useProfile } from "../../../hooks/useProfile";
 
 export function Account(){
-    const {logout}=useAuth();    
-    const { userData, updateUser, deleteAccount }=useProfile();
+    const { logout, userData, updateUser, deleteAccount }=useAuth();
 
     const [updateData, setUpdateData]=useState(userData || {});
     const [enableEdit, setEnableEdit]=useState(false);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./Add.css";
 import { useLocation } from "react-router-dom";
 import { Button } from "../../../components/buttons/button/Button";
@@ -15,6 +15,7 @@ export function Add(){
     const location=useLocation();
 
     const { addBornday }=useBorndays();
+    const fileInputRef=useRef<HTMLInputElement>(null);
     const [borndayData, setBorndayData]=useState<BorndayData>({
         name: "",
         date: (location.state as { date?: string })?.date || new Date().toISOString().split("T")[0],
@@ -29,7 +30,7 @@ export function Add(){
         }));
     };
 
-    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
+    function handleAddImage(e: React.ChangeEvent<HTMLInputElement>){
         const file=e.target.files?.[0] || null;
         setBorndayData(prev=>({
             ...prev,
@@ -37,9 +38,20 @@ export function Add(){
         }))
     }
 
+    function handleRemoveImage(e: React.MouseEvent<HTMLButtonElement>){
+        e.preventDefault();
+        setBorndayData(prev=>({
+            ...prev,
+            image: null
+        }));
+
+        if(fileInputRef.current){
+            fileInputRef.current.value="";
+        }
+    }
+
     async function handleAdd(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
-        // addBornday(borndayData);
         const formData = new FormData();
         formData.append("name", borndayData.name);
         formData.append("date", borndayData.date);
@@ -54,7 +66,15 @@ export function Add(){
         <div className="add">
             <h1>Add Bornday</h1>
             <form onSubmit={handleAdd} className="add-form">
-                <Input type="file" name="image" inputFunction={handleImageChange} text="Profile"/>
+                <Input type="file" name="image" inputFunction={handleAddImage} text="Profile" ref={fileInputRef}/>
+                {borndayData.image ? (
+                    <div className="add-image-section">
+                        <img src={borndayData.image ? URL.createObjectURL(borndayData.image) : ""} alt="image" className="add-image"/>
+                        <button type="button" onClick={handleRemoveImage} className="add-remove"><img src="/no.png" alt="img"/></button>
+                    </div>
+                ) : (
+                    <></>
+                )}
                 <Input type="text" name="name" value={borndayData.name} inputFunction={handleInputChange} text="Name"/>
                 <Input type="date" name="date" value={borndayData.date} inputFunction={handleInputChange} text="DOB"/>
                 <Button type="submit"text="Add"imageUrl="/add.png"imageClassName="add-icon"/>

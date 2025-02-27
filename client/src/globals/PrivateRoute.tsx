@@ -19,16 +19,11 @@ export const PrivateRoute: React.FC<PrivateRouteProps>=({ children })=>{
     useEffect(()=>{
         const verifyUser=async()=>{
             try{
-                const response=await fetch(`${apiUrl}/fetchUser`, {
+                const response=await fetch(`${apiUrl}/auth/fetchUser`, {
                     method: "GET",
                     credentials: "include"
                 });
-                if(response.ok){
-                    setIsAuthenticated(true);
-                }
-                else{
-                    setIsAuthenticated(false);
-                }
+                setIsAuthenticated(response.ok);
             } 
             catch(error){
                 setIsAuthenticated(false);

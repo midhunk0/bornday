@@ -53,6 +53,25 @@
     cursor: pointer;
     white-space: nowrap;
     position: relative;
+    border-top: 1px solid white;
+}
+
+.sidebar-menu:nth-child(4){
+    border-bottom: 1px solid white;
+}
+
+.sidebar-menu.active{
+    background: #CA3F85;
+    color: white;
+}
+
+.sidebar-menu.active img{
+    filter: invert();
+}
+
+.sidebar-menu.active label{
+    color: #CA3F85;
+    background: white;
 }
 
 .sidebar.collapsed a{

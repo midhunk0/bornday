@@ -31,7 +31,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
     async function fetchNotifications() {
         try {
-            const response = await fetch(`${apiUrl}/fetchNotifications`, {
+            const response = await fetch(`${apiUrl}/notifications/fetchNotifications`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include"
@@ -50,18 +50,13 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
     async function readNotification(notificationId: string) {
         try {
-            const response = await fetch(`${apiUrl}/readNotification/${notificationId}`, {
+            const response = await fetch(`${apiUrl}/notifications/readNotification/${notificationId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include"
             });
             const result = await response.json();
             if (response.ok) {
-                // setNotifications(prev =>
-                //     prev.map(notification =>
-                //         notification._id === notificationId ? { ...notification, isRead: true } : notification
-                //     )
-                // );
                 fetchNotifications();
                 setNotificationsCount(prev => Math.max(0, prev - 1));
             } else {

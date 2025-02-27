@@ -14,15 +14,7 @@ interface UpdataDataProps{
     date: string;
 }
 
-interface Notification{
-    _id: string;
-    message: string;
-    createdAt: string;
-    isRead: boolean;
-}
-
 type Borndays=Bornday[];
-type Notifications=Notification[];
 
 export function useBorndays(){
     const navigate=useNavigate();
@@ -33,8 +25,6 @@ export function useBorndays(){
         date: "",
         imageUrl: "/profile.png",        
     });
-    const [notifications, setNotifications]=useState<Notifications>([]);
-    const [notificationsCount, setNotificationsCount]=useState(0);
 
     const apiUrl=import.meta.env.MODE==="development"
         ? import.meta.env.VITE_APP_DEV_URL
@@ -42,7 +32,7 @@ export function useBorndays(){
 
     async function addBornday(inputData: FormData){
         try{
-            const response=await fetch(`${apiUrl}/addBornday`, {
+            const response=await fetch(`${apiUrl}/bornday/addBornday`, {
                 method: "POST",
                 body: inputData,
                 credentials: "include"
@@ -69,7 +59,7 @@ export function useBorndays(){
     useEffect(()=>{
         async function fetchBorndays(){
             try{
-                const response=await fetch(`${apiUrl}/fetchBorndays`, {
+                const response=await fetch(`${apiUrl}/bornday/fetchBorndays`, {
                     method: "GET",
                     credentials: "include"
                 });
@@ -96,7 +86,7 @@ export function useBorndays(){
 
     async function fetchBornday(borndayId: string){
         try{
-            const response=await fetch(`${apiUrl}/fetchBornday/${borndayId}`, {
+            const response=await fetch(`${apiUrl}/bornday/fetchBornday/${borndayId}`, {
                 method: "GET",
                 credentials: "include"
             });
@@ -122,7 +112,7 @@ export function useBorndays(){
 
     async function deleteBornday(borndayId: string, onDeleteSuccess: (borndayId: string)=>void){
         try{
-            const response=await fetch(`${apiUrl}/deleteBornday/${borndayId}`, {
+            const response=await fetch(`${apiUrl}/bornday/deleteBornday/${borndayId}`, {
                 method: "DELETE",
                 credentials: "include"
             });
@@ -147,7 +137,7 @@ export function useBorndays(){
 
     async function updateBornday(borndayId: string, updateData: UpdataDataProps){
         try{
-            const response=await fetch(`${apiUrl}/editBornday/${borndayId}`, {
+            const response=await fetch(`${apiUrl}/bornday/editBornday/${borndayId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updateData),
@@ -172,62 +162,6 @@ export function useBorndays(){
         }
     }
 
-    async function fetchNotifications(){
-        try{
-            const response=await fetch(`${apiUrl}/fetchNotifications`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include"
-            })
-            const result=await response.json();
-            if(response.ok){
-                setNotifications(result.notifications);
-                setNotificationsCount(result.count);
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error){
-            if(error instanceof Error){
-                console.log("Error while fetching notifications: ", error.message);
-            }
-            else{
-                console.log("An unknown error occurred");
-            }
-        }
-    }
-
-    useEffect(()=>{
-        fetchNotifications();
-    }, [apiUrl])
-
-    async function readNotification(notificationId: string){
-        try{
-            const response=await fetch(`${apiUrl}/readNotification/${notificationId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include"
-            });
-            const result=await response.json();
-            if(response.ok){
-                fetchNotifications();
-                setNotificationsCount(prev=>prev-1);
-            }
-            else{
-                toast.error(result.message);
-            }
-        }
-        catch(error){
-            if(error instanceof Error){
-                console.log("Error while reading notification")
-            }
-            else{
-                console.log("An unknown error occurred");
-            }
-        }
-    }
-
     return { 
         addBornday, 
         borndays, 
@@ -236,10 +170,5 @@ export function useBorndays(){
         fetchBornday, 
         updateBornday, 
         deleteBornday,
-        notifications, 
-        setNotifications,
-        notificationsCount, 
-        setNotificationsCount,
-        readNotification
     };
 };
