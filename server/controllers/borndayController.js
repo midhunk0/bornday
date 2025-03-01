@@ -118,7 +118,7 @@ const fetchBornday=async(req, res)=>{
         const {image, ...borndayData}=bornday.toObject();
         const borndayWithImage={
             ...borndayData,
-            ...(image ? { imageUrl: `${apiUrl}/fetchImage/${bornday._id}` } : {}) 
+            ...(image ? { imageUrl: `${apiUrl}/bornday/fetchImage/${bornday._id}` } : {}) 
         }
         return res.status(200).json({ message: "Bornday fetched", bornday: borndayWithImage });
     }
@@ -195,6 +195,14 @@ const editBornday=async(req, res)=>{
         }
         if(date){
             user.borndays[borndayIndex].date=date;
+        }
+        const file=req.file;
+        if(file){
+            user.borndays[borndayIndex].image={
+                imageName: `${Date.now()}.${file.originalname}`,
+                imageType: file.mimetype,
+                image: file.buffer
+            };
         }
         await user.save();
         return res.status(200).json({ message: "Bornday updated" })

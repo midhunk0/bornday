@@ -16,7 +16,50 @@
     gap: 16px;
     width: 70%;
     padding: 16px;
+    overflow: scroll;
 }
+
+.update-image-section{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.update-image{
+    border-radius: 24px;
+    border: 1px solid #CA3F85;
+    width: calc(100% - 2px);
+}
+
+.update-remove{
+    display: flex;
+    padding: 8px;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #CA3F85;
+    cursor: pointer;
+    width: max-content;
+    overflow: none;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
+.update-remove img{
+    width: 24px;
+    height: 24px;
+}
+
+.update-remove:hover{
+    animation: rotateIcon 0.6s ease-in-out;
+    background: #CA3F85;
+}
+
+.update-remove:hover img{
+    filter: invert();
+}
+
 
 @media(max-width: 1080px){
     .update-form{
@@ -32,7 +75,7 @@
     .update-form{
         padding: 0;
         width: 100%;
-        margin-top: 16px;
+        padding-top: 16px;
     }
 }
 

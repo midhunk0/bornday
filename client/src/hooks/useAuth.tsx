@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -180,33 +180,31 @@ export function useAuth(){
         }
     }
 
-    useEffect(()=>{
-        async function fetchUser(){
-            try{
-                const response=await fetch(`${apiUrl}/auth/fetchUser`, {
-                    method: "GET",
-                    credentials: "include"
-                });
-                const result=await response.json();
-                if(response.ok){
-                    setUserData(result.user);
-                }
-                else{
-                    toast.error(result.message);
-                }
+    
+    async function fetchUser(){
+        try{
+            const response=await fetch(`${apiUrl}/auth/fetchUser`, {
+                method: "GET",
+                credentials: "include"
+            });
+            const result=await response.json();
+            if(response.ok){
+                setUserData(result.user);
             }
-            catch(error: unknown){
-                if(error instanceof Error){
-                    console.log("Error while fetching data: ", error.message);
-                }
-                else{
-                    console.log("An unknown error occurred");
-                }
+            else{
+                toast.error(result.message);
             }
         }
+        catch(error: unknown){
+            if(error instanceof Error){
+                console.log("Error while fetching data: ", error.message);
+            }
+            else{
+                console.log("An unknown error occurred");
+            }
+        }
+    }
 
-        fetchUser();
-    }, [apiUrl]);
 
     async function updateUser(updateUserData: UpdateUserProps){
         try{
@@ -271,6 +269,7 @@ export function useAuth(){
         sendOTP,
         verifyOTP,
         logout,
+        fetchUser,
         userData, 
         updateUser, 
         deleteAccount

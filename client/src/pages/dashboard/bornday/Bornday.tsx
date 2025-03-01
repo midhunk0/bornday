@@ -9,15 +9,16 @@ import { useBorndays } from "../../../hooks/useBorndays";
 export function Bornday(){
     const navigate=useNavigate();
     const { borndayId }=useParams<{ borndayId: string }>();
-        
+    const [loading, setLoading]=useState(true);
     const { bornday, fetchBornday, deleteBornday, setBorndays }=useBorndays();
     const [showConfirm, setShowConfirm]=useState(false);
 
     useEffect(()=>{
         if(borndayId){
-            fetchBornday(borndayId);
+            fetchBornday(borndayId).then(()=> setLoading(false));
         }
-    }, [borndayId, fetchBornday]);
+    }, [borndayId]);
+    
 
     function updateBornday(borndayId: string){
         navigate(`/dashboard/update/${borndayId}`);
@@ -35,12 +36,18 @@ export function Bornday(){
         })
     }
 
+    if(loading){
+        return <div>Loading...</div>
+    }
+
     return(
         <div className={`bornday ${showConfirm ? "blur" : ""}`}>
             <h1>Bornday</h1>
             <div className="bornday-div">
                 <div className="bornday-user">
-                    <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="img"/>
+                    {bornday.imageUrl && (
+                        <img src={bornday.imageUrl} alt="img"/>
+                    )}
                     <div className="bornday-detail">
                         <h2>{bornday.name}</h2>
                         <h4>{bornday.date}</h4>

@@ -9,7 +9,7 @@ router.get("/fetchBorndays", fetchBorndays);
 router.get("/fetchBornday/:borndayId", fetchBornday);
 router.get("/fetchBorndaysByMonth/:month", fetchBorndaysByMonth);
 router.get("/fetchBorndaysByDay/:day/:month", fetchBorndaysByDay);
-router.put("/editBornday/:borndayId", editBornday);
+router.put("/editBornday/:borndayId", upload.single("image"), editBornday);
 router.delete("/deleteBornday/:borndayId", deleteBornday);
 
 module.exports=router;

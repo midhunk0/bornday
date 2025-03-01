@@ -9,11 +9,6 @@ interface Bornday {
     imageUrl: string;
 }
 
-interface UpdataDataProps{
-    name: string;
-    date: string;
-}
-
 type Borndays=Bornday[];
 
 export function useBorndays(){
@@ -135,12 +130,11 @@ export function useBorndays(){
         }
     }
 
-    async function updateBornday(borndayId: string, updateData: UpdataDataProps){
+    async function updateBornday(borndayId: string, inputData: FormData){
         try{
             const response=await fetch(`${apiUrl}/bornday/editBornday/${borndayId}`, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updateData),
+                body: inputData,
                 credentials: "include"
             });
             const result=await response.json();

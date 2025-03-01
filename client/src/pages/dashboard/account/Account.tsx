@@ -6,18 +6,25 @@ import { Input } from "../../../components/input/Input";
 import { useAuth } from "../../../hooks/useAuth";
 
 export function Account(){
-    const { logout, userData, updateUser, deleteAccount }=useAuth();
+    const { logout, fetchUser, userData, updateUser, deleteAccount }=useAuth();
 
     const [updateData, setUpdateData]=useState(userData || {});
     const [enableEdit, setEnableEdit]=useState(false);
     const [showConfirm, setShowConfirm]=useState(false);
 
     useEffect(()=>{
-        if(userData){
-            setUpdateData(userData);
+        async function getUser(){
+            await fetchUser();
         }
-    }, [userData])
+        getUser();
+    }, []);
 
+    useEffect(()=>{
+        if(userData){
+            setUpdateData(userData);    
+        }
+    }, [userData]);
+    
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
         setUpdateData((prev)=>({
             ...prev,
