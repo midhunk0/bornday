@@ -11,17 +11,10 @@
     font-size: 50px;
 }
 
-.bornday-div{
+.bornday-user, .bornday-user-skeleton{
     display: flex;
-    flex-direction: column;
     padding: 16px;
-    width: 70%;
     gap: 16px;
-}
-
-.bornday-user{
-    display: flex;
-    padding: 16px;
     border-radius: 24px;
     color: #CA3f85;
     background: white;
@@ -29,12 +22,53 @@
     flex-direction: column;
 }
 
-.bornday-user img{
+.hidden {
+    display: none; 
+}
+
+.bornday-detail-skeleton{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 150px;
+}
+
+.bornday-detail-skeleton h2, .bornday-detail-skeleton h4 {
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    width: 100%;
+}
+
+.bornday-detail-skeleton h2{
+    height: 29px;
+}
+
+.bornday-detail-skeleton h4{
+    height: 19px;
+}
+
+.bornday-div, .bornday-div-skeleton{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    width: 70%;
+    gap: 16px;
+}
+
+.bornday-user img, .bornday-image-skeleton{
+    width: 100%;
+    aspect-ratio: 6/4;
     object-fit: contain;
     background: black;
     border-radius: 12px;
-    border: 1px solid #CA3f85;
-    margin-bottom: 16px;
+}
+
+.bornday-image-skeleton{
+    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
 }
 
 .bornday-detail{
@@ -55,7 +89,7 @@
 }
 
 @media(max-width: 1080px){
-    .bornday-div{
+    .bornday-div, .bornday-div-skeleton{
         width: calc(100% - 32px);
     }
 }
@@ -65,7 +99,7 @@
         width: 100%;
     }
 
-    .bornday-div{
+    .bornday-div, .bornday-div-skeleton{
         padding: 0;
         width: 100%;
         margin-top: 16px;
@@ -82,5 +116,21 @@
 @media(max-width: 468px){
     .bornday{
         width: 100%;
+    }
+
+    .bornday-user, .bornday-user-skeleton{
+        padding: 0;
+        gap: 0;
+    }
+
+    .bornday-user img, .bornday-image-skeleton{
+        border-radius: 23px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .bornday-detail, .bornday-detail-skeleton{
+        width: calc(100% - 32px);
+        padding: 16px;
     }
 }

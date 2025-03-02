@@ -11,7 +11,7 @@
     font-size: 50px;
 }
 
-.borndays-items{
+.borndays-items, .borndays-items-skeleton{
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -20,13 +20,71 @@
     overflow: scroll;
 }
 
+.borndays-item-skeleton {
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #CA3F85;
+    border-radius: 50px;
+    background: white;
+}
+
+.borndays-item-details-skeleton {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.borndays-item-image-skeleton {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background-size: 200% 100%;
+    border: 1px solid #CA3F85;
+    animation: shimmer 1.5s infinite linear;
+}
+
+.borndays-item-content-skeleton {
+    display: flex;
+    gap: 8px;
+    width: 150px;
+}
+
+.borndays-item-content-skeleton p {
+    height: 16px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    width: 100%;
+}
+
+.borndays-item-icon-skeleton {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
 .borndays.blur>*:not(.confirmPopup) {
     filter: blur(2px);
     pointer-events: none;
 }
 
 @media(max-width: 1080px){
-    .borndays-items{
+    .borndays-items, .borndays-items-skeleton{
         width: calc(100% - 32px);
     }
 }
@@ -36,7 +94,7 @@
         width: 100%;
     }
 
-    .borndays-items{
+    .borndays-items, .borndays-items-skeleton{
         padding: 0;
         width: 100%;
         margin-top: 16px;

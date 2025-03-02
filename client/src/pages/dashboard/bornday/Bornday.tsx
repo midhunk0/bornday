@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import "./Bornday.css";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,6 +11,7 @@ export function Bornday(){
     const navigate=useNavigate();
     const { borndayId }=useParams<{ borndayId: string }>();
     const [loading, setLoading]=useState(true);
+    const [imageLoaded, setImageLoaded]=useState(false);
     const { bornday, fetchBornday, deleteBornday, setBorndays }=useBorndays();
     const [showConfirm, setShowConfirm]=useState(false);
 
@@ -36,26 +38,35 @@ export function Bornday(){
         })
     }
 
-    if(loading){
-        return <div>Loading...</div>
-    }
-
     return(
         <div className={`bornday ${showConfirm ? "blur" : ""}`}>
             <h1>Bornday</h1>
-            <div className="bornday-div">
-                <div className="bornday-user">
-                    {bornday.imageUrl && (
-                        <img src={bornday.imageUrl} alt="img"/>
-                    )}
-                    <div className="bornday-detail">
-                        <h2>{bornday.name}</h2>
-                        <h4>{bornday.date}</h4>
+            {loading ?
+                <div className="bornday-div-skeleton">
+                    <div className="bornday-user-skeleton">
+                        <div className="bornday-image-skeleton"/>
+                        <div className="bornday-detail-skeleton">
+                            <h2/>
+                            <h4/>
+                        </div>
                     </div>
                 </div>
-                <Button type="button" text="Edit" functionName={()=>updateBornday(borndayId!)} imageUrl="/edit.png" imageClassName="edit-icon"/>
-                <Button className="delete" type="button" text="Delete" functionName={()=>setShowConfirm(true)} imageUrl="/delete.png" imageClassName="delete-icon"/>
-            </div>
+            : 
+                <div className="bornday-div">
+                    <div className="bornday-user">
+                        {bornday.imageUrl && !imageLoaded && <div className="bornday-image-skeleton"/>}
+                        {bornday.imageUrl && (
+                            <img src={bornday.imageUrl} alt="img" onLoad={()=>setImageLoaded(true)} className={imageLoaded ? "" : "hidden"}/>
+                        )}
+                        <div className="bornday-detail">
+                            <h2>{bornday.name}</h2>
+                            <h4>{bornday.date}</h4>
+                        </div>
+                    </div>
+                    <Button type="button" text="Edit" functionName={()=>updateBornday(borndayId!)} imageUrl="/edit.png" imageClassName="edit-icon"/>
+                    <Button className="delete" type="button" text="Delete" functionName={()=>setShowConfirm(true)} imageUrl="/delete.png" imageClassName="delete-icon"/>
+                </div>
+            }
             {showConfirm && (
                 <ConfirmPopup
                     text={`Are you sure to delete bornday of ${bornday.name}?`}

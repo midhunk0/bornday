@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -51,7 +51,7 @@ export function useBorndays(){
         }
     }
     
-    useEffect(()=>{
+    // useEffect(()=>{
         async function fetchBorndays(){
             try{
                 const response=await fetch(`${apiUrl}/bornday/fetchBorndays`, {
@@ -76,8 +76,8 @@ export function useBorndays(){
             }
         }
 
-        fetchBorndays();
-    }, [apiUrl]);
+    //     fetchBorndays();
+    // }, [apiUrl]);
 
     async function fetchBornday(borndayId: string){
         try{
@@ -161,6 +161,7 @@ export function useBorndays(){
         borndays, 
         setBorndays, 
         bornday, 
+        fetchBorndays,
         fetchBornday, 
         updateBornday, 
         deleteBornday,
