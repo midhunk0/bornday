@@ -42,13 +42,11 @@ export function Bornday(){
         <div className={`bornday ${showConfirm ? "blur" : ""}`}>
             <h1>Bornday</h1>
             {loading ?
-                <div className="bornday-div-skeleton">
-                    <div className="bornday-user-skeleton">
-                        <div className="bornday-image-skeleton"/>
-                        <div className="bornday-detail-skeleton">
-                            <h2/>
-                            <h4/>
-                        </div>
+                <div className="bornday-user-skeleton">
+                    <div className="bornday-image-skeleton"/>
+                    <div className="bornday-detail-skeleton">
+                        <p/>
+                        <p/>
                     </div>
                 </div>
             : 
@@ -58,11 +56,11 @@ export function Bornday(){
                         {bornday.imageUrl && (
                             <img src={bornday.imageUrl} alt="img" onLoad={()=>setImageLoaded(true)} className={imageLoaded ? "" : "hidden"}/>
                         )}
-                        <div className="bornday-detail">
-                            <h2>{bornday.name}</h2>
-                            <h4>{bornday.date}</h4>
-                        </div>
                     </div>
+                    {/* <div className="bornday-detail"> */}
+                        <p>{bornday.name}</p>
+                        <p>{bornday.date}</p>
+                    {/* </div> */}
                     <Button type="button" text="Edit" functionName={()=>updateBornday(borndayId!)} imageUrl="/edit.png" imageClassName="edit-icon"/>
                     <Button className="delete" type="button" text="Delete" functionName={()=>setShowConfirm(true)} imageUrl="/delete.png" imageClassName="delete-icon"/>
                 </div>

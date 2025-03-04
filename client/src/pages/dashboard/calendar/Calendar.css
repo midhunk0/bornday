@@ -16,10 +16,12 @@
     flex-direction: column;
     width: 70%;
     padding: 16px;
+    margin-top: 16px;
     background: white;
     border-radius: 16px;
     overflow-y: scroll;
     gap: 16px;
+    border: 1px solid #CA3F85;
 }
 
 .calendar-bornday-details{

@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import "./Calendar.css";
 import { useNavigate } from "react-router-dom";
 import { BorndayItem } from "../../../components/borndayItem/BorndayItem";
@@ -10,13 +11,17 @@ import { useBorndays } from "../../../hooks/useBorndays";
 export function Calendar() {
     const navigate=useNavigate();
 
-    const { borndays, setBorndays, deleteBornday }=useBorndays();
+    const { borndays, fetchBorndays, setBorndays, deleteBornday }=useBorndays();
     
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [openButtons, setOpenButtons]=useState<{ [key: string]: boolean }>({});
     const [borndayId, setBorndayId]=useState("");
     const [showConfirm, setShowConfirm]=useState(false);
+
+    useEffect(()=>{
+        fetchBorndays();
+    }, [borndayId]);
 
     function changeMonth(offset: number) {
         const newDate = new Date(currentDate);

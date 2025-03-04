@@ -26,6 +26,7 @@
     border-radius: 50%;
     border: 1px solid #CA3F85;
     object-fit: contain;
+    background: black;
 }
 
 .borndayItem-content{

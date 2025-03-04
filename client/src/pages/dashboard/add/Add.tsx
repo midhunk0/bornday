@@ -4,6 +4,9 @@ import { useLocation } from "react-router-dom";
 import { Button } from "../../../components/buttons/button/Button";
 import { Input } from "../../../components/input/Input";
 import { useBorndays } from "../../../hooks/useBorndays";
+import { infinity } from 'ldrs'
+
+infinity.register()
 
 interface BorndayData{
     name: string,
@@ -21,6 +24,7 @@ export function Add(){
         date: (location.state as { date?: string })?.date || new Date().toISOString().split("T")[0],
         image: null
     });
+    const [loading, setLoading]=useState(false);
 
     function handleInputChange(e:React.ChangeEvent<HTMLInputElement>){
         const { name, value }=e.target;
@@ -50,8 +54,9 @@ export function Add(){
         }
     }
 
-    async function handleAdd(e: React.FormEvent<HTMLFormElement>){
+    async function handleAddBornday(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
+        setLoading(true);
         const formData = new FormData();
         formData.append("name", borndayData.name);
         formData.append("date", borndayData.date);
@@ -59,26 +64,37 @@ export function Add(){
             formData.append("image", borndayData.image);
         }
     
-        await addBornday(formData);
+        await addBornday(formData).then(()=>setLoading(false));
     }
 
     return(
         <div className="add">
             <h1>Add Bornday</h1>
-            <form onSubmit={handleAdd} className="add-form">
-                <Input type="file" name="image" inputFunction={handleAddImage} text="Profile" ref={fileInputRef}/>
-                {borndayData.image ? (
-                    <div className="add-image-section">
-                        <img src={borndayData.image ? URL.createObjectURL(borndayData.image) : ""} alt="image" className="add-image"/>
-                        <button type="button" onClick={handleRemoveImage} className="add-remove"><img src="/no.png" alt="img"/></button>
-                    </div>
-                ) : (
-                    <></>
-                )}
-                <Input type="text" name="name" value={borndayData.name} inputFunction={handleInputChange} text="Name"/>
-                <Input type="date" name="date" value={borndayData.date} inputFunction={handleInputChange} text="DOB"/>
-                <Button type="submit"text="Add"imageUrl="/add.png"imageClassName="add-icon"/>
-            </form>
+            {loading ? 
+                <l-infinity
+                    size="70"
+                    stroke="7"
+                    stroke-length="0.2"
+                    bg-opacity="0.1"
+                    speed="1.2" 
+                    color="#CA3F85" 
+                ></l-infinity>
+            : 
+                <form onSubmit={handleAddBornday} className="add-form">
+                    <Input type="file" name="image" inputFunction={handleAddImage} text="Profile" ref={fileInputRef}/>
+                    {borndayData.image ? (
+                        <div className="add-image-section">
+                            <img src={borndayData.image ? URL.createObjectURL(borndayData.image) : ""} alt="image" className="add-image"/>
+                            <button type="button" onClick={handleRemoveImage} className="add-remove"><img src="/no.png" alt="img"/></button>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+                    <Input type="text" name="name" value={borndayData.name} inputFunction={handleInputChange} text="Name"/>
+                    <Input type="date" name="date" value={borndayData.date} inputFunction={handleInputChange} text="DOB"/>
+                    <Button type="submit"text="Add"imageUrl="/add.png"imageClassName="add-icon"/>
+                </form>
+            }
         </div>
     );
 };

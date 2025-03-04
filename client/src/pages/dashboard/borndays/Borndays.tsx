@@ -14,6 +14,7 @@ export function Borndays(){
     const [borndayId, setBorndayId]=useState("");
     const [showConfirm, setShowConfirm]=useState(false);
     const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         fetchBorndays().then(() => setLoading(false)); 

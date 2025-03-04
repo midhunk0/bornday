@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./BorndayItem.css";
 
 interface Bornday{
@@ -19,6 +19,8 @@ interface BorndayProps{
 }
 
 export function BorndayItem({ bornday, open, onView,  onEdit, onSetId, onToggle, onSetConfirm }: BorndayProps){
+    const [imageLoaded, setImageLoaded]=useState(false);
+
     function formatDate(dateString: string){
         const date=new Date(dateString);
         return date.toLocaleDateString("en-US", {
@@ -31,7 +33,8 @@ export function BorndayItem({ bornday, open, onView,  onEdit, onSetId, onToggle,
     return(
         <div className="borndayItem" onClick={(e)=>onView(e, bornday._id)}>
             <div className="borndayItem-details">
-                <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="image"/>
+                {!imageLoaded && <div className="borndays-item-image-skeleton"/>}
+                <img src={bornday.imageUrl ? bornday.imageUrl : "/profile.png"} alt="image" onLoad={()=>setImageLoaded(true)} className={imageLoaded ? "" : "hidden"}/>
                 <div className="borndayItem-content">
                     <p>{bornday.name}</p>
                     <p>{formatDate(bornday.date)}</p>

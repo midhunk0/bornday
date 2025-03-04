@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import "./Update.css";
 import { useParams } from "react-router-dom";
@@ -22,10 +23,12 @@ export function Update(){
         image: null,
         date: ""
     });
+    const [loading, setLoading]=useState(true);
+    const [imageLoaded, setImageLoaded]=useState(false);
 
     useEffect(()=>{
         if(borndayId){
-            fetchBornday(borndayId);
+            fetchBornday(borndayId).then(()=>setLoading(false));
         }
     }, [borndayId]);
 
@@ -82,22 +85,31 @@ export function Update(){
     return(
         <div className="update">
             <h1>Update Bornday</h1>
-            <form onSubmit={handleUpdate} className="update-form">
-                {updateData.image ? (
-                    <div className="update-image-section">
-                        {isNewImage 
-                            ? <img src={updateData.image ? URL.createObjectURL(updateData.image) : ""} alt="image" className="update-image"/>
-                            : <img src={updateData.image.name} alt="image" className="update-image"/>
-                        }
-                        <button type="button" onClick={handleRemoveImage} className="update-remove"><img src="/no.png" alt="img"/></button>
-                    </div>
-                ) : (
-                    <Input type="file" name="image" inputFunction={handleAddImage} text="Profile" ref={fileInputRef}/>
-                )}
-                <Input type="text" name="name" value={updateData.name} inputFunction={(e)=>setUpdateData({...updateData, name: e.target.value})} text="Name"/>
-                <Input type="date" name="date" value={updateData.date} inputFunction={(e)=>setUpdateData({...updateData, date: e.target.value})} text="DOB"/>
-                <Button type="submit" text="Update" imageUrl="/update.png" imageClassName="update-icon"/>
-            </form>
+            {loading ? 
+                <div className="update-form-skeleton">
+                    <div className="update-image-skeleton"/>
+                    <div className="update-input-skeleton"/>
+                    <div className="update-input-skeleton"/>
+                </div>
+            :
+                <form onSubmit={handleUpdate} className="update-form">
+                    {updateData.image ? (
+                        <div className="update-image-section">
+                            {updateData.image && !imageLoaded && <div className="update-image-skeleton"/>}
+                            {isNewImage 
+                                ? <img src={updateData.image ? URL.createObjectURL(updateData.image) : ""} alt="image" className={`update-image ${imageLoaded ? "" : "hidden"}`} onLoad={()=>setImageLoaded(true)}/>
+                                : <img src={updateData.image.name} alt="image" className={`update-image ${imageLoaded ? "" : "hidden"}`} onLoad={()=>setImageLoaded(true)}/>
+                            }
+                            <button type="button" onClick={handleRemoveImage} className="update-remove"><img src="/no.png" alt="img"/></button>
+                        </div>
+                    ) : (
+                        <Input type="file" name="image" inputFunction={handleAddImage} text="Profile" ref={fileInputRef}/>
+                    )}
+                    <Input type="text" name="name" value={updateData.name} inputFunction={(e)=>setUpdateData({...updateData, name: e.target.value})} text="Name"/>
+                    <Input type="date" name="date" value={updateData.date} inputFunction={(e)=>setUpdateData({...updateData, date: e.target.value})} text="DOB"/>
+                    <Button type="submit" text="Update" imageUrl="/update.png" imageClassName="update-icon"/>
+                </form>
+            }
         </div>
     )
 }

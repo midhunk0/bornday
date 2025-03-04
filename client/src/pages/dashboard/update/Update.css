@@ -15,8 +15,39 @@
     flex-direction: column;
     gap: 16px;
     width: 70%;
-    padding: 16px;
+    /* padding: 16px; */
+    padding-top: 16px;
     overflow: scroll;
+}
+
+.update-form-skeleton{
+    display: flex;
+    flex-direction: column;
+    /* padding: 16px; */
+    padding-top: 16px;
+    width: 70%;
+    gap: 16px;
+}
+
+.update-image-skeleton{
+    width: calc(100% - 2px);
+    aspect-ratio: 6/4;
+    object-fit: contain;
+    background: black;
+    border-radius: 24px;
+    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background-size: 200% 100%;
+    border: 1px solid #CA3F85;
+    animation: shimmer 1.5s infinite linear;
+}
+
+.update-input-skeleton{
+    border: 1px solid #CA3F85;
+    border-radius: 32px;
+    height: 53px;
+    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
 }
 
 .update-image-section{
@@ -30,6 +61,9 @@
     border-radius: 24px;
     border: 1px solid #CA3F85;
     width: calc(100% - 2px);
+    aspect-ratio: 6/4;
+    object-fit: contain;
+    background-color: black;
 }
 
 .update-remove{
@@ -62,7 +96,7 @@
 
 
 @media(max-width: 1080px){
-    .update-form{
+    .update-form, .update-form-skeleton{
         width: calc(100% - 32px);
     }
 }
@@ -72,7 +106,7 @@
         width: 100%;
     }
 
-    .update-form{
+    .update-form, .update-form-skeleton{
         padding: 0;
         width: 100%;
         padding-top: 16px;
