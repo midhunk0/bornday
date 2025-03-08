@@ -5,6 +5,11 @@ const returnUserId = require("../config/auth");
 const { User } = require("../model");
 const { getNextBornday } = require("../utils/dateUtils");
 
+const environment=process.env.NODE_ENV;
+const apiUrl=environment==='development' 
+    ? process.env.BACK_END_DEV_URL
+    : process.env.BACK_END_PROD_URL;
+
 const addBornday=async(req, res)=>{
     try{
         const userId=returnUserId(req);
@@ -60,7 +65,7 @@ const fetchImage=async(req, res)=>{
         if(!bornday.image){
             return res.status(200).send();
         }
-        res.set("Content-Type",bornday.image.imageType);
+        res.set("Content-Type", bornday.image.imageType);
         return res.status(200).send(bornday.image.image);
     }
     catch(err){
@@ -69,11 +74,6 @@ const fetchImage=async(req, res)=>{
 }
 
 const fetchBorndays=async(req, res)=>{
-    const environment=process.env.NODE_ENV;
-    const apiUrl=environment==='development' 
-        ? process.env.FRONT_END_DEV_API
-        : process.env.FRONT_END_PROD_API;
-
     try{
         const userId=returnUserId(req);
         if(!userId){
@@ -105,7 +105,6 @@ const fetchBorndays=async(req, res)=>{
 
 const fetchBornday=async(req, res)=>{
     try{
-        const apiUrl="http://localhost:4000"
         const userId=returnUserId(req);
         if(!userId){
             return res.status(400).json({ message: "User token not found or invalid" });
