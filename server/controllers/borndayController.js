@@ -69,8 +69,12 @@ const fetchImage=async(req, res)=>{
 }
 
 const fetchBorndays=async(req, res)=>{
+    const environment=process.env.NODE_ENV;
+    const apiUrl=environment==='development' 
+        ? process.env.FRONT_END_DEV_API
+        : process.env.FRONT_END_PROD_API;
+
     try{
-        const apiUrl="http://localhost:4000";
         const userId=returnUserId(req);
         if(!userId){
             return res.status(400).json({ message: "User token not found or invalid" });

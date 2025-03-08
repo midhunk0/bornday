@@ -19,7 +19,7 @@ const apiUrl=environment==='development'
 app.use(cors({
     origin: apiUrl,
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorizarion"]
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(cookieParser());
 app.use(express.json());
