@@ -1,4 +1,5 @@
 # Bornday
+![bornday](https://github.com/user-attachments/assets/09d226d7-f650-472e-aad6-590913df1bcd)
 
 Bornday is an app to store the birthdays of friends and families and get notified a day before it.
 
