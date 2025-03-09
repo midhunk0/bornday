@@ -14,4 +14,4 @@ jobs:
     steps:
       - name: Call Notification API
         run: |
-          curl -X POST "$BACKEND_URL/sendNotifications"
+          curl -X POST "$BACKEND_URL/notifications/sendNotifications"
