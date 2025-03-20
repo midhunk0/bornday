@@ -135,7 +135,7 @@ const loginUser=async(req, res)=>{
 const fetchUser=async(req, res)=>{
     try{
         const apiUrl="http://localhost:4000";
-        const userId=returnUserId(req);
+        const userId=returnUserId(req);              
         if(!userId){
             return res.status(401).json({ message: "User token not found or invalid" });
         }
