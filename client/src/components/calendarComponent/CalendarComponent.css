@@ -6,9 +6,9 @@
 }
 
 .calendarComponent-header-icon-wrapper{
-    background-color: #ca3f85;
-    border: 1px solid #CA3f85;
-    color: white;
+    background-color: var(--pink);
+    border: 1px solid var(--pink);
+    color: var(--bg1);
     display: grid;
     place-content: center;
     border-radius: 50px;
@@ -33,7 +33,7 @@
 }
 
 .calendarComponent-header-icon-wrapper:hover{
-    background: white;
+    background: var(--bg1);
 }
 
 .calendarComponent-header-icon-wrapper:hover .calendarComponent-left-icon{
@@ -49,7 +49,7 @@
 hr{
     border: none;
     height: 1px;
-    background: #CA3f85;
+    background: var(--pink);
 }
 
 .calendarComponent-grid {
@@ -70,8 +70,8 @@ hr{
 
 .calendarComponent-day, .calendarComponent-empty {
     aspect-ratio: 1 / 1;
-    background: white;
-    border: 1px solid #ddd;
+    background: var(--bg1);
+    border: 1px solid var(--bg3);
     border-radius: 50px;
     cursor: pointer;
     transition: background 0.3s ease;
@@ -82,21 +82,21 @@ hr{
 }
 
 .calendarComponent-empty{
-    background: #ddd;
+    background: var(--bg3);
     cursor: auto;
 }
 
 .calendarComponent-day:hover {
-    background-color: #fce4ef;
+    background-color: var(--bg2);
 }
 
 
 .calendarComponent-day.has-bornday {
-    background: #ca3f85;
-    color: white;
+    background: var(--pink);
+    color: var(--bg1);
 }
 
 .calendarComponent-day.selected {
-    background-color: black;
-    color: white;
+    background-color: var(--text1);
+    color: var(--bg1);
 }

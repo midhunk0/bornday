@@ -13,12 +13,9 @@
 
 .bornday-user, .bornday-user-skeleton{
     display: flex;
-    /* padding: 16px; */
-    /* gap: 16px; */
     width: 100%;
     border-radius: 24px;
-    color: #CA3f85;
-    /* background: white; */
+    color: var(--pink);
     flex-direction: column;
 }
 
@@ -48,24 +45,14 @@
     display: flex;
     animation: shimmer 1.5s infinite linear;
     width: calc(100% - 2px);
-    /* padding: 16px; */
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     border-radius: 32px;
     height: 51px;
 }
 
-/* .bornday-detail-skeleton h2{
-    height: 29px;
-}
-
-.bornday-detail-skeleton h4{
-    height: 19px;
-} */
-
 .bornday-div{
     display: flex;
     flex-direction: column;
-    /* padding: 16px; */
     padding-top: 16px;
     width: 70%;
     gap: 16px;
@@ -74,17 +61,17 @@
 .bornday-div p{
     padding: 16px;
     border-radius: 32px;
-    background-color: white;
-    border: 1px solid #CA3F85;
+    background-color: var(--bg1);
+    border: 1px solid var(--pink);
 }
 
 .bornday-user img, .bornday-image-skeleton{
     width: calc(100% - 2px);
     aspect-ratio: 6/4;
     object-fit: contain;
-    background: black;
+    background: var(--text1);
     border-radius: 24px;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
 }
 
 .bornday-image-skeleton{
@@ -142,7 +129,6 @@
 
     .bornday-user, .bornday-user-skeleton{
         padding: 0;
-        /* gap: 0; */
     }
 
     .bornday-user img, .bornday-image-skeleton{

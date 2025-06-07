@@ -1,9 +1,9 @@
 .button{
     padding: 16px;
     font-size: 16px;
-    border: 1px solid #CA3f85;
+    border: 1px solid var(--pink);
     cursor: pointer;
-    background: white;
+    background: var(--bg1);
     border-radius: 50px;
     display: flex;
     align-items: center;
@@ -18,12 +18,12 @@
     right: 8px;
     width: 36px;
     aspect-ratio: 1/1;
-    background: #CA3f85;
+    background: var(--pink);
     border-radius: 50%;
     display: grid;
     place-content: center;
     overflow: hidden;
-    border: 1px solid #CA3f85;
+    border: 1px solid var(--pink);
 }
 
 .button-icon-wrapper img{
@@ -33,22 +33,22 @@
 }
 
 .button.delete{
-    background: white;
-    color: red;
+    background: var(--bg1);
+    color: var(--red);
 }
 
 .button:hover{
-    background: black;
-    color: white;
+    background: var(--text1);
+    color: var(--bg1);
 }
 
 .button.delete:hover{
-    background: red;
-    color: white;
+    background: var(--red);
+    color: var(--bg1);
 }
 
 .button:hover .button-icon-wrapper{
-    background: white;
+    background: var(--bg1);
 }
 
 .button:hover .button-icon-wrapper img{

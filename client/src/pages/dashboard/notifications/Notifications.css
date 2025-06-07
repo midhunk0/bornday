@@ -15,7 +15,6 @@
     flex-direction: column;
     gap: 16px;
     width: 70%;
-    /* padding: 16px; */
     padding-top: 16px;
     overflow: scroll;
     height: 100vh;
@@ -24,9 +23,9 @@
 .notification{
     display: flex;
     padding: 16px;
-    background: white;
+    background: var(--bg1);
     border-radius: 32px;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     justify-content: space-between;
     position: relative;
     align-items: center;
@@ -38,19 +37,19 @@
 }
 
 .notification:hover{
-    background: black;
-    color: white;
+    background: var(--text1);
+    color: var(--bg1);
 }
 
 .notification label{
     display: flex;
-    background: #CA3F85;
+    background: var(--pink);
     position: absolute;
-    color: white;
+    color: var(--bg1);
     padding: 2px 12px;
     top: 0;
     transform: translateY(-50%);
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     border-radius: 24px;
 }
 

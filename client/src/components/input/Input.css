@@ -7,8 +7,9 @@
 .input-container input{
     width: 100%;
     padding: 16px;
+    background: var(--bg1);
     font-size: 16px;
-    border: 1px solid #aaa;
+    border: 1px solid var(--text3);
     border-radius: 30px;
     outline: none;
     transition: border-color 0.3s ease-in-out;
@@ -20,7 +21,7 @@ input[type="file"]::file-selector-button {
 
 .input-container input[type="file"]{
     cursor: pointer;
-    background: white;
+    background: var(--bg1);
 }
 
 .input-container label{
@@ -29,14 +30,15 @@ input[type="file"]::file-selector-button {
     left: 16px;
     transform: translateY(-50%);
     font-size: 16px;
-    color: gray;
+    color: var(--gray);
     transition: all 0.3s ease-in-out;
     pointer-events: none;
 }
 
 .input-container input:focus,
 .input-container input:not(:placeholder-shown){
-    border-color: #CA3F85;
+    border-color: var(--pink);
+    color: var(--text1);
 }
 
 .input-container input:focus+label,
@@ -44,9 +46,9 @@ input[type="file"]::file-selector-button {
     top: 0;
     left: 12px;
     font-size: 12px;
-    color: white;
-    background: #CA3F85;
+    color: var(--white);
+    background: var(--pink);
     padding: 2px 12px;
-    border: 1px solid #CA3f85;
+    border: 1px solid var(--pink);
     border-radius: 12px;
 }

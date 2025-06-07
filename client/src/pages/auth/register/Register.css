@@ -31,7 +31,7 @@
 }
 
 .register-contents h1{
-    color: #CA3F85;
+    color: var(--pink);
     font-family: "Oswald", serif;
     font-size: 40px;
     width: 80%;
@@ -50,12 +50,12 @@
     text-align: center;
     font-size: 16px;
     font-weight: 500;
-    color: #333;
+    color: var(--text2);
 }
 
 .register-footer a{
     text-decoration: none;
-    color: #CA3F85;
+    color: var(--pink);
     font-weight: 600;
     margin-left: 8px;
 }

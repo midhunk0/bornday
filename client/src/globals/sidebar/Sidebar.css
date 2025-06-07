@@ -3,7 +3,7 @@
     flex-direction: column;
     min-width: 56px;
     overflow: hidden;
-    background: #fff;
+    background: var(--bg1);
     height: 100vh;
     z-index: 1;
 }
@@ -53,16 +53,16 @@
     cursor: pointer;
     white-space: nowrap;
     position: relative;
-    border-top: 1px solid white;
+    border-top: 1px solid var(--bg1);
 }
 
 .sidebar-menu:nth-child(4){
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--bg1);
 }
 
 .sidebar-menu.active{
-    background: #CA3F85;
-    color: white;
+    background: var(--pink);
+    color: var(--bg1);
 }
 
 .sidebar-menu.active img{
@@ -70,8 +70,8 @@
 }
 
 .sidebar-menu.active label{
-    color: #CA3F85;
-    background: white;
+    color: var(--pink);
+    background: var(--bg1);
 }
 
 .sidebar.collapsed a{
@@ -79,8 +79,8 @@
 }
 
 .sidebar-menu:hover{
-    background: #CA3F85;
-    color: white;
+    background: var(--pink);
+    color: var(--bg1);
 }
 
 .sidebar-menu.footer{
@@ -91,7 +91,8 @@
 .sidebar-icon-month, 
 .sidebar-icon-bornday, 
 .sidebar-icon-option,
-.sidebar-icon-notifications{
+.sidebar-icon-notifications, 
+.sidebar-icon-toggle{
     width: 24px;
     height: 24px;
     margin: 0;
@@ -100,7 +101,8 @@
 .sidebar-menu:hover .sidebar-icon-add,
 .sidebar-menu:hover .sidebar-icon-bornday,
 .sidebar-menu:hover .sidebar-icon-month, 
-.sidebar-menu:hover .sidebar-icon-notifications{
+.sidebar-menu:hover .sidebar-icon-notifications,
+.sidebar-menu:hover .sidebar-icon-toggle{
     filter: invert();
     animation: vibrate 0.1s ease-in-out infinite alternate;
 }
@@ -128,8 +130,8 @@
 .sidebar-menu label{
     position: absolute;
     font-size: 12px;
-    background: #CA3F85;
-    color: white;
+    background: var(--pink);
+    color: var(--bg1);
     top: 12px;
     left: 36px;
     padding: 2px;
@@ -142,8 +144,8 @@
 }
 
 .sidebar-menu:hover label{
-    background: white;
-    color: #CA3F85;
+    background: var(--bg1);
+    color: var(--pink);
 }
 
 @media (min-width: 720px) {

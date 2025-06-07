@@ -15,7 +15,6 @@
     flex-direction: column;
     gap: 16px;
     width: 70%;
-    /* padding: 16px; */
     padding-top: 16px;
     overflow: scroll;
 }
@@ -23,7 +22,6 @@
 .update-form-skeleton{
     display: flex;
     flex-direction: column;
-    /* padding: 16px; */
     padding-top: 16px;
     width: 70%;
     gap: 16px;
@@ -35,17 +33,17 @@
     object-fit: contain;
     background: black;
     border-radius: 24px;
-    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background: linear-gradient(90deg, var(--bg2) 25%, var(--bg1) 50%, var(--bg2) 75%);
     background-size: 200% 100%;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     animation: shimmer 1.5s infinite linear;
 }
 
 .update-input-skeleton{
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     border-radius: 32px;
     height: 53px;
-    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background: linear-gradient(90deg, var(--bg2) 25%, var(--bg1) 50%, var(--bg2) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite linear;
 }
@@ -59,19 +57,19 @@
 
 .update-image{
     border-radius: 24px;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     width: calc(100% - 2px);
     aspect-ratio: 6/4;
     object-fit: contain;
-    background-color: black;
+    background-color: var(--text1);
 }
 
 .update-remove{
     display: flex;
     padding: 8px;
-    background: white;
+    background: var(--bg1);
     border-radius: 24px;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     cursor: pointer;
     width: max-content;
     overflow: none;
@@ -87,7 +85,7 @@
 
 .update-remove:hover{
     animation: rotateIcon 0.6s ease-in-out;
-    background: #CA3F85;
+    background: var(--pink);
 }
 
 .update-remove:hover img{

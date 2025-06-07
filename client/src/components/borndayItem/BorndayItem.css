@@ -2,16 +2,16 @@
     display: flex;
     padding: 8px;
     justify-content: space-between;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     border-radius: 50px;
     cursor: pointer;
-    background: white;
+    background: var(--bg1);
     transition: background 0.3s ease-in-out;
 }
 
 .borndayItem:hover{
-    background: black;
-    color: white;
+    background: var(--text1);
+    color: var(--bg1);
 }
 
 .borndayItem-details{
@@ -24,9 +24,9 @@
     width: 36px;
     aspect-ratio: 1/1;
     border-radius: 50%;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     object-fit: contain;
-    background: black;
+    background: var(--text1);
 }
 
 .borndayItem-content{
@@ -51,11 +51,11 @@
 .borndayItem-icon-wrapper{
     width: 36px;
     aspect-ratio: 1/1;
-    background: #CA3F85;
+    background: var(--pink);
     border-radius: 50%;
     display: grid;
     place-content: center;
-    border: 1px solid #CA3f85;
+    border: 1px solid var(--pink);
     overflow: hidden;
     cursor: pointer;
 }
@@ -72,7 +72,7 @@
 }
 
 .borndayItem-icon-wrapper:hover{
-    background: white;
+    background: var(--bg1);
 }
 
 

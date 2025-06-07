@@ -4,6 +4,7 @@
     height: calc(100vh - 32px);
     padding: 16px;
     gap: 16px;
+    background: var(--bg1)
 }
 
 .login-image{
@@ -31,7 +32,7 @@
 }
 
 .login-contents h1{
-    color: #CA3F85;
+    color: var(--pink);
     font-family: "Oswald", serif;
     font-size: 40px;
     width: 80%;
@@ -47,7 +48,7 @@
 
 .login-forgot-password{
     text-decoration: none;
-    color: #CA3F85;
+    color: var(--pink);
     font-weight: 600;
     margin-left: 8px;
     margin-left: auto;
@@ -63,12 +64,12 @@
     text-align: center;
     font-size: 16px;
     font-weight: 500;
-    color: #333;
+    color: var(--text2);
 }
 
 .login-footer a{
     text-decoration: none;
-    color: #CA3F85;
+    color: var(--pink);
     font-weight: 600;
     margin-left: 8px;
 }

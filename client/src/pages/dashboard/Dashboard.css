@@ -12,7 +12,7 @@
     display: flex;
     width: calc(100% - 372px);
     padding: 16px;
-    background: #fce4ef;
+    background: var(--bg2);
     justify-content: center;
     margin-left: 340px;   
 }

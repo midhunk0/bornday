@@ -16,7 +16,6 @@
     flex-direction: column;
     gap: 16px;
     width: 70%;
-    /* padding: 16px; */
     padding-top: 16px;
     overflow: scroll;
 }
@@ -26,9 +25,9 @@
     padding: 8px;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     border-radius: 50px;
-    background: white;
+    background: var(--bg1);
 }
 
 .borndays-item-details-skeleton {
@@ -41,9 +40,9 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background: linear-gradient(90deg, var(--bg2) 25%, var(--bg1) 50%, var(--bg2) 75%);
     background-size: 200% 100%;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
     animation: shimmer 1.5s infinite linear;
 }
 
@@ -56,7 +55,7 @@
 .borndays-item-content-skeleton p {
     height: 16px;
     border-radius: 4px;
-    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background: linear-gradient(90deg, var(--bg2) 25%, var(--bg1) 50%, var(--bg2) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite linear;
     width: 100%;
@@ -68,7 +67,7 @@
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+    background: linear-gradient(90deg, var(--bg2) 25%, var(--bg1) 50%, var(--bg2) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite linear;
 

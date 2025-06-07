@@ -1,7 +1,7 @@
 .confirmPopup{
     padding: 16px;
     border-radius: 16px;
-    background: white;
+    background: var(--text1);
     display: flex;
     flex-direction: column;
     position: absolute;

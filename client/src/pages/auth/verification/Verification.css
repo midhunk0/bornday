@@ -31,7 +31,7 @@
 }
 
 .verification-contents h1{
-    color: #CA3F85;
+    color: var(--pink);
     font-family: "Oswald", serif;
     font-size: 40px;
     width: 80%;

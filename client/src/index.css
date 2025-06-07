@@ -6,3 +6,18 @@
     padding: 0;
     scrollbar-width: none;
 }
+
+:root{
+    --pink: #CA3F85;
+    --text1: #000000;
+    --text2: #333;
+    --text3: #aaa;
+    --bg1: #FFFFFF;
+    --bg2: #FCE4EF;
+    --bg3: #ddd;
+
+    --red: #FF0000;
+    --gray: gray;
+    --white: white;
+    --black: black;
+}

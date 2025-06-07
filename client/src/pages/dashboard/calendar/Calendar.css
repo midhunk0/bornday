@@ -17,17 +17,17 @@
     width: 70%;
     padding: 16px;
     margin-top: 16px;
-    background: white;
+    background: var(--bg1);
     border-radius: 16px;
     overflow-y: scroll;
     gap: 16px;
-    border: 1px solid #CA3F85;
+    border: 1px solid var(--pink);
 }
 
 .calendar-bornday-details{
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--bg1);
     border-radius: 8px;
 }
 
@@ -70,7 +70,6 @@
     .calendar{
         width: 100%;
     }
-
 
     .calendar-details{
         padding: 16px;
